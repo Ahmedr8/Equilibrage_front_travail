@@ -1,0 +1,125 @@
+<div class="card">
+  <div class="card-header">
+    Filter
+  </div>
+  <div class="card-body" >
+    <div class="row">
+      <div class="col-md-4">
+        <label for="validationCustom01" class="form-label">code article generique</label>
+        <input type="text" class="form-control" id="validationCustom01" placeholder="code article generique" [(ngModel)]="cag" >
+      </div>
+      <div class="col-md-4">
+        <label for="validationCustom02" class="form-label">code a barre</label>
+        <input type="text" class="form-control" id="validationCustom02" placeholder="code a barre" [(ngModel)]="cb" >
+      </div>
+      <div class="col-md-4">
+        <label for="validationCustomUsername" class="form-label">code fournisseur</label>
+        <div class="input-group has-validation">   
+        <input type="text" class="form-control" id="validationCustomUsername" aria-describedby="inputGroupPrepend" placeholder="code fournissuer" [(ngModel)]="cf">
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-4">
+        <label for="validationCustom03" class="form-label">Model</label>
+        <input type="text" class="form-control" id="validationCustom03" placeholder="Model" [(ngModel)]="m">
+      </div>
+      <div class="col-md-4">
+        <label for="validationCustom04" class="form-label">Categorie</label>
+        <input type="text" name="" id="" placeholder="Categorie" class="form-control" [(ngModel)]="c">
+      </div>
+      <div class="col-md-4">
+        <label for="validationCustom04" class="form-label">Sous Categorie</label>
+        <input type="text" name="" id="" placeholder="Sous Categorie" class="form-control" [(ngModel)]="sc">
+        </div>
+      </div>
+      <br>
+      <div class="container " style="text-align: center;">
+        
+        <button class="btn btn-primary" type="button" (click)="Filtrer()"><span><i class="bi bi-funnel-fill"></i></span>Filtrer</button>
+      </div>
+  </div>
+  </div>
+  <br>
+  <div style="display: flow-root;">
+  <button data-bs-toggle="modal" data-bs-target="#upload" type="button" style="float: right;" class="btn btn-info "><span><i class="bi bi-arrow-bar-down"></i></span> Importer</button>
+  </div>
+  <br>
+<!-- Vertically centered scrollable modal -->
+<!-- Modal -->
+<div class="modal fade" id="upload" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog  modal-dialog-centered modal-dialog-scrollable">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Upload csv File</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div className="container ">
+          <div className="row">
+            <div className="col-12 col-sm-7 col-md-6 m-auto">
+              <div className="card border-0 shadow">
+                <div className="card-body">
+                  <div style="text-align: center;"><i className="fa fa-upload fa-5x" aria-hidden="true"></i><br />Ajouter un ficher .csvv</div>
+                  <form  encType="multipart/form-data" (submit)="upload()"  >
+                    <div class="input-group mb-3">
+                      <input type="file"  #fileInput  accept=".csv" class="form-control" id="inputGroupFile01">
+                      <button type="submit"  data-bs-dismiss="modal" class="btn-primary">Upload CSV</button>
+                    </div>  
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="card" >
+  <div class="card-body">
+<div class="table-responsive">
+  <table class="display" id="datatable" width="100%" cellspacing="0">
+    <thead>
+      <tr>
+        <th>Code Article DEM</th>
+        <th>Code Barre</th>
+        <th>Code Article Gen</th>
+        <th>Libelle</th>
+        <th>Code Taille</th>
+        <th>Libelle Taille</th>
+        <th>Code Couleur</th>
+        <th>Libelle Couleur</th>
+        <th>Code Fournisseur</th>
+        <th>Categorie</th>
+        <th>Sous Categorie</th>
+        <th>Famille 3</th>
+        <th>Famille 4</th>
+        <th>Famille 5</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let article of articles">
+        <td>{{ article.code_article_dem }}</td>
+        <td>{{ article.code_barre }}</td>
+        <td>{{ article.code_article_gen }}</td>
+        <td>{{ article.libelle }}</td>
+        <td>{{ article.code_taille }}</td>
+        <td>{{ article.lib_taille }}</td>
+        <td>{{ article.code_couleur }}</td>
+        <td>{{ article.lib_couleur }}</td>
+        <td>{{ article.code_fournisseur }}</td>
+        <td>{{ article.fam1 }}</td>
+        <td>{{ article.fam2 }}</td>
+        <td>{{ article.fam3 }}</td>
+        <td>{{ article.fam4 }}</td>
+        <td>{{ article.fam5 }}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+</div>
+</div>

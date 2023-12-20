@@ -1,0 +1,92 @@
+<div class="card">
+  <div class="card-header">
+    Filter
+  </div>
+  <div class="card-body" >
+    <div class="row">
+      <div class="col-md-4">
+        <label for="validationCustom01" class="form-label">code depot</label>
+        <input type="text" class="form-control" id="validationCustom01" placeholder="code depot" [(ngModel)]="cd" >
+      </div>
+      <div class="col-md-4">
+        <label for="validationCustom02" class="form-label">code Etablissement</label>
+        <input type="text" class="form-control" id="validationCustom02" placeholder="code Etablissement" [(ngModel)]="ce" >
+      </div>
+      <div class="col-md-4">
+        <label for="validationCustomUsername" class="form-label">type</label>
+        <div class="input-group has-validation">   
+        <input type="text" class="form-control" id="validationCustomUsername" aria-describedby="inputGroupPrepend" placeholder="type" [(ngModel)]="type">
+        </div>
+      </div>
+    </div>
+      <br>
+      <div class="container " style="text-align: center;">
+        
+        <button class="btn btn-primary" type="button" (click)="Filtrer()"><span><i class="bi bi-funnel-fill"></i></span>Filtrer</button>
+      </div>
+  </div>
+  </div>
+  <br>
+  <div style="display: flow-root;">
+  <button data-bs-toggle="modal" data-bs-target="#upload" type="button" style="float: right;" class="btn btn-info "><span><i class="bi bi-arrow-bar-down"></i></span> Importer</button>
+  </div>
+  <br>
+<!-- Vertically centered scrollable modal -->
+<!-- Modal -->
+<div class="modal fade" id="upload" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog  modal-dialog-centered modal-dialog-scrollable">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Upload csv File</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div className="container ">
+          <div className="row">
+            <div className="col-12 col-sm-7 col-md-6 m-auto">
+              <div className="card border-0 shadow">
+                <div className="card-body">
+                  <div style="text-align: center;"><i className="fa fa-upload fa-5x" aria-hidden="true"></i><br />Ajouter un ficher .csvv</div>
+                  <form  encType="multipart/form-data" (submit)="upload()"  >
+                    <div class="input-group mb-3">
+                      <input type="file"  #fileInput  accept=".csv" class="form-control" id="inputGroupFile01">
+                      <button type="submit"  data-bs-dismiss="modal" class="btn-primary">Upload CSV</button>
+                    </div>  
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="card" >
+  <div class="card-body">
+<div class="table-responsive">
+  <table class="display" id="datatable" width="100%" cellspacing="0">
+    <thead>
+      <tr>
+        <th>Code Depot</th>
+        <th>Code Etablissement</th>
+        <th>Type</th>
+        <th>Libelle</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let depot of Depots">
+        <td>{{ depot.code_depot }}</td>
+        <td>{{ depot.code_etab }}</td>
+        <td>{{ depot.type }}</td>
+        <td>{{ depot.libelle }}</td>
+        
+      </tr>
+    </tbody>
+  </table>
+</div>
+</div>
+</div>

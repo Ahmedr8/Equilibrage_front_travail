@@ -1,0 +1,142 @@
+<div class="card">
+  <div class="card-header">
+    Filter
+  </div>
+  <div class="card-body" >
+    <div class="row">
+      <div class="col-md-4">
+        <label for="validationCustom01" class="form-label">code session</label>
+        <input type="text" class="form-control" id="validationCustom01" placeholder="code session" [(ngModel)]="cs" >
+      </div>
+      <div class="col-md-4">
+        <label for="validationCustom02" class="form-label">date session</label>
+        <input type="date" class="form-control" id="validationCustom02" placeholder="code a barre" [(ngModel)]="date" >
+      </div>
+      <div class="col-md-4">
+        <label for="validationCustomUsername" class="form-label">critere</label>
+        <div class="input-group has-validation">   
+          <select class="form-select" aria-label="Default select example" [(ngModel)]="crit" required>
+            <option value="stock_min" selected>stock minimale</option>
+            <option value="moy_ventes">moyenne des ventes</option>
+          </select>
+        </div>
+      </div>
+    </div>
+      <br>
+      <div class="container " style="text-align: center;">
+        
+        <button class="btn btn-primary" type="button" (click)="Filtrer()"><span><i class="bi bi-funnel-fill"></i></span>Filtrer</button>
+      </div>
+  </div>
+  </div>
+<br>
+<div style="display: flow-root;">
+<button onclick="window.location.href='/equilibrage/add_prop'" style="float: right;" class="btn btn-info "><span><i class="bi bi-plus-square-fill"></i></span> Crée Session</button>
+</div>
+<br>
+<div class="card" >
+  <div class="card-body">
+<div class="table-responsive">
+  <table class="display" id="datatable" width="100%" cellspacing="0">
+    <thead>
+      <tr>
+
+        <th style="width:17%" rowspan="2">code sessoin </th>
+        <th style="width:17%"rowspan="2">libelle</th>
+        <th style="width:17%"rowspan="2">date</th>
+        <th style="width:17%"rowspan="2">user</th>
+        <th style="width:17%"rowspan="2">critere</th>
+        <th style="width: 15%;" colspan="2">Action</th>
+      </tr>
+      <tr>
+        <th>detailles</th>
+        <th>supprimer</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr  *ngFor="let session of sessions">
+        <td>{{session.code_session}}</td>
+        <td>{{session.libelle}}</td>
+        <td>{{session.date}}</td>
+        <td>{{session.id_user}}</td>
+        <td>{{session.critere}}</td>
+        <td><button data-bs-toggle="modal" data-bs-target="#exampleModal" (click)="sessionDetail(session.code_session)" ><i class="bi bi-info-circle-fill"></i></button></td>
+        <td><button (click)="sessionDel(session)"><i class="bi bi-trash-fill"></i></button></td>
+      </tr>
+    </tbody>
+  </table>
+  <!-- Modal -->
+<div class="modal fade modal-xl" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">detaille de session</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body row">
+        <div class="card col-md-6" style="display: inline-block;">
+          <div class="card-header">
+            Articles inclu
+          </div>
+          <ul class="list-group list-group-flush">
+            <li class="list-group-item" *ngFor="let item of articles">{{item}}</li>
+          </ul>
+        </div>
+        <div class="card col-md-6" style="display: inline-block;">
+          <div class="card-header">
+            Etablissements inclu
+          </div>
+          <ul class="list-group list-group-flush">
+            <li class="list-group-item" *ngFor="let etab of etabs">{{etab}}</li>
+          </ul>
+
+        </div>
+        <div class="card" >
+          <div class="card-body">
+        <div class="table-responsive">
+          <table class="display" id="datatable3" width="100%" cellspacing="0">
+            <thead>
+              <tr>
+                <th >ordre de transfert</th>
+                <th >code article generique</th>
+                <th >code article dimensionee</th>
+                <th >code barre</th>
+                <th >libellle taille</th>
+                <th >libelle couleur</th>
+                <th >emmeteur</th>
+                <th >recepteur</th>
+                <th >quantite a transferer</th>
+                <th >code session</th>
+                <th >date</th>
+                <th >nom createur</th>
+                <th >statut proposition</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr  *ngFor="let prop of props">
+                <td>{{prop.ordre_trf}}</td>
+                <td>{{prop.code_article_gen}}</td>
+                <td>{{prop.code_article_dem}}</td>
+                <td>{{prop.code_barre}}</td>
+                <td>{{prop.lib_taille}}</td>
+                <td>{{prop.lib_couleur}}</td>
+                <td>{{prop.emet}}</td>
+                <td>{{prop.recep}}</td>
+                <td>{{prop.qte_trf}}</td>
+                <td>{{prop.code_session}}</td>
+                <td>{{prop.date}}</td>
+                <td>{{prop.nom}}</td>
+                <td>{{prop.statut}}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+</div>
+</div>

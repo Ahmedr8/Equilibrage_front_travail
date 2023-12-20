@@ -1,0 +1,40 @@
+body, html {
+    height: 100%;
+    margin: 0;
+  }
+  
+  .container-fluid {
+    height: 100%;
+  }
+  
+  .row {
+    height: 100%;
+    display: flex;
+  }
+  
+  .sidebar {
+    height: 100%;
+    position: fixed;
+    overflow-y: auto;
+  }
+  
+  .main-content {
+    flex: 1;
+    overflow-y: auto;
+    padding-left: 250px; /* Adjust as needed */
+  }
+  
+  .sidebar .text-white {
+    color: white;
+}
+
+/* Optionally, you can change the color of links and hover styles if needed */
+.sidebar .text-white a {
+    color: white;
+    text-decoration: none; /* Remove underline from links */
+}
+
+/* Change link color on hover */
+.sidebar .text-white a:hover {
+    color: #ccc; /* Change the color to a lighter shade on hover */
+}
