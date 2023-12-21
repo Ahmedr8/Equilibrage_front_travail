@@ -1,0 +1,10 @@
+.switch_page:hover {
+    background-color: #353131;
+    color: rgb(246, 241, 241);
+  }
+  
+.switch_page {
+    background-color: #f1f1f1;
+    color: black;
+    margin: 2px;
+  }

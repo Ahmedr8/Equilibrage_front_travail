@@ -40,6 +40,7 @@ export class PropositionComponent implements OnInit {
   created=false;
   articleA=true;
   etabA=false;
+  page_number:number=1;
   constructor(private articleService: ArticleService,private etabService: EtablissementService,private sessionService:SessionService,private datePipe: DatePipe,private detailDetailSessionService: DetailDetailSessionService,private propositionService:PropositionService) { }
 
   ngOnInit() {
@@ -92,9 +93,8 @@ export class PropositionComponent implements OnInit {
     
   
   }
-
   retrieveArticles(): void {
-    this.articleService.getArticles()
+    this.articleService.getArticles(this.page_number.toString())
       .subscribe({
         next: (data) => {
           this.articles = data;
@@ -131,7 +131,7 @@ export class PropositionComponent implements OnInit {
       fam2: this.c,
       fam3:this.sc
     };
-    this.articleService.getArticlesMultipleParams(data)
+    this.articleService.getArticlesMultipleParams(data,this.page_number.toString())
     .subscribe({
       next: (data) => {
         this.articles = data;

@@ -7,11 +7,11 @@ declare var $ : any
 @Component({
   selector: 'app-Articles',
   templateUrl: './Articles.component.html',
-  styleUrls: ['./Articles.component.css']
+  styleUrls: ['./Articles.component.css','../BaseData.component.css']
 })
 export class ArticlesComponent implements OnInit {
   @ViewChild('fileInput') fileInput!: ElementRef;
-  articles?: Article[];
+  articles: Article[]=[];
   cag:any='';
   cad:any='';
   cb:any='';
@@ -20,32 +20,105 @@ export class ArticlesComponent implements OnInit {
   c:any='';
   sc:any='';
   table:any;
+  page_number:number=1;
   datatableElement !: DataTableDirective;
   dtOptions: DataTables.Settings = {};
+  end_of_data:boolean=false;
+  no_previous:boolean=true;
+  totalColumns:number=15;
 
 
   constructor(private articleService: ArticleService) { }
 
   ngOnInit(): void {
     this.retrieveArticles();
-    setTimeout(() => {
-      this.table=$('#datatable').DataTable();
-    }, 500);
+    this.exposeAngularFunctionGlobally();
   }
 
+  next_page():void{
+    if(this.articles.length>=2){
+    this.end_of_data=false
+    this.page_number=this.page_number+1
+    this.no_previous=false;
+    this.retrieveArticles();
+    if (this.articles.length=0)
+    {
+      this.end_of_data=true
+    }
+    }else{
+      this.end_of_data=true
+    }
+  }
+  previous_page():void{
+    if(this.page_number>1){
+    this.page_number=this.page_number-1
+    this.end_of_data=false
+    this.retrieveArticles();
+    this.no_previous=false
+    }else{
+      this.no_previous=true
+    }
+  }
 
   retrieveArticles(): void {
-    this.articleService.getArticles()
+    this.articleService.getArticles(this.page_number.toString())
       .subscribe({
         next: (data) => {
           this.articles = data;
         },
-        error: (e) => console.error(e)
-      });
+        error: (e) => {console.error(e)
+        },
+       complete : () => {
+          this.refreshList()
+      }
+      
+    });
   }
 
   refreshList(): void {
-    
+    if (this.table) {
+      this.table.destroy();
+    }
+    this.table=$('#datatable').DataTable({ data : this.articles,
+      columns: [
+        { data: 'code_article_dem', title: 'Code Article DEM' },
+        { data: 'code_barre', title: 'Code Barre' },
+        { data: 'code_article_gen', title: 'Code Article Gen' },
+        { data: 'libelle', title: 'Libelle' },
+        { data: 'code_taille', title: 'Code Taille' },
+        { data: 'lib_taille', title: 'Libelle Taille' },
+        { data: 'code_couleur', title: 'Code Couleur' },
+        { data: 'lib_couleur', title: 'Libelle Couleur' },
+        { data: 'code_fournisseur', title: 'Code Fournisseur' },
+        { data: 'fam1', title: 'Categorie' },
+        { data: 'fam2', title: 'Sous Categorie' },
+        { data: 'fam3', title: 'Famille 3' },
+        { data: 'fam4', title: 'Famille 4' },
+        { data: 'fam5', title: 'Famille 5' },
+        {
+          title: 'Actions',
+          render: function (data: any, type: any, row: { code_article_dem: any; }, meta: any) {
+            return `
+              <script> myAngularApp = window.myAngularApp;
+              function deleteButtonClick(data) {
+                console.log('JavaScript function called!');
+                if (myAngularApp) {
+                  // Call the Angular function
+                  myAngularApp.deleteButtonClick(data);
+                } else {
+                  console.error('Angular application not found.');
+                }
+                
+            }
+              </script>
+              <button class="btn btn-success btn-sm rounded-2" data-id="${row.code_article_dem}" onclick="editButtonClick(${row})">Edit</button>
+              <button class="btn btn-danger btn-sm rounded-2" data-id="${row.code_article_dem}" onclick="deleteButtonClick('${row.code_article_dem}')">Delete</button>
+            `;
+          },
+        },
+      ],
+      paging: false,        
+    });
   }
   Filtrer(): void{
     const data = {
@@ -56,17 +129,16 @@ export class ArticlesComponent implements OnInit {
       fam2: this.c,
       fam3:this.sc
     };
-    this.articleService.getArticlesMultipleParams(data)
+    this.articleService.getArticlesMultipleParams(data,this.page_number.toString())
     .subscribe({
       next: (data) => {
         this.articles = data;
         console.log(this.articles);
-        $('#datatable').DataTable().clear().destroy();
-        setTimeout(() => {
-          $('#datatable').DataTable();
-        }, 500);
       },
       error: (e) => console.error(e)
+      , complete: ()=> {
+        this.refreshList()
+      }
     });
   }
 
@@ -80,16 +152,13 @@ export class ArticlesComponent implements OnInit {
     this.articleService.uploadFile(fileInput.files[0]).subscribe(
       (response) => {
         console.log('File uploaded successfully:', response);
-        // Handle success, e.g., show a success message
         this.retrieveArticles();
-     $('#datatable').DataTable().clear().destroy();
-        setTimeout(() => {
-          $('#datatable').DataTable();
-        }, 500);
       },
       (error) => {
         console.error('File upload failed:', error);
-        // Handle error, e.g., show an error message
+      },
+      () => {
+          this.retrieveArticles()
       }
     );
 
@@ -98,7 +167,41 @@ export class ArticlesComponent implements OnInit {
 
     
   }
-
+  editButtonClick(article: Article):void {
+    this.articleService.updateArticle(article)
+    .subscribe({
+      next: (data) => {
+        console.log(data)
+      },
+      error: (e) => {console.error(e)
+      },
+     complete : () => {
+        this.refreshList()
+    }
+    
+  });
+  }
+  
+  deleteButtonClick(id: string): void {
+    console.log('delete')
+    this.articleService.deleteArticle(id)
+    .subscribe({
+      next: (data) => {
+        console.log(data)
+      },
+      error: (e) => {console.error(e)
+      },
+     complete : () => {
+        this.refreshList()
+        console.log('complete')
+    }
+    
+  });
+  }
+  exposeAngularFunctionGlobally(): void {
+    // Expose the Angular application globally
+    (window as any).myAngularApp = this;
+  }
 
   }
  

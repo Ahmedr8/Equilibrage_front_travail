@@ -15,13 +15,13 @@ export class ArticleService {
 
   constructor(private http: HttpClient) {}
 
-  getArticles(): Observable<Article[]> {
-    return this.http.get<Article[]>(this.apiUrl+'articles/');
+  getArticles(page_number:string): Observable<Article[]> {
+    return this.http.get<Article[]>(this.apiUrl+'articles/page='+page_number);
   }
 
-  getArticlesMultipleParams(f:any): Observable<Article[]> {
+  getArticlesMultipleParams(f:any,page_number:string): Observable<Article[]> {
     let queryParams = f;
-    return this.http.get<Article[]>(this.apiUrl+'articles/filtred',{params:queryParams});
+    return this.http.get<Article[]>(this.apiUrl+'articles/filtred/page='+page_number,{params:queryParams});
 }
 
   getArticleById(id: string): Observable<Article> {
@@ -34,12 +34,12 @@ export class ArticleService {
   }
 
   updateArticle(article: Article): Observable<Article> {
-    const url = `${this.apiUrl}/${article.code_article_dem}`;
+    const url = `${this.apiUrl}articles/${article.code_article_dem}`;
     return this.http.put<Article>(url, article);
   }
 
   deleteArticle(id: string): Observable<any> {
-    const url = `${this.apiUrl}/${id}`;
+    const url = `${this.apiUrl}articles/${id}`;
     return this.http.delete(url);
   }
 
