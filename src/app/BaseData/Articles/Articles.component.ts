@@ -26,6 +26,7 @@ export class ArticlesComponent implements OnInit {
   end_of_data:boolean=false;
   no_previous:boolean=true;
   totalColumns:number=15;
+  id_to_delete: string='';
 
 
   constructor(private articleService: ArticleService) { }
@@ -90,13 +91,14 @@ export class ArticlesComponent implements OnInit {
         { data: 'code_couleur', title: 'Code Couleur' },
         { data: 'lib_couleur', title: 'Libelle Couleur' },
         { data: 'code_fournisseur', title: 'Code Fournisseur' },
-        { data: 'fam1', title: 'Categorie' },
-        { data: 'fam2', title: 'Sous Categorie' },
-        { data: 'fam3', title: 'Famille 3' },
+        { data: 'fam1', title: 'Model' },
+        { data: 'fam2', title: 'Categorie' },
+        { data: 'fam3', title: 'Sous Categorie' },
         { data: 'fam4', title: 'Famille 4' },
         { data: 'fam5', title: 'Famille 5' },
         {
           title: 'Actions',
+          orderable: false,
           render: function (data: any, type: any, row: { code_article_dem: any; }, meta: any) {
             return `
               <script> myAngularApp = window.myAngularApp;
@@ -104,15 +106,16 @@ export class ArticlesComponent implements OnInit {
                 console.log('JavaScript function called!');
                 if (myAngularApp) {
                   // Call the Angular function
-                  myAngularApp.deleteButtonClick(data);
+                  myAngularApp.id_article_to_delete(data);
                 } else {
                   console.error('Angular application not found.');
                 }
                 
             }
-              </script>
+              </script><div class="d-flex flex-inline">
               <button class="btn btn-success btn-sm rounded-2" data-id="${row.code_article_dem}" onclick="editButtonClick(${row})">Edit</button>
-              <button class="btn btn-danger btn-sm rounded-2" data-id="${row.code_article_dem}" onclick="deleteButtonClick('${row.code_article_dem}')">Delete</button>
+              <button class="btn btn-danger btn-sm rounded-2" data-id="${row.code_article_dem}" data-bs-toggle="modal" data-bs-target="#delete" onclick="deleteButtonClick('${row.code_article_dem}')">Delete</button>
+              </div>
             `;
           },
         },
@@ -182,9 +185,9 @@ export class ArticlesComponent implements OnInit {
   });
   }
   
-  deleteButtonClick(id: string): void {
+  deleteButtonClick(): void {
     console.log('delete')
-    this.articleService.deleteArticle(id)
+    this.articleService.deleteArticle(this.id_to_delete)
     .subscribe({
       next: (data) => {
         console.log(data)
@@ -192,12 +195,18 @@ export class ArticlesComponent implements OnInit {
       error: (e) => {console.error(e)
       },
      complete : () => {
-        this.refreshList()
-        console.log('complete')
+        this.retrieveArticles()
     }
     
   });
+  
   }
+
+  id_article_to_delete(id: string):void{
+    this.id_to_delete=id
+    console.log(this.id_to_delete)
+  }
+
   exposeAngularFunctionGlobally(): void {
     // Expose the Angular application globally
     (window as any).myAngularApp = this;

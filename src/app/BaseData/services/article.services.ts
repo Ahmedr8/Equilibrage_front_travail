@@ -47,6 +47,6 @@ export class ArticleService {
     const formData = new FormData();
     formData.append('file', file);
 
-    return this.http.post(this.apiUrl+'articles/', formData);
+    return this.http.post(this.apiUrl+'articles/page=1', formData);
   }
 }

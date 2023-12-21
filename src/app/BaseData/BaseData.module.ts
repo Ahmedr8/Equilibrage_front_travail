@@ -9,7 +9,6 @@ import { EtablissementComponent } from './Etablissement/Etablissement.component'
 import { FormsModule }   from '@angular/forms';
 import { StocksComponent } from './stocks/stocks.component';
 import { DepotComponent } from './Depot/Depot.component';
-import { FamilleComponent } from './Famille/Famille.component';
 
 
 @NgModule({
@@ -20,6 +19,6 @@ import { FamilleComponent } from './Famille/Famille.component';
     HttpClientModule,
     DataTablesModule
   ],
-  declarations: [BaseDataComponent,ArticlesComponent,EtablissementComponent,StocksComponent,DepotComponent,FamilleComponent]
+  declarations: [BaseDataComponent,ArticlesComponent,EtablissementComponent,StocksComponent,DepotComponent]
 })
 export class BaseDataModule { }
