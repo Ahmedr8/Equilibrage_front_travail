@@ -36,7 +36,7 @@
       <br>
       <div class="container " style="text-align: center;">
         
-        <button class="btn btn-primary" type="button" (click)="Filtrer()"><span><i class="bi bi-funnel-fill"></i></span>Filtrer</button>
+        <button class="btn btn-primary" type="button" (click)="Filtrer_click()"><span><i class="bi bi-funnel-fill"></i></span>Filtrer</button>
       </div>
   </div>
   </div>
@@ -59,7 +59,7 @@
                 <div class="card-body">
                   <div style="text-align: center;"><i class="fa fa-upload" aria-hidden="true"></i>  Ajouter un ficher .csv</div>
                   <form  encType="multipart/form-data" (submit)="upload()"  >
-                    <div class="input-group mb-3">
+                    <div class="input-group">
                       <input type="file"  #fileInput  accept=".csv" class="form-control" id="inputGroupFile01">
                       <button type="submit"  data-bs-dismiss="modal" class="btn switch_page">Upload CSV</button>
                     </div>  

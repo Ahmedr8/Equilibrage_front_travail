@@ -9,7 +9,7 @@ declare var $ : any
 @Component({
   selector: 'app-sessions',
   templateUrl: './sessions.component.html',
-  styleUrls: ['./sessions.component.css']
+  styleUrls: ['./sessions.component.css','../equilibrage.component.css']
 })
 export class SessionsComponent implements OnInit {
   sessions: Session[]=[];
@@ -20,28 +20,143 @@ export class SessionsComponent implements OnInit {
   date:any='';
   cs:any='';
   crit:any='';
+  table_sessions:any;
+  table_props:any;
+  end_of_data:boolean=false;
+  no_previous:boolean=true;
+  totalColumns:number=6;
+  id_to_delete: string='';
+  page_number:number=1;
   constructor(private sessionService : SessionService,private detailDetailSessionService:DetailDetailSessionService,private propositionService:PropositionService) { }
 
   ngOnInit() {
     this.retrieveSessions();
-    setTimeout(() => {
-      $('#datatable').DataTable({
-        columnDefs: [
-          { orderable: false, targets: 5 },
-          { orderable: false, targets: 6 }
-        ],
-      });
-    }, 500)
+    this.exposeAngularFunctionGlobally();
+  }
+  exposeAngularFunctionGlobally(): void {
+    // Expose the Angular application globally
+    (window as any).myAngularApp = this;
+  }
+  next_page():void{
+    if(this.sessions.length>=2){
+    this.end_of_data=false
+    this.page_number=this.page_number+1
+    this.no_previous=false;
+    this.Filtrer();
+    if (this.sessions.length=0)
+    {
+      this.end_of_data=true
+    }
+    }else{
+      this.end_of_data=true
+    }
+  }
+  previous_page():void{
+    if(this.page_number>1){
+    this.page_number=this.page_number-1
+    this.end_of_data=false
+    this.Filtrer();
+    this.no_previous=false
+    }else{
+      this.no_previous=true
+    }
   }
 
   retrieveSessions(): void {
-    this.sessionService.getSessions()
+    this.sessionService.getSessions(this.page_number.toString())
       .subscribe({
         next: (data) => {
           this.sessions = data;
+          console.log(data)
         },
         error: (e) => console.error(e)
+        ,
+       complete : () => {
+          this.refresh_sessionsList()
+      }
       });
+  }
+
+  refresh_sessionsList(): void {
+    if (this.table_sessions) {
+      this.table_sessions.destroy();
+    }
+    this.table_sessions=$('#datatable').DataTable({ data : this.sessions,
+      columns: [
+        { data: 'code_session', title: 'code sessoin' },
+        { data: 'libelle', title: 'libelle' },
+        { data: 'date', title: 'date' },
+        { data: 'id_user', title: 'user' },
+        { data: 'critere', title: 'critere' },
+        {
+          title: 'Actions',
+          orderable: false,
+          render: function (data: any, type: any, row: { code_session: any; }, meta: any) {
+            return `
+              <script> myAngularApp = window.myAngularApp;
+              function deleteButtonClick(data) {
+                console.log('JavaScript function called!');
+                if (myAngularApp) {
+                  // Call the Angular function
+                  myAngularApp.id_session_to_delete(data);
+                } else {
+                  console.error('Angular application not found.');
+                }
+                
+            }
+            function details_ButtonClick(data) {
+              console.log('JavaScript details function called!');
+              if (myAngularApp) {
+                // Call the Angular function
+                myAngularApp.sessionDetail(data);
+              } else {
+                console.error('Angular application not found.');
+              }
+              
+          }
+              </script><div class="d-flex flex-inline">
+              <button class="btn btn-success btn-sm rounded-2 m-1" data-id="${row.code_session}" data-bs-toggle="modal" data-bs-target="#details" onclick="details_ButtonClick(${row.code_session})">details</button>
+              <button class="btn btn-danger btn-sm rounded-2 m-1" data-id="${row.code_session}" data-bs-toggle="modal" data-bs-target="#delete" onclick="deleteButtonClick('${row.code_session}')">Delete</button>
+              </div>
+            `;
+          },
+        },
+      ],
+      paging: false,        
+    });
+  }
+  refreshList_prop(): void {
+    if (this.table_props) {
+      this.table_props.destroy();
+    }
+    this.table_props=$('#datatable3').DataTable({ data : this.props,
+      columns: [
+        { data: 'ordre_trf', title: 'ordre de transfert' },
+        { data: 'code_article_gen', title: 'code article generique' },
+        { data: 'code_article_dem', title: 'code article dimensionee' },
+        { data: 'code_barre', title: 'code barre' },
+        { data: 'lib_taille', title: 'libellle taille' },
+        { data: 'lib_couleur', title: 'libelle couleur' },
+        { data: 'emet', title: 'emmeteur' },
+        { data: 'qte_trf', title: 'recepteur' },
+        { data: 'code_session', title: 'quantite a transferer' },
+        { data: 'date', title: 'date' },
+        { data: 'nom', title: 'nom createur' },
+        { data: 'statut', title: 'statut proposition' }
+      ],
+      select: {
+        style: 'multi', // Style of the selection
+      },
+      buttons: [
+        'selectAll',
+        'selectNone',
+        'excel',
+        'colvis',
+        'print'
+    ],
+    dom: 'Bfrtip',
+        
+    });
   }
 
   Filtrer(): void{
@@ -50,32 +165,28 @@ export class SessionsComponent implements OnInit {
       code_session: this.cs,
       critere: this.crit
     };
-    this.sessionService.getsessiosMultipleParams(data)
+    this.sessionService.getsessiosMultipleParams(data,this.page_number.toString())
     .subscribe({
       next: (data) => {
         this.sessions = data;
         console.log(this.sessions);
-        $('#datatable').DataTable().clear().destroy();
-        setTimeout(() => {
-          $('#datatable').DataTable({
-            columnDefs: [
-              { orderable: false, targets: 5 },
-              { orderable: false, targets: 6 }
-            ],
-          });
-        }, 500);
+        
       },
       error: (e) => console.error(e)
+      ,
+       complete : () => {
+          this.refresh_sessionsList()
+      }
     });
   }
 
-  sessionDetail(id: number | null): void {
-    const idd = id !== null ? id.toString() : '';
-    this.detailDetailSessionService.getDetailSessionsById(idd)
+  sessionDetail(id: string): void {
+    console.log("details")
+    this.detailDetailSessionService.getDetailSessionsById(id)
       .subscribe({
         next: (data) => {
           this.sessionDetails = data;
-  
+          
           // Initialize articles and etabs as empty arrays
           this.articles = [];
           this.etabs = [];
@@ -96,61 +207,45 @@ export class SessionsComponent implements OnInit {
         },
         error: (e) => console.error(e)
       });
-      this.propositionService.getPropositionsById(idd)
+      this.propositionService.getPropositionsById(id)
       .subscribe({
         next: (propos) => {
           this.props = propos;
           console.log(this.props)
-          $('#datatable3').DataTable().clear().destroy();
-          setTimeout(() => {
-            $('#datatable3').DataTable(
-              {
-                select: {
-                  style: 'multi', // Style of the selection
-                },
-                buttons: [
-                  'selectAll',
-                  'selectNone',
-                  'excel',
-                  'colvis',
-                  'print'
-              ],
-              dom: 'Bfrtip',
-              
-              }
-            );
-          }, 500);
         },
         error: (e) => console.error(e)
+        ,
+        complete: ()=> {
+          this.refreshList_prop()
+        }
       });
   }
 
-  sessionDel(ses:Session):void{
-    const idd = ses.code_session !== null ? ses.code_session.toString() : '';
-    this.sessionService.deleteSession(idd).subscribe({
-      next: (res) => {
-        console.log(res)
-        $('#datatable').DataTable().clear().destroy();
-        let table=this.sessions
-        const index = table.indexOf(ses, 0);
-        if (index > -1) {
-        table.splice(index, 1);
-        }
-        this.sessions=table;
-        this.retrieveSessions();
-        setTimeout(() => {
-          $('#datatable').DataTable({
-            columnDefs: [
-              { orderable: false, targets: 5 },
-              { orderable: false, targets: 6 }
-            ],
-          });
-        }, 500)
+  deleteButtonClick(): void {
+    console.log('delete')
+    this.sessionService.deleteSession(this.id_to_delete)
+    .subscribe({
+      next: (data) => {
+        console.log(data)
       },
-      error: (e) => console.error(e)
-    });
-
+      error: (e) => {console.error(e)
+      },
+     complete : () => {
+        this.retrieveSessions()
+    }
+    
+  });
+  
   }
+
+  id_session_to_delete(id: string):void{
+    this.id_to_delete=id
+    console.log(this.id_to_delete)
+  }
+
+
+
+
   
 
 }

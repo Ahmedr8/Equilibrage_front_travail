@@ -15,13 +15,13 @@ export class StockService {
 
   constructor(private http: HttpClient) {}
 
-  getStocks(): Observable<Stock[]> {
-    return this.http.get<Stock[]>(this.apiUrl+'stocks/');
+  getStocks(page_number:string): Observable<Stock[]> {
+    return this.http.get<Stock[]>(this.apiUrl+'stocks/page='+page_number);
   }
 
-  getStocksMultipleParams(f:any): Observable<Stock[]> {
+  getStocksMultipleParams(f:any,page_number:string): Observable<Stock[]> {
     let queryParams = f;
-    return this.http.get<Stock[]>(this.apiUrl+'stocks/filtred',{params:queryParams});
+    return this.http.get<Stock[]>(this.apiUrl+'stocks/filtred/page='+page_number,{params:queryParams});
 }
 
   getStockById(id: string): Observable<Stock> {
@@ -34,12 +34,12 @@ export class StockService {
   }
 
   updateStock(Stock: Stock): Observable<Stock> {
-    const url = `${this.apiUrl}/${Stock.id_stock}`;
+    const url = `${this.apiUrl}stocks/${Stock.id_stock}`;
     return this.http.put<Stock>(url, Stock);
   }
 
   deleteStock(id: string): Observable<any> {
-    const url = `${this.apiUrl}/${id}`;
+    const url = `${this.apiUrl}stocks/${id}`;
     return this.http.delete(url);
   }
 
@@ -47,6 +47,6 @@ export class StockService {
     const formData = new FormData();
     formData.append('file', file);
 
-    return this.http.post(this.apiUrl+'stocks/', formData);
+    return this.http.post(this.apiUrl+'stocks/page=1', formData);
   }
 }

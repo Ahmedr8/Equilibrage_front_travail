@@ -15,13 +15,13 @@ export class DepotService {
 
   constructor(private http: HttpClient) {}
 
-  getDepots(): Observable<Depot[]> {
-    return this.http.get<Depot[]>(this.apiUrl+'depots/');
+  getDepots(page_number:string): Observable<Depot[]> {
+    return this.http.get<Depot[]>(this.apiUrl+'depots/page='+page_number);
   }
 
-  getDepotsMultipleParams(f:any): Observable<Depot[]> {
+  getDepotsMultipleParams(f:any,page_number:string): Observable<Depot[]> {
     let queryParams = f;
-    return this.http.get<Depot[]>(this.apiUrl+'depots/filtred',{params:queryParams});
+    return this.http.get<Depot[]>(this.apiUrl+'depots/filtred/page='+page_number,{params:queryParams});
 }
 
   getDepotById(id: string): Observable<Depot> {
@@ -34,12 +34,12 @@ export class DepotService {
   }
 
   updateDepot(Depot: Depot): Observable<Depot> {
-    const url = `${this.apiUrl}/${Depot.code_depot}`;
+    const url = `${this.apiUrl}depots/${Depot.code_depot}`;
     return this.http.put<Depot>(url, Depot);
   }
 
   deleteDepot(id: string): Observable<any> {
-    const url = `${this.apiUrl}/${id}`;
+    const url = `${this.apiUrl}depots/${id}`;
     return this.http.delete(url);
   }
 
@@ -47,6 +47,6 @@ export class DepotService {
     const formData = new FormData();
     formData.append('file', file);
 
-    return this.http.post(this.apiUrl+'depots/', formData);
+    return this.http.post(this.apiUrl+'depots/page=1', formData);
   }
 }

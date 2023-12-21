@@ -22,7 +22,7 @@
       <br>
       <div class="container " style="text-align: center;">
         
-        <button class="btn btn-primary" type="button" (click)="Filtrer()"><span><i class="bi bi-funnel-fill"></i></span>Filtrer</button>
+        <button class="btn btn-primary" type="button" (click)="Filtrer_click()"><span><i class="bi bi-funnel-fill"></i></span>Filtrer</button>
       </div>
   </div>
   </div>
@@ -41,23 +41,17 @@
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-        <div className="container ">
-          <div className="row">
-            <div className="col-12 col-sm-7 col-md-6 m-auto">
-              <div className="card border-0 shadow">
-                <div className="card-body">
-                  <div style="text-align: center;"><i className="fa fa-upload fa-5x" aria-hidden="true"></i><br />Ajouter un ficher .csvv</div>
+              <div class="card border-0 ">
+                <div class="card-body">
+                  <div style="text-align: center;"><i class="fa fa-upload" aria-hidden="true"></i>  Ajouter un ficher .csv</div>
                   <form  encType="multipart/form-data" (submit)="upload()"  >
                     <div class="input-group mb-3">
                       <input type="file"  #fileInput  accept=".csv" class="form-control" id="inputGroupFile01">
-                      <button type="submit"  data-bs-dismiss="modal" class="btn-primary">Upload CSV</button>
+                      <button type="submit"  data-bs-dismiss="modal" class="btn switch_page">Upload CSV</button>
                     </div>  
                   </form>
                 </div>
               </div>
-            </div>
-          </div>
-        </div>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -65,28 +59,41 @@
     </div>
   </div>
 </div>
+
+<!-- Modal -->
+<div class="modal fade" id="delete" tabIndex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" data-bs-backdrop="static">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Supression</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        voulez vous vraiment supprimer cette Depot!
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+        <button type="button" class="btn btn-danger"  data-bs-dismiss="modal"  (click)="deleteButtonClick()">Delete</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <div class="card" >
   <div class="card-body">
-<div class="table-responsive">
-  <table class="display" id="datatable" width="100%" cellspacing="0">
-    <thead>
-      <tr>
-        <th>Code Depot</th>
-        <th>Code Etablissement</th>
-        <th>Type</th>
-        <th>Libelle</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let depot of Depots">
-        <td>{{ depot.code_depot }}</td>
-        <td>{{ depot.code_etab }}</td>
-        <td>{{ depot.type }}</td>
-        <td>{{ depot.libelle }}</td>
-        
-      </tr>
-    </tbody>
-  </table>
-</div>
+    <div class="table-responsive">
+      <table class="display" id="datatable" width="100%" cellspacing="0">
+        <thead>
+        </thead>
+        <tbody>
+        </tbody>
+        <tfoot>
+          <tr>
+            <td [attr.colspan]="totalColumns"><div  style="display: flex; align-items: center; justify-content: center; "><button class="btn switch_page" (click)="previous_page()" [disabled]="no_previous">&laquo; Previous</button>
+              <button class="btn switch_page" (click)="next_page()" [disabled]="end_of_data">Next &raquo;</button></div><div></div></td>
+          </tr>
+        </tfoot>
+      </table>
+    </div>
 </div>
 </div>

@@ -41,7 +41,7 @@ export class ArticlesComponent implements OnInit {
     this.end_of_data=false
     this.page_number=this.page_number+1
     this.no_previous=false;
-    this.retrieveArticles();
+    this.Filtrer();
     if (this.articles.length=0)
     {
       this.end_of_data=true
@@ -54,7 +54,7 @@ export class ArticlesComponent implements OnInit {
     if(this.page_number>1){
     this.page_number=this.page_number-1
     this.end_of_data=false
-    this.retrieveArticles();
+    this.Filtrer();
     this.no_previous=false
     }else{
       this.no_previous=true
@@ -113,8 +113,8 @@ export class ArticlesComponent implements OnInit {
                 
             }
               </script><div class="d-flex flex-inline">
-              <button class="btn btn-success btn-sm rounded-2" data-id="${row.code_article_dem}" onclick="editButtonClick(${row})">Edit</button>
-              <button class="btn btn-danger btn-sm rounded-2" data-id="${row.code_article_dem}" data-bs-toggle="modal" data-bs-target="#delete" onclick="deleteButtonClick('${row.code_article_dem}')">Delete</button>
+              <button class="btn btn-success btn-sm rounded-2 m-1" data-id="${row.code_article_dem}" onclick="editButtonClick(${row})">Edit</button>
+              <button class="btn btn-danger btn-sm rounded-2 m-1" data-id="${row.code_article_dem}" data-bs-toggle="modal" data-bs-target="#delete" onclick="deleteButtonClick('${row.code_article_dem}')">Delete</button>
               </div>
             `;
           },
@@ -124,6 +124,29 @@ export class ArticlesComponent implements OnInit {
     });
   }
   Filtrer(): void{
+    const data = {
+      code_barre: this.cb,
+      code_article_gen: this.cag,
+      code_fournisseur: this.cf,
+      fam1: this.m,
+      fam2: this.c,
+      fam3:this.sc
+    };
+    this.articleService.getArticlesMultipleParams(data,this.page_number.toString())
+    .subscribe({
+      next: (data) => {
+        this.articles = data;
+        console.log(this.articles);
+      },
+      error: (e) => console.error(e)
+      , complete: ()=> {
+        this.refreshList()
+      }
+    });
+  }
+
+  Filtrer_click(): void{
+    this.page_number=1
     const data = {
       code_barre: this.cb,
       code_article_gen: this.cag,

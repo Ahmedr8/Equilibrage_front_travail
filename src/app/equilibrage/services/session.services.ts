@@ -14,8 +14,8 @@ export class SessionService {
 
   constructor(private http: HttpClient) {}
 
-  getSessions(): Observable<Session[]> {
-    return this.http.get<Session[]>(this.apiUrl+'sessions/');
+  getSessions(page_number:string): Observable<Session[]> {
+    return this.http.get<Session[]>(this.apiUrl+'sessions/page='+page_number);
   }
 
   getSessionById(id: string): Observable<Session> {
@@ -37,8 +37,8 @@ export class SessionService {
     return this.http.delete(url);
   }
 
-  getsessiosMultipleParams(f:any): Observable<Session[]> {
+  getsessiosMultipleParams(f:any,page_number:string): Observable<Session[]> {
     let queryParams = f;
-    return this.http.get<Session[]>(this.apiUrl+'sessions/filtred',{params:queryParams});
+    return this.http.get<Session[]>(this.apiUrl+'sessions/filtred/page='+page_number,{params:queryParams});
 }
 }
