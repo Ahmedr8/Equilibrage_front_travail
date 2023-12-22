@@ -1,23 +1,23 @@
 <div class="pt-2 ">
-  <p><b>données de base /</b> Etablissements</p>
+  <p style="color: rgb(82, 82, 222);"><b style="color: black;">Données de base /</b> Etablissements</p>
 </div>
 <hr>
-<div class="card">
-  <div class="card-header">
-    Filter
+<div class="card shadow">
+  <div class="card-header py-1 headerColorBg" style=" color: white; font-weight: 600;">
+    Filtres
   </div>
   <div class="card-body" >
     <div class="row">
       <div class="col-md-3">
-        <label for="validationCustom01" class="form-label">code Etablissement</label>
-        <input type="text" class="form-control" id="validationCustom01" placeholder="code Etablissement" [(ngModel)]="ce" >
+        <label for="validationCustom01" class="form-label">Code Etablissement</label>
+        <input type="text" class="form-control" id="validationCustom01" placeholder="Code Etablissement" [(ngModel)]="ce" >
       </div>
       <div class="col-md-3">
-        <label for="validationCustom02" class="form-label">adresse</label>
-        <input type="text" class="form-control" id="validationCustom02" placeholder="adresse" [(ngModel)]="adr" >
+        <label for="validationCustom02" class="form-label">Adresse</label>
+        <input type="text" class="form-control" id="validationCustom02" placeholder="Adresse" [(ngModel)]="adr" >
       </div>
       <div class="col-md-3">
-        <label for="validationCustomUsername" class="form-label">type</label>
+        <label for="validationCustomUsername" class="form-label">Type</label>
         <div class="input-group has-validation">   
         <input type="text" class="form-control" id="validationCustomUsername" aria-describedby="inputGroupPrepend" placeholder="Type" [(ngModel)]="type">
         </div>
@@ -74,14 +74,14 @@
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Supression</h5>
+        <h5 class="modal-title" id="exampleModalLabel">Suppression</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-        voulez vous vraiment supprimer cette Etablissement!
+        voulez vous vraiment supprimer cet Etablissement!
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">annuler</button>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
         <button type="button" class="btn btn-danger"  data-bs-dismiss="modal"  (click)="deleteButtonClick()">Supprimer</button>
       </div>
     </div>
@@ -93,15 +93,15 @@
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Supression</h5>
+        <h5 class="modal-title" id="exampleModalLabel">Suppression</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-        voulez vous vraiment modifier la priorite de cette Etablissement!
+        voulez vous vraiment modifier la priorité de cet Etablissement!
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">annuler</button>
-        <button type="button" class="btn btn-success"  data-bs-dismiss="modal"  (click)="modif()">modifier</button>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+        <button type="button" class="btn btn-success"  data-bs-dismiss="modal"  (click)="modif()">Modifier</button>
       </div>
     </div>
   </div>
@@ -114,13 +114,13 @@
     <thead>
       <tr>
 
-        <th >code Etablissement </th>
-        <th >libelle</th>
-        <th >adresse1</th>
-        <th >adresse2</th>
-        <th >type</th>
-        <th >priorite</th>
-        <th>action</th>
+        <th >Code Etablissement </th>
+        <th >Libelle</th>
+        <th >Adresse1</th>
+        <th >Adresse2</th>
+        <th >Type</th>
+        <th >Priorité</th>
+        <th>Action</th>
       </tr>
     </thead>
     <tbody>

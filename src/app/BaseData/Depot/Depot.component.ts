@@ -78,10 +78,10 @@ export class DepotComponent implements OnInit {
     }
     this.table=$('#datatable').DataTable({ data : this.Depots,
       columns: [
-        { data: 'code_depot', title: 'Code Depo' },
+        { data: 'code_depot', title: 'Code' },
         { data: 'code_etab', title: 'Code Etablissement' },
         { data: 'type', title: 'Type' },
-        { data: 'libelle', title: 'Libelle' },
+        { data: 'libelle', title: 'Libellé' },
         {
           title: 'Actions',
           orderable: false,

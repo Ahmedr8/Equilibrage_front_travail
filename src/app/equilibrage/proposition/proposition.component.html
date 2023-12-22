@@ -1,35 +1,37 @@
 <div class="pt-2 ">
-  <p><b>Equilibrage/</b> Creation d'une Session</p>
+  <p style="color: rgb(82, 82, 222);"><b style="color: black;">Equilibrage/</b> Création d'une Session</p>
 </div>
 <hr>
-<div class="progress" *ngIf="!submitted" >
-  <div class="progress-bar" role="progressbar" style="width: 25%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+<div class="progress" *ngIf="!submitted">
+  <div class="progress-bar" role="progressbar" style="width: 25%;" aria-valuenow="25" aria-valuemin="0"
+    aria-valuemax="100"></div>
 </div>
 <div class="container mt-5" *ngIf="!submitted">
   <div class="row justify-content-center">
     <div class="col-md-6">
-      <div class="card">
-        <div class="card-header">
+      <div class="card shadow">
+        <div class="card-header headerColorBg" style=" color: white; font-weight: 600;">
           Session
         </div>
         <div class="card-body">
           <div class="form-group">
-            <label for="validationCustom03" class="form-label">Nom session</label>
-            <input type="text" class="form-control" id="validationCustom03" placeholder="Nom session" [(ngModel)]="lib" required>
+            <label for="validationCustom03" class="form-label labelBold">Libellé session</label>
+            <input type="text" class="form-control" id="validationCustom03" placeholder="Nom session" [(ngModel)]="lib"
+              required>
             <div class="invalid-feedback">
               Please provide a valid name.
             </div>
           </div>
-          <div class="form-group">
-            <label for="validationCustom04" class="form-label">Critere</label>
+          <div class="form-group" style="margin-top: 3%;">
+            <label for="validationCustom04" class="form-label labelBold">Critère</label>
             <select class="form-select" aria-label="Default select example" [(ngModel)]="crit" required>
-              <option value="stock_min" selected>stock minimum</option>
-              <option value="moy_ventes">moyenne des ventes</option>
+              <option value="stock_min" selected>Stock min</option>
+              <option value="moy_ventes">Moyenne des ventes</option>
             </select>
           </div>
           <br>
           <div class="d-flex justify-content-end">
-            <button class="btn btn_custom" type="button" (click)="Ajouter()">Next</button>
+            <button class="btn btn_custom" type="button" (click)="Ajouter()">Suivant</button>
             <!-- The empty span below is for spacing -->
             <span></span>
           </div>
@@ -38,64 +40,71 @@
     </div>
   </div>
 </div>
-  <div class="progress" *ngIf="submitted" >
-    <div class="progress-bar" role="progressbar"  [ngStyle]="{'width': articleA  ? '50%': ( etabA  ? '75%' : ( created  ? '100%' : '0%'))  }" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
-  </div>
+<div class="progress" *ngIf="submitted">
+  <div class="progress-bar" role="progressbar"
+    [ngStyle]="{'width': articleA  ? '50%': ( etabA  ? '75%' : ( created  ? '100%' : '0%'))  }" aria-valuenow="25"
+    aria-valuemin="0" aria-valuemax="100"></div>
+</div>
 <div [ngStyle]="{ 'display': submitted ? 'block' : 'none'}">
-<ul class="nav nav-tabs">
-  <li class="nav-item">
-    <a class="nav-link " [ngClass]="articleA ? 'active' : ''" [ngStyle]="{'pointerEvents': articleA || etabA ? '' : 'none'}" aria-current="page"  (click)="articleShow(true)">choisir articles</a>
-  </li>
-  <li class="nav-item">
-    <a class="nav-link" [ngClass]="etabA ? 'active' : ''" (click)="articleShow(false)" [ngStyle]="{'pointerEvents': etabA || articleA ? 'all' : 'none'}" >choisir etablissement</a>
-  </li>
-  <li class="nav-item">
-    <a class="nav-link" [ngClass]="created ? 'active' : ''">proposition</a>
-  </li>
-</ul>
-<div [ngStyle]="{ 'display': articleA ? 'block' : 'none'} ">
-  <br>
-  <div class="card">
-    <div class="card-header">
-      Filter
-    </div>
-    <div class="card-body" >
-      <div class="row">
-        <div class="col-md-3">
-          <label for="validationCustom01" class="form-label">code article generique</label>
-          <input type="text" class="form-control" id="validationCustom01" placeholder="code article generique" [(ngModel)]="cag" >
-        </div>
-        <div class="col-md-3">
-          <label for="validationCustom02" class="form-label">code a barre</label>
-          <input type="text" class="form-control" id="validationCustom02" placeholder="code a barre" [(ngModel)]="cb" >
-        </div>
-        <div class="col-md-3">
-          <label for="validationCustomUsername" class="form-label">code fournisseur</label>
-          <div class="input-group has-validation">   
-          <input type="text" class="form-control" id="validationCustomUsername" aria-describedby="inputGroupPrepend" placeholder="code fournissuer" [(ngModel)]="cf">
-          </div>
-        </div>
+  <ul class="nav nav-tabs">
+    <li class="nav-item">
+      <a class="nav-link " [ngClass]="articleA ? 'active' : ''"
+        [ngStyle]="{'pointerEvents': articleA || etabA ? '' : 'none'}" aria-current="page"
+        (click)="articleShow(true)">Choisir Articles</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" [ngClass]="etabA ? 'active' : ''" (click)="articleShow(false)"
+        [ngStyle]="{'pointerEvents': etabA || articleA ? 'all' : 'none'}">Choisir Etablissements</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" [ngClass]="created ? 'active' : ''">Proposition</a>
+    </li>
+  </ul>
+  <div [ngStyle]="{ 'display': articleA ? 'block' : 'none'} ">
+    <br>
+    <div class="card shadow">
+      <div class="card-header py-1 headerColorBg" style=" color: white; font-weight: 600;">
+        Filtres
       </div>
-      <div class="row">
-        <div class="col-md-3">
-          <label for="validationCustom03" class="form-label">Model</label>
-          <input type="text" class="form-control" id="validationCustom03" placeholder="Model" [(ngModel)]="m">
-        </div>
-        <div class="col-md-3">
-          <label for="validationCustom04" class="form-label">Categorie</label>
-          <input type="text" name="" id="" placeholder="Categorie" class="form-control" [(ngModel)]="c">
-        </div>
-        <div class="col-md-3">
-          <label for="validationCustom04" class="form-label">Sous Categorie</label>
-          <input type="text" name="" id="" placeholder="Sous Categorie" class="form-control" [(ngModel)]="sc">
+      <div class="card-body">
+        <div class="row">
+          <div class="col-md-3">
+            <label for="validationCustom01" class="form-label labelBold">Code Générique</label>
+            <input type="text" class="form-control custom-placeholder" id="validationCustom01" placeholder="Code Générique"
+              [(ngModel)]="cag">
           </div>
-          <div class="col-md-3 " style="text-align: center;">
-          
-            <button class="btn btn_custom" type="button" (click)="Filtrer()"><span><i class="bi bi-funnel-fill"></i></span>Filtrer</button>
+          <div class="col-md-3">
+            <label for="validationCustom02" class="form-label labelBold">Code à barre</label>
+            <input type="text" class="form-control custom-placeholder" id="validationCustom02" placeholder="Code à barre" [(ngModel)]="cb">
+          </div>
+          <div class="col-md-3">
+            <label for="validationCustomUsername" class="form-label labelBold">Code fournisseur</label>
+            <div class="input-group has-validation">
+              <input type="text" class="form-control custom-placeholder" id="validationCustomUsername" aria-describedby="inputGroupPrepend"
+                placeholder="Code fournissuer" [(ngModel)]="cf">
+            </div>
+          </div>
+        </div>
+        <div class="row" style="margin-top: 1%;">
+          <div class="col-md-3">
+            <label for="validationCustom03" class="form-label labelBold">Modèle</label>
+            <input type="text" class="form-control custom-placeholder" id="validationCustom03" placeholder="Modèle" [(ngModel)]="m">
+          </div>
+          <div class="col-md-3">
+            <label for="validationCustom04" class="form-label labelBold">Catégorie</label>
+            <input type="text" name="" id="" placeholder="Catégorie" class="form-control custom-placeholder" [(ngModel)]="c">
+          </div>
+          <div class="col-md-3">
+            <label for="validationCustom04" class="form-label labelBold">Sous Catégorie</label>
+            <input type="text" name="" id="" placeholder="Sous Catégorie" class="form-control custom-placeholder" [(ngModel)]="sc">
           </div>
         </div>
         <br>
-    </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn_custom" type="button" (click)="Filtrer()" style="margin-right: 2%; margin-bottom: 1%; font-weight: bold;"><span><i
+          class="bi bi-funnel-fill"></i></span>Filtrer</button>
+      </div>
     </div>
     <br>
     <div class="d-flex justify-content-between">
@@ -103,61 +112,62 @@
       <button class="btn btn_custom" type="button" (click)="articleShow(false)">Next</button>
     </div>
     <br>
-    
-  <div class="card" >
-    <div class="card-body">
-  <div class="table-responsive">
-    <table class="display" id="datatable1" width="100%" cellspacing="0">
-      <thead>
-        <tr>
-          <th style="width:3%"></th>
-          <th style="width:40%">code article dem </th>
-          <th style="width:50%">code a barre</th>
-          <th style="width:7%">label</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr  *ngFor="let article of articles">
-          <td></td>
-          <td>{{article.code_article_dem}}</td>
-          <td>{{article.code_barre}}</td>
-          <td>{{article.libelle}}</td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-  </div>
-  </div>
-</div>
-<div [ngStyle]="{ 'display': etabA ? 'block' : 'none'} ">
-  <br>
-  <div class="card">
-    <div class="card-header">
-      Filter
-    </div>
-    <div class="card-body" >
-      <div class="row">
-        <div class="col-md-3">
-          <label for="validationCustom01" class="form-label">codde Etablissement</label>
-          <input type="text" class="form-control" id="validationCustom01" placeholder="code Etablissement" [(ngModel)]="ce" >
-        </div>
-        <div class="col-md-3">
-          <label for="validationCustom02" class="form-label">adresse</label>
-          <input type="text" class="form-control" id="validationCustom02" placeholder="adresse" [(ngModel)]="adr" >
-        </div>
-        <div class="col-md-3">
-          <label for="validationCustomUsername" class="form-label">type</label>
-          <div class="input-group has-validation">   
-          <input type="text" class="form-control" id="validationCustomUsername" aria-describedby="inputGroupPrepend" placeholder="Type" [(ngModel)]="type">
-          </div>
-        </div>
-        <div  class="col-md-3 mt-4" style="text-align: center;">
-          
-          <button class="btn btn_custom" type="button" (click)="Filtrer2()"><span><i class="bi bi-funnel-fill"></i></span>Filtrer</button>
+
+    <div class="card">
+      <div class="card-body">
+        <div class="table-responsive">
+          <table class="display" id="datatable1" width="100%" cellspacing="0">
+            <thead>
+              <tr>
+                <th style="width:3%"></th>
+                <th style="width:40%">Code article DIM </th>
+                <th style="width:50%">Code à barre</th>
+                <th style="width:7%">Libellé</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let article of articles">
+                <td></td>
+                <td>{{article.code_article_dem}}</td>
+                <td>{{article.code_barre}}</td>
+                <td>{{article.libelle}}</td>
+              </tr>
+            </tbody>
+          </table>
         </div>
       </div>
-
     </div>
+  </div>
+  <div [ngStyle]="{ 'display': etabA ? 'block' : 'none'} ">
+    <br>
+    <div class="card">
+      <div class="card-header">
+        Filter
+      </div>
+      <div class="card-body">
+        <div class="row">
+          <div class="col-md-3">
+            <label for="validationCustom01" class="form-label labelBold">Code Etablissement</label>
+            <input type="text" class="form-control custom-placeholder" id="validationCustom01" placeholder="Code Etablissement"
+              [(ngModel)]="ce">
+          </div>
+          <div class="col-md-3">
+            <label for="validationCustom02" class="form-label labelBold">Adresse</label>
+            <input type="text" class="form-control custom-placeholder" id="validationCustom02" placeholder="Adresse" [(ngModel)]="adr">
+          </div>
+          <div class="col-md-3">
+            <label for="validationCustomUsername" class="form-label labelBold">Type</label>
+            <div class="input-group has-validation">
+              <input type="text" class="form-control custom-placeholder" id="validationCustomUsername" aria-describedby="inputGroupPrepend"
+                placeholder="Type" [(ngModel)]="type">
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn_custom" type="button" (click)="Filtrer2()" style="margin-right: 2%; margin-bottom: 1%; font-weight: bold;"><span><i
+          class="bi bi-funnel-fill"></i></span>Filtrer</button>
+      </div>
     </div>
     <br>
     <div class="d-flex justify-content-between">
@@ -165,82 +175,83 @@
       <button class="btn btn_custom" type="button" (click)="createProp()">Next</button>
     </div>
     <br>
-  <div class="card" >
-    <div class="card-body">
-  <div class="table-responsive">
-    <table class="display" id="datatable2" width="100%" cellspacing="0">
-      <thead>
-        <tr>
-          <th style="width:3%"></th>
-          <th style="width:14%">code Etablissement </th>
-          <th style="width:14%">libelle</th>
-          <th style="width:14%">adresse1</th>
-          <th style="width:14%">adresse2</th>
-          <th style="width:14%">type</th>
-          <th style="width:14%">priorite</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr  *ngFor="let etab of etabs">
-          <td></td>
-          <td>{{etab.code_etab}}</td>
-          <td>{{etab.libelle}}</td>
-          <td>{{etab.adresse1}}</td>
-          <td>{{etab.adresse2}}</td>
-          <td>{{etab.type}}</td>
-          <td><input type="number"  placeholder="{{etab.priorite}}" [(ngModel)]="etab.priorite" (change)="onInputChange(etab)"></td>
-        </tr>
-      </tbody>
-    </table>
+    <div class="card">
+      <div class="card-body">
+        <div class="table-responsive">
+          <table class="display" id="datatable2" width="100%" cellspacing="0">
+            <thead>
+              <tr>
+                <th style="width:3%"></th>
+                <th style="width:14%">Code Etablissement </th>
+                <th style="width:14%">Libellé</th>
+                <th style="width:14%">Adresse1</th>
+                <th style="width:14%">Adresse2</th>
+                <th style="width:14%">Type</th>
+                <th style="width:14%">Priorité</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let etab of etabs">
+                <td></td>
+                <td>{{etab.code_etab}}</td>
+                <td>{{etab.libelle}}</td>
+                <td>{{etab.adresse1}}</td>
+                <td>{{etab.adresse2}}</td>
+                <td>{{etab.type}}</td>
+                <td><input type="number" placeholder="{{etab.priorite}}" [(ngModel)]="etab.priorite"
+                    (change)="onInputChange(etab)"></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
   </div>
+  <div [ngStyle]="{ 'display': created ? 'block' : 'none'} ">
+    <div class="card">
+      <div class="card-body">
+        <div class="table-responsive">
+          <table class="display" id="datatable3" width="100%" cellspacing="0">
+            <thead>
+              <tr>
+                <th>Ordre transfert</th>
+                <th>Code Gén</th>
+                <th>Code DIM</th>
+                <th>Code Barre</th>
+                <th>Code Dépot Emmet</th>
+                <th>Taille</th>
+                <th>Couleur</th>
+                <th>Emmeteur</th>
+                <th>Récepteur</th>
+                <th>Qté à Transferer</th>
+                <th>Code session</th>
+                <th>Date création</th>
+                <th>Créateur</th>
+                <th>Statut</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let prop of props">
+                <td>{{prop.ordre_trf}}</td>
+                <td>{{prop.code_article_gen}}</td>
+                <td>{{prop.code_article_dem}}</td>
+                <td>{{prop.code_barre}}</td>
+                <td>{{prop.code_depot_emet}}</td>
+                <td>{{prop.lib_taille}}</td>
+                <td>{{prop.lib_couleur}}</td>
+                <td>{{prop.emet}}</td>
+                <td>{{prop.recep}}</td>
+                <td>{{prop.qte_trf}}</td>
+                <td>{{prop.code_session}}</td>
+                <td>{{prop.date}}</td>
+                <td>{{prop.nom}}</td>
+                <td>{{prop.statut}}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
   </div>
-  </div>
-</div>
-<div [ngStyle]="{ 'display': created ? 'block' : 'none'} ">
-  <div class="card" >
-    <div class="card-body">
-  <div class="table-responsive">
-    <table class="display" id="datatable3" width="100%" cellspacing="0">
-      <thead>
-        <tr>
-          <th >ordre de transfert</th>
-          <th >code article generique</th>
-          <th >code article dimensionee</th>
-          <th >code barre</th>
-          <th>code depot emmeteur</th>
-          <th >libellle taille</th>
-          <th >libelle couleur</th>
-          <th >emmeteur</th>
-          <th >recepteur</th>
-          <th >quantite a transferer</th>
-          <th >code session</th>
-          <th >date</th>
-          <th >nom createur</th>
-          <th >statut proposition</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr  *ngFor="let prop of props">
-          <td>{{prop.ordre_trf}}</td>
-          <td>{{prop.code_article_gen}}</td>
-          <td>{{prop.code_article_dem}}</td>
-          <td>{{prop.code_barre}}</td>
-          <td>{{prop.code_depot_emet}}</td>
-          <td>{{prop.lib_taille}}</td>
-          <td>{{prop.lib_couleur}}</td>
-          <td>{{prop.emet}}</td>
-          <td>{{prop.recep}}</td>
-          <td>{{prop.qte_trf}}</td>
-          <td>{{prop.code_session}}</td>
-          <td>{{prop.date}}</td>
-          <td>{{prop.nom}}</td>
-          <td>{{prop.statut}}</td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-  </div>
-  </div> 
-</div>
 
 </div>

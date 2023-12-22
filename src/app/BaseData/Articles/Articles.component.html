@@ -1,53 +1,61 @@
 <div class="pt-2 ">
-  <p><b>données de base /</b> Articles</p>
+  <p style="color: rgb(82, 82, 222);"><b style="color: black;">Données de base /</b> Articles</p>
 </div>
 <hr>
-<div class="card">
-  <div class="card-header">
-    Filter
+<div class="card shadow">
+  <div class="card-header py-1 headerColorBg" style=" color: white; font-weight: 600;">
+    Filtres
   </div>
-  <div class="card-body" >
+  <div class="card-body">
     <div class="row">
       <div class="col-md-3">
-        <label for="validationCustom01" class="form-label">code article generique</label>
-        <input type="text" class="form-control" id="validationCustom01" placeholder="code article generique" [(ngModel)]="cag" >
+        <label for="validationCustom01" class="form-label labelBold">Code Générique</label>
+        <input type="text" class="form-control custom-placeholder" id="validationCustom01" placeholder="Code Générique"
+          [(ngModel)]="cag">
       </div>
       <div class="col-md-3">
-        <label for="validationCustom02" class="form-label">code a barre</label>
-        <input type="text" class="form-control" id="validationCustom02" placeholder="code a barre" [(ngModel)]="cb" >
+        <label for="validationCustom02" class="form-label labelBold">Code à barre</label>
+        <input type="text" class="form-control custom-placeholder" id="validationCustom02" placeholder="Code à barre"
+          [(ngModel)]="cb">
       </div>
       <div class="col-md-3">
-        <label for="validationCustomUsername" class="form-label">code fournisseur</label>
-        <div class="input-group has-validation">   
-        <input type="text" class="form-control" id="validationCustomUsername" aria-describedby="inputGroupPrepend" placeholder="code fournissuer" [(ngModel)]="cf">
+        <label for="validationCustomUsername" class="form-label labelBold">Code fournisseur</label>
+        <div class="input-group has-validation">
+          <input type="text" class="form-control custom-placeholder" id="validationCustomUsername"
+            aria-describedby="inputGroupPrepend" placeholder="Code fournisseur" [(ngModel)]="cf">
         </div>
       </div>
     </div>
-    <div class="row">
+    <div class="row" style="margin-top: 1%;">
       <div class="col-md-3">
-        <label for="validationCustom03" class="form-label">Model</label>
-        <input type="text" class="form-control" id="validationCustom03" placeholder="Model" [(ngModel)]="m">
+        <label for="validationCustom03" class="form-label labelBold">Modèle</label>
+        <input type="text" class="form-control custom-placeholder" id="validationCustom03" placeholder="Modèle"
+          [(ngModel)]="m">
       </div>
       <div class="col-md-3">
-        <label for="validationCustom04" class="form-label">Categorie</label>
-        <input type="text" name="" id="" placeholder="Categorie" class="form-control" [(ngModel)]="c">
+        <label for="validationCustom04" class="form-label labelBold">Catégorie</label>
+        <input type="text" name="" id="" placeholder="Catégorie" class="form-control custom-placeholder"
+          [(ngModel)]="c">
       </div>
       <div class="col-md-3">
-        <label for="validationCustom04" class="form-label">Sous Categorie</label>
-        <input type="text" name="" id="" placeholder="Sous Categorie" class="form-control" [(ngModel)]="sc">
-        </div>
-        <div class="col-md-3 " style="text-align: center;">
-        
-          <button class="btn btn_custom" type="button" (click)="Filtrer_click()"><span><i class="bi bi-funnel-fill"></i></span>Filtrer</button>
-        </div>
+        <label for="validationCustom04" class="form-label labelBold">Sous Catégorie</label>
+        <input type="text" name="" id="" placeholder="Sous Catégorie" class="form-control custom-placeholder"
+          [(ngModel)]="sc">
       </div>
+
+    </div>
   </div>
+  <div class="modal-footer">
+    <button class="btn btn_custom" type="button" (click)="Filtrer_click()"  style="margin-right: 2%; margin-bottom: 1%; font-weight: bold;"><span><i
+      class="bi bi-funnel-fill"></i></span>Filtrer</button>
   </div>
-  <br>
-  <div style="display: flow-root;">
-  <button data-bs-toggle="modal" data-bs-target="#upload" type="button" style="float: right;" class="btn btn_custom "><span><i class="bi bi-arrow-bar-down"></i></span> Importer</button>
-  </div>
-  <br>
+</div>
+<br>
+<div style="display: flow-root;">
+  <button data-bs-toggle="modal" data-bs-target="#upload" type="button" style="float: right;"
+    class="btn btn_custom "><span><i class="bi bi-arrow-bar-down"></i></span> Importer</button>
+</div>
+<br>
 <!-- Vertically centered scrollable modal -->
 <!-- Modal -->
 <div class="modal fade" id="upload" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -58,17 +66,18 @@
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-              <div class="card border-0 ">
-                <div class="card-body">
-                  <div style="text-align: center;"><i class="fa fa-upload" aria-hidden="true"></i>  Ajouter un ficher .csv</div>
-                  <form  encType="multipart/form-data" (submit)="upload()"  >
-                    <div class="input-group">
-                      <input type="file"  #fileInput  accept=".csv" class="form-control" id="inputGroupFile01">
-                      <button type="submit"  data-bs-dismiss="modal" class="btn switch_page">Upload CSV</button>
-                    </div>  
-                  </form>
-                </div>
+        <div class="card border-0 ">
+          <div class="card-body">
+            <div style="text-align: center;"><i class="fa fa-upload" aria-hidden="true"></i> Ajouter un ficher .csv
+            </div>
+            <form encType="multipart/form-data" (submit)="upload()">
+              <div class="input-group">
+                <input type="file" #fileInput accept=".csv" class="form-control" id="inputGroupFile01">
+                <button type="submit" data-bs-dismiss="modal" class="btn switch_page">Upload CSV</button>
               </div>
+            </form>
+          </div>
+        </div>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -77,7 +86,8 @@
   </div>
 </div>
 <!-- Modal -->
-<div class="modal fade" id="delete" tabIndex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" data-bs-backdrop="static">
+<div class="modal fade" id="delete" tabIndex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true"
+  data-bs-backdrop="static">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
@@ -85,32 +95,38 @@
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-        voulez vous vraiment supprimer cette Article!
+        voulez vous vraiment supprimer cet Article!
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-        <button type="button" class="btn btn-danger"  data-bs-dismiss="modal"  (click)="deleteButtonClick()">Delete</button>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+        <button type="button" class="btn btn-danger" data-bs-dismiss="modal"
+          (click)="deleteButtonClick()">Supprimer</button>
       </div>
     </div>
   </div>
 </div>
 
 
-<div class="card" >
+<div class="card">
   <div class="card-body">
-<div class="table-responsive">
-  <table class="display" id="datatable" width="100%" cellspacing="0">
-    <thead>
-    </thead>
-    <tbody>
-    </tbody>
-    <tfoot>
-      <tr>
-        <td [attr.colspan]="totalColumns"><div  style="display: flex; align-items: center; justify-content: center; "><button class="btn switch_page" (click)="previous_page()" [disabled]="no_previous">&laquo; Previous</button>
-          <button class="btn switch_page" (click)="next_page()" [disabled]="end_of_data">Next &raquo;</button></div><div></div></td>
-      </tr>
-    </tfoot>
-  </table>
-</div>
-</div>
+    <div class="table-responsive">
+      <table class="display" id="datatable" width="100%" cellspacing="0">
+        <thead>
+        </thead>
+        <tbody>
+        </tbody>
+        <tfoot>
+          <tr>
+            <td [attr.colspan]="totalColumns">
+              <div style="display: flex; align-items: center; justify-content: center; "><button class="btn switch_page"
+                  (click)="previous_page()" [disabled]="no_previous">&laquo; Previous</button>
+                <button class="btn switch_page" (click)="next_page()" [disabled]="end_of_data">Next &raquo;</button>
+              </div>
+              <div></div>
+            </td>
+          </tr>
+        </tfoot>
+      </table>
+    </div>
+  </div>
 </div>

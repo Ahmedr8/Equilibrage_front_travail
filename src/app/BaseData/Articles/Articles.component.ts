@@ -82,16 +82,16 @@ export class ArticlesComponent implements OnInit {
     }
     this.table=$('#datatable').DataTable({ data : this.articles,
       columns: [
-        { data: 'code_article_dem', title: 'Code Article DEM' },
+        { data: 'code_article_dem', title: 'Code DIM' },
         { data: 'code_barre', title: 'Code Barre' },
-        { data: 'code_article_gen', title: 'Code Article Gen' },
-        { data: 'libelle', title: 'Libelle' },
+        { data: 'code_article_gen', title: 'Code Gen' },
+        { data: 'libelle', title: 'Désignation' },
         { data: 'lib_taille', title: 'Taille' },
         { data: 'lib_couleur', title: 'Couleur' },
         { data: 'code_fournisseur', title: 'Code Fournisseur' },
-        { data: 'fam1', title: 'Model' },
-        { data: 'fam2', title: 'Categorie' },
-        { data: 'fam3', title: 'Sous Categorie' },
+        { data: 'fam1', title: 'Modèle' },
+        { data: 'fam2', title: 'Catégorie' },
+        { data: 'fam3', title: 'Sous Catégorie' },
         {
           title: 'Actions',
           orderable: false,

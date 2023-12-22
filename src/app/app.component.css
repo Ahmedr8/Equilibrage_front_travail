@@ -1,10 +1,11 @@
 @media screen and (max-width: 576px) {
-    .side {
-      width: 15%;
-    }
-    .cont{
-        width: 80%;
-        padding-left: 10%;
-        padding-right: 3%;
-    }
+  .side {
+    width: 15%;
   }
+
+  .cont {
+    width: 80%;
+    padding-left: 10%;
+    padding-right: 3%;
+  }
+}

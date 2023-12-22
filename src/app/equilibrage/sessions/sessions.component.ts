@@ -83,11 +83,11 @@ export class SessionsComponent implements OnInit {
     }
     this.table_sessions=$('#datatable').DataTable({ data : this.sessions,
       columns: [
-        { data: 'code_session', title: 'code sessoin' },
-        { data: 'libelle', title: 'nom' },
-        { data: 'date', title: 'date' },
-        { data: 'id_user', title: 'id utilisateur' },
-        { data: 'critere', title: 'critere' },
+        { data: 'code_session', title: 'Code sessoin' },
+        { data: 'libelle', title: 'Libellé' },
+        { data: 'date', title: 'Date' },
+        { data: 'id_user', title: 'Id Utilisateur' },
+        { data: 'critere', title: 'Critère' },
         {
           title: 'Actions',
           orderable: false,

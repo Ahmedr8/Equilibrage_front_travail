@@ -2,6 +2,25 @@
 
 @import "~bootstrap/dist/css/bootstrap.min.css";
 @import '~bootstrap-icons/font/bootstrap-icons.css';
+
 .zoum {
-    zoom: 0.9;
+    zoom: 90%;
+}
+
+.headerColorBg {
+    background: #070101;
+
+    /* Chrome 10-25, Safari 5.1-6 */
+    background: -webkit-linear-gradient(to right, rgb(21, 28, 48), rgb(16, 4, 91));
+
+    /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+    background: linear-gradient(to right, rgb(13, 25, 56), rgb(29, 9, 161))
+}
+
+.labelBold {
+    font-weight: bold;
+}
+
+.custom-placeholder::placeholder {
+    font-size: 14px;
 }

@@ -87,11 +87,11 @@ export class StocksComponent implements OnInit {
     }
     this.table=$('#datatable').DataTable({ data : this.Stocks,
       columns: [
-        { data: 'code_article_dem', title: 'Code Article DEM' },
+        { data: 'code_article_dem', title: 'Code DIM' },
         { data: 'code_barre', title: 'Code Barre' },
         { data: 'code_etab', title: 'Code Etablissement' },
-        { data: 'code_depot', title: 'Code Depot' },
-        { data: 'stock_min', title: 'Stock Minimale' },
+        { data: 'code_depot', title: 'Code Dépot' },
+        { data: 'stock_min', title: 'Stock Min' },
         { data: 'stock_physique', title: 'Stock Physique' },
         {
           title: 'Actions',
