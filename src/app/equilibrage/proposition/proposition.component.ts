@@ -27,12 +27,12 @@ export class PropositionComponent implements OnInit {
   ce:any='';
   type:any='';
   adr:any='';
-  etabs?: Etablissement[];
+  etabs: Etablissement[]=[];
   props?:propAffiche[];
-  lib:any;
+  lib:any="S_"+this.datePipe.transform(new Date(), 'yyyy_MM_dd_hh_mm_ss');
   datei?: any =new Date();
   options: string[]=['stock_min','moy_vente'];
-  crit:any;
+  crit:any="stock_min";
   id_session:any;
   tablepending:any;
   tableEtabs:any;
@@ -46,50 +46,7 @@ export class PropositionComponent implements OnInit {
   ngOnInit() {
     this.retrieveArticles();
     this.retrieveEtabs();
-    setTimeout(() => {
-        this.tablepending= $('#datatable1').DataTable({
-        columnDefs: [
-          {
-            orderable: false,
-            className: 'select-checkbox',
-            targets: 0 // This targets the first column for selection
-          },
-          // Add more columnDefs as needed
-        ],
-        select: {
-          style: 'os multi', // Style of the selection
-          selector: 'td:first-child' // Selector for selecting cells in the first column
-        },
-        order: [[1, 'asc']],
-        buttons: [
-          'selectAll',
-          'selectNone'
-      ],
-      dom: 'Bfrtip'
-      }
-        );
-     this.tableEtabs= $('#datatable2').DataTable({
-        columnDefs: [
-          {
-            orderable: false,
-            className: 'select-checkbox',
-            targets: 0 // This targets the first column for selection
-          },
-          // Add more columnDefs as needed
-        ],
-        select: {
-          style: 'os multi', // Style of the selection
-          selector: 'td:first-child' // Selector for selecting cells in the first column
-        },
-        order: [[1, 'asc']],
-        buttons: [
-          'selectAll',
-          'selectNone'
-      ],
-      dom: 'Bfrtip'
-      }
-        );
-    }, 500);
+    
     
   
   }
@@ -100,18 +57,87 @@ export class PropositionComponent implements OnInit {
           this.articles = data;
         },
         error: (e) => console.error(e)
+        ,
+       complete : () => {
+          this.refreshList_articles()
+      }
       });
   }
 
+refreshList_articles(){
+  if(this.tablepending){
+    this.tablepending.destroy();
+  }
+  $(document).ready(() => {
+  this.tablepending= $('#datatable1').DataTable({
+    columnDefs: [
+      {
+        orderable: false,
+        className: 'select-checkbox',
+        targets: 0 
+      },
+      
+    ],
+    select: {
+      style: 'os multi',
+      selector: 'td:first-child' 
+    },
+    order: [[1, 'asc']],
+    buttons: [
+      'selectAll',
+      'selectNone'
+  ],
+  dom: 'Bfrtip'
+  }
+    );
+  });
+}
+
   retrieveEtabs(): void {
-    this.etabService.getEtablissements()
+    this.etabService.getEtablissements('1')
       .subscribe({
         next: (data) => {
           this.etabs = data;
         },
         error: (e) => console.error(e)
+        ,
+       complete : () => {
+          this.refreshList_etabs()
+      }
       });
   }
+
+  refreshList_etabs(){
+    if(this.tableEtabs){
+      this.tableEtabs.destroy();
+    }
+    $(document).ready(() => {
+    this.tableEtabs= $('#datatable2').DataTable({
+      columnDefs: [
+        {
+          orderable: false,
+          className: 'select-checkbox',
+          targets: 0
+        },
+        
+      ],
+      select: {
+        style: 'os multi', 
+        selector: 'td:first-child' 
+      },
+      order: [[1, 'asc']],
+      buttons: [
+        'selectAll',
+        'selectNone'
+    ],
+    dom: 'Bfrtip'
+    }
+      );
+    });
+  
+
+  }
+
   retrieveprops(): void {
     this.propositionService.getPropositionsById(this.id_session)
       .subscribe({
@@ -120,8 +146,37 @@ export class PropositionComponent implements OnInit {
           console.log(this.props)
         },
         error: (e) => console.error(e)
+        ,
+       complete : () => {
+          this.refreshList_props()
+      }
       });
   }
+
+  refreshList_props(){
+    if (this.props) {
+      $('#datatable3').DataTable().clear().destroy();
+    }
+    $(document).ready(() => {
+    $('#datatable3').DataTable(
+      {
+        select: {
+          style: 'multi', // Style of the selection
+        },
+        buttons: [
+          'selectAll',
+          'selectNone',
+          'excel',
+          'colvis',
+          'print'
+      ],
+      dom: 'Bfrtip',
+      
+      }
+    );
+  });
+  }
+
   Filtrer(): void{
     const data = {
       code_barre: this.cb,
@@ -136,32 +191,12 @@ export class PropositionComponent implements OnInit {
       next: (data) => {
         this.articles = data;
         console.log(this.articles);
-        $('#datatable1').DataTable().clear().destroy();
-        setTimeout(() => {
-          this.tablepending= $('#datatable1').DataTable({
-            columnDefs: [
-              {
-                orderable: false,
-                className: 'select-checkbox',
-                targets: 0 // This targets the first column for selection
-              },
-              // Add more columnDefs as needed
-            ],
-            select: {
-              style: 'os multi', // Style of the selection
-              selector: 'td:first-child' // Selector for selecting cells in the first column
-            },
-            order: [[1, 'asc']],
-            buttons: [
-              'selectAll',
-              'selectNone'
-          ],
-          dom: 'Bfrtip'
-          }
-            );
-        }, 500);
       },
       error: (e) => console.error(e)
+      ,
+       complete : () => {
+          this.refreshList_articles()
+      }
     });
   }
   Filtrer2(): void{
@@ -171,37 +206,18 @@ export class PropositionComponent implements OnInit {
       type: this.type,
       
     };
-    this.etabService.getArticlesMultipleParams(data)
+    this.etabService.getEtabssMultipleParams(data,'1')
     .subscribe({
       next: (data) => {
         this.etabs = data;
         console.log(this.etabs);
-        $('#datatable2').DataTable().clear().destroy();
-        setTimeout(() => {
-          this.tableEtabs= $('#datatable2').DataTable({
-            columnDefs: [
-              {
-                orderable: false,
-                className: 'select-checkbox',
-                targets: 0 // This targets the first column for selection
-              },
-              // Add more columnDefs as needed
-            ],
-            select: {
-              style: 'os multi', // Style of the selection
-              selector: 'td:first-child' // Selector for selecting cells in the first column
-            },
-            order: [[1, 'asc']],
-            buttons: [
-              'selectAll',
-              'selectNone'
-          ],
-          dom: 'Bfrtip'
-          }
-            );
-        }, 500);
+        
       },
       error: (e) => console.error(e)
+      ,
+       complete : () => {
+          this.refreshList_etabs()
+      }
     });
   }
   articleShow(v:boolean):void{
@@ -230,9 +246,12 @@ export class PropositionComponent implements OnInit {
   createProp():void{
     
     const tab2 = this.tableEtabs.rows({selected:  true}).data();
-    const id_etabs=[];       
+    const id_etabs=[]; 
+    const prio_etabs=[]      
       for (var i=0; i < tab2.length ;i++){
         id_etabs.push(tab2[i][1]);
+        console.log(this.etabs[i].priorite)
+        prio_etabs.push(this.etabs[i].priorite)
       }  
       const tab1 = this.tablepending.rows({selected:  true}).data();
       const id_articles=[];       
@@ -241,39 +260,31 @@ export class PropositionComponent implements OnInit {
          }
       const datatosend={
         articles:id_articles,
-        etabs: id_etabs
+        etabs: id_etabs,
+        prios : prio_etabs
       }
       this.detailDetailSessionService.createDetailSession(datatosend,this.id_session)
       .subscribe({
         next: (res) => {
           console.log(res);
-          this.retrieveprops();
-      setTimeout(() => {
-        $('#datatable3').DataTable(
-          {
-            select: {
-              style: 'multi', // Style of the selection
-            },
-            buttons: [
-              'selectAll',
-              'selectNone',
-              'excel',
-              'colvis',
-              'print'
-          ],
-          dom: 'Bfrtip',
-          
-          }
-        );
-      }, 500);
-      this.created = true;
-      this.articleA=false;
-      this.etabA=false;
         },
         error: (e) => console.error(e)
+        ,
+       complete : () => {
+        this.retrieveprops();
+        this.created = true;
+        this.articleA=false;
+        this.etabA=false;
+      }
       });
 
   }
-  
+ 
+  onInputChange(etab:Etablissement):void{
+    const i = this.etabs.findIndex(item => item.code_etab === etab.code_etab);
+    this.etabs[i].priorite=etab.priorite
+    
+  }
+
 
 }

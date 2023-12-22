@@ -6,33 +6,84 @@ import { data } from 'jquery';
 @Component({
   selector: 'app-Etablissement',
   templateUrl: './Etablissement.component.html',
-  styleUrls: ['./Etablissement.component.css']
+  styleUrls: ['./Etablissement.component.css','../BaseData.component.css']
 })
 export class EtablissementComponent implements OnInit {
-  etabs?: Etablissement[];
+  etabs: Etablissement[]=[];
   ce:any='';
   type:any='';
   adr:any='';
   prio:any;
   editMode=false;
+  end_of_data:boolean=false;
+  no_previous:boolean=true;
+  totalColumns:number=7;
+  id_to_delete: string='';
+  page_number:number=1;
+  modif_data: Etablissement=this.etabs[0];
   constructor(private etabService: EtablissementService) { }
   @ViewChild('fileInput') fileInput!: ElementRef;
   ngOnInit() {
     this.retrieveEtabs();
-    setTimeout(() => {
-      $('#datatable').DataTable();
-    }, 500);
+    this.exposeAngularFunctionGlobally();
 
   }
+  exposeAngularFunctionGlobally(): void {
+    // Expose the Angular application globally
+    (window as any).myAngularApp = this;
+  }
+  next_page():void{
+    if(this.etabs.length>=2){
+    this.end_of_data=false
+    this.page_number=this.page_number+1
+    this.no_previous=false;
+    this.Filtrer();
+    if (this.etabs.length=0)
+    {
+      this.end_of_data=true
+    }
+    }else{
+      this.end_of_data=true
+    }
+  }
+  previous_page():void{
+    if(this.page_number>1){
+    this.page_number=this.page_number-1
+    this.end_of_data=false
+    this.Filtrer();
+    this.no_previous=false
+    }else{
+      this.no_previous=true
+    }
+  }
+
   retrieveEtabs(): void {
-    this.etabService.getEtablissements()
+    this.etabService.getEtablissements(this.page_number.toString())
       .subscribe({
         next: (data) => {
           this.etabs = data;
         },
         error: (e) => console.error(e)
+        ,complete : () => {
+          this.refreshList()
+          
+        }
       });
     }
+
+    refreshList(): void {
+      if (this.etabs) {
+        $('#datatable').DataTable().clear().destroy();
+      }
+      $(document).ready(() => {
+        $('#datatable').DataTable({columnDefs: [
+          { orderable: false, targets: 6 }
+        ],
+        paging: false,  
+      });
+      });
+    }
+
     Filtrer(): void{
       const data = {
         code_etab: this.ce,
@@ -40,17 +91,39 @@ export class EtablissementComponent implements OnInit {
         type: this.type,
         
       };
-      this.etabService.getArticlesMultipleParams(data)
+      this.etabService.getEtabssMultipleParams(data,this.page_number.toString())
       .subscribe({
         next: (data) => {
           this.etabs = data;
           console.log(this.etabs);
-          $('#datatable').DataTable().clear().destroy();
-          setTimeout(() => {
-            $('#datatable').DataTable();
-          }, 500);
         },
         error: (e) => console.error(e)
+        ,complete : () => {
+          this.refreshList()
+          
+        }
+      });
+    }
+
+    Filtrer_click(): void{
+      this.page_number=1
+      const data = {
+        code_etab: this.ce,
+        adresse1: this.adr,
+        type: this.type,
+        
+      };
+      this.etabService.getEtabssMultipleParams(data,this.page_number.toString())
+      .subscribe({
+        next: (data) => {
+          this.etabs = data;
+          console.log(this.etabs);
+        },
+        error: (e) => console.error(e)
+        ,complete : () => {
+          this.refreshList()
+          
+        }
       });
     }
     upload():void{
@@ -63,16 +136,15 @@ export class EtablissementComponent implements OnInit {
       this.etabService.uploadFile(fileInput.files[0]).subscribe(
         (response) => {
           console.log('File uploaded successfully:', response);
-          // Handle success, e.g., show a success message
-          this.retrieveEtabs();
-       $('#datatable').DataTable().clear().destroy();
-          setTimeout(() => {
-            $('#datatable').DataTable();
-          }, 500);
+         
         },
         (error) => {
           console.error('File upload failed:', error);
           // Handle error, e.g., show an error message
+        }
+        , () => {
+          this.retrieveEtabs()
+          
         }
       );
   
@@ -81,10 +153,11 @@ export class EtablissementComponent implements OnInit {
   
       
     }
-
-    modif(etab:Etablissement):any{
-      const data=etab;
-      this.etabService.updateEtablissement(data)
+    data_to_modif(etab:Etablissement):void{
+      this.modif_data=etab
+    }
+    modif():void{
+      this.etabService.updateEtablissement(this.modif_data)
       .subscribe({
         next: (res) => {
            console.log(res);
@@ -95,5 +168,24 @@ export class EtablissementComponent implements OnInit {
     }
     toggleEditMode() {
       this.editMode = !this.editMode;
+    }
+    deleteButtonClick(){
+      console.log('delete')
+      this.etabService.deleteEtablissement(this.id_to_delete)
+      .subscribe({
+        next: (data) => {
+          console.log(data)
+        },
+        error: (e) => {console.error(e)
+        },
+       complete : () => {
+          this.retrieveEtabs()
+      }
+      
+    });
+    }
+    id_article_to_delete(id: string):void{
+      this.id_to_delete=id
+      console.log(this.id_to_delete)
     }
 }

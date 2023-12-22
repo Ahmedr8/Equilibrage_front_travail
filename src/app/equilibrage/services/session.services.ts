@@ -24,11 +24,11 @@ export class SessionService {
   }
 
   createSession(Session: Session): Observable<Session> {
-    return this.http.post<Session>(this.apiUrl+'sessions/', Session);
+    return this.http.post<Session>(this.apiUrl+'sessions/page=1', Session);
   }
 
   updateSession(Session: Session): Observable<Session> {
-    const url = `${this.apiUrl}/${Session.code_session}`;
+    const url = `${this.apiUrl}sessions/${Session.code_session}`;
     return this.http.put<Session>(url, Session);
   }
 

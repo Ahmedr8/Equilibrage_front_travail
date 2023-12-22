@@ -22,7 +22,7 @@
       <br>
       <div class="container " style="text-align: center;">
         
-        <button class="btn btn-primary" type="button" (click)="Filtrer()"><span><i class="bi bi-funnel-fill"></i></span>Filtrer</button>
+        <button class="btn btn-primary" type="button" (click)="Filtrer_click()"><span><i class="bi bi-funnel-fill"></i></span>Filtrer</button>
       </div>
   </div>
   </div>
@@ -64,6 +64,44 @@
     </div>
   </div>
 </div>
+<!-- Modal -->
+<div class="modal fade" id="delete" tabIndex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" data-bs-backdrop="static">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Supression</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        voulez vous vraiment supprimer cette Etablissement!
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">annuler</button>
+        <button type="button" class="btn btn-danger"  data-bs-dismiss="modal"  (click)="deleteButtonClick()">Supprimer</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="update" tabIndex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" data-bs-backdrop="static">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Supression</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        voulez vous vraiment modifier la priorite de cette Etablissement!
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">annuler</button>
+        <button type="button" class="btn btn-success"  data-bs-dismiss="modal"  (click)="modif()">modifier</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <div class="card" >
   <div class="card-body">
 <div class="table-responsive">
@@ -88,9 +126,21 @@
         <td>{{etab.adresse2}}</td>
         <td>{{etab.type}}</td>
         <td><input type="number"  placeholder="{{etab.priorite}}" [(ngModel)]="etab.priorite" ></td>
-        <td><button type="button" class="btn btn-secondary" (click)="modif(etab)">modifier</button></td>
+        <td>
+          <div class="d-flex flex-inline">
+          <button type="button" class="btn btn-success btn-sm rounded-2  m-1" data-bs-toggle="modal" data-bs-target="#update" (click)="data_to_modif(etab)">modifier</button>
+          <button type="button" class="btn btn-danger btn-sm rounded-2  m-1" data-bs-toggle="modal" data-bs-target="#delete" (click)="id_article_to_delete(etab.code_etab)">supprimer</button>
+        </div>
+        </td>
       </tr>
     </tbody>
+    <tfoot>
+      <tr>
+        <td [attr.colspan]="totalColumns"><div  style="display: flex; align-items: center; justify-content: center; "><button class="btn switch_page" (click)="previous_page()" [disabled]="no_previous">&laquo; Previous</button>
+          <button class="btn switch_page" (click)="next_page()" [disabled]="end_of_data">Next &raquo;</button></div><div></div>
+        </td>
+      </tr>
+    </tfoot>
   </table>
 </div>
 </div>

@@ -14,12 +14,12 @@ export class EtablissementService {
 
   constructor(private http: HttpClient) {}
 
-  getEtablissements(): Observable<Etablissement[]> {
-    return this.http.get<Etablissement[]>(this.apiUrl+'etablissements/');
+  getEtablissements(page_number:string): Observable<Etablissement[]> {
+    return this.http.get<Etablissement[]>(this.apiUrl+'etablissements/page='+page_number);
   }
 
   getEtablissementById(id: string): Observable<Etablissement> {
-    const url = `${this.apiUrl}/${id}`;
+    const url = `${this.apiUrl}etablissements/${id}`;
     return this.http.get<Etablissement>(url);
   }
 
@@ -33,17 +33,17 @@ export class EtablissementService {
   }
 
   deleteEtablissement(id: string): Observable<any> {
-    const url = `${this.apiUrl}/${id}`;
+    const url = `${this.apiUrl}etablissements/${id}`;
     return this.http.delete(url);
   }
   uploadFile(file: File) {
     const formData = new FormData();
     formData.append('file', file);
 
-    return this.http.post(this.apiUrl+'etablissements/', formData);
+    return this.http.post(this.apiUrl+'etablissements/page=1', formData);
   }
-  getArticlesMultipleParams(f:any): Observable<Etablissement[]> {
+  getEtabssMultipleParams(f:any,page_number:string): Observable<Etablissement[]> {
     let queryParams = f;
-    return this.http.get<Etablissement[]>(this.apiUrl+'etablissements/filtred',{params:queryParams});
+    return this.http.get<Etablissement[]>(this.apiUrl+'etablissements/filtred/page='+page_number,{params:queryParams});
 }
 }
