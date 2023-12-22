@@ -38,7 +38,7 @@ export class SessionsComponent implements OnInit {
     (window as any).myAngularApp = this;
   }
   next_page():void{
-    if(this.sessions.length>=2){
+    if(this.sessions.length>=200){
     this.end_of_data=false
     this.page_number=this.page_number+1
     this.no_previous=false;
