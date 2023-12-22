@@ -16,12 +16,15 @@ export class StocksComponent implements OnInit {
   ce:any='';
   cb:any='';
   cd:any='';
+  m:any='';
+  c:any='';
+  sc:any='';
   table:any;
   datatableElement !: DataTableDirective;
   dtOptions: DataTables.Settings = {};
   end_of_data:boolean=false;
   no_previous:boolean=true;
-  totalColumns:number=11;
+  totalColumns:number=7;
   id_to_delete: string='';
   page_number:number=1;
 
@@ -86,14 +89,10 @@ export class StocksComponent implements OnInit {
       columns: [
         { data: 'code_article_dem', title: 'Code Article DEM' },
         { data: 'code_barre', title: 'Code Barre' },
-        { data: 'code_etab', title: 'Code Etab' },
+        { data: 'code_etab', title: 'Code Etablissement' },
         { data: 'code_depot', title: 'Code Depot' },
-        { data: 'stock_min', title: 'Stock Min' },
+        { data: 'stock_min', title: 'Stock Minimale' },
         { data: 'stock_physique', title: 'Stock Physique' },
-        { data: 'ventes', title: 'Ventes' },
-        { data: 'trecu', title: 'Trecu' },
-        { data: 't_trf_recu', title: 'T_trf_recu' },
-        { data: 't_trf_emis', title: 'T_trf_emi' },
         {
           title: 'Actions',
           orderable: false,

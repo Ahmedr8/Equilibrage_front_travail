@@ -8,3 +8,13 @@
     color: black;
     margin: 4px;
   }
+  .btn_custom:hover {
+    background-color: #aea4a4;
+    color: black
+  }
+  
+.btn_custom {
+    background-color: #00008B;
+    color: white;
+    margin: 4px;
+  }

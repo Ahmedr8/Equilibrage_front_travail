@@ -1,34 +1,38 @@
+<div class="pt-2 ">
+  <p><b>données de base /</b> Depots</p>
+</div>
+<hr>
 <div class="card">
   <div class="card-header">
     Filter
   </div>
   <div class="card-body" >
     <div class="row">
-      <div class="col-md-4">
+      <div class="col-md-3">
         <label for="validationCustom01" class="form-label">code depot</label>
         <input type="text" class="form-control" id="validationCustom01" placeholder="code depot" [(ngModel)]="cd" >
       </div>
-      <div class="col-md-4">
+      <div class="col-md-3">
         <label for="validationCustom02" class="form-label">code Etablissement</label>
         <input type="text" class="form-control" id="validationCustom02" placeholder="code Etablissement" [(ngModel)]="ce" >
       </div>
-      <div class="col-md-4">
+      <div class="col-md-3">
         <label for="validationCustomUsername" class="form-label">type</label>
         <div class="input-group has-validation">   
         <input type="text" class="form-control" id="validationCustomUsername" aria-describedby="inputGroupPrepend" placeholder="type" [(ngModel)]="type">
         </div>
-      </div>
-    </div>
-      <br>
-      <div class="container " style="text-align: center;">
         
-        <button class="btn btn-primary" type="button" (click)="Filtrer_click()"><span><i class="bi bi-funnel-fill"></i></span>Filtrer</button>
       </div>
+      <div class="col-md-3 mt-4" style="text-align: center;">
+        
+        <button class="btn btn_custom" type="button" (click)="Filtrer_click()"><span><i class="bi bi-funnel-fill"></i></span>Filtrer</button>
+    </div>
+    </div>
   </div>
   </div>
   <br>
   <div style="display: flow-root;">
-  <button data-bs-toggle="modal" data-bs-target="#upload" type="button" style="float: right;" class="btn btn-info "><span><i class="bi bi-arrow-bar-down"></i></span> Importer</button>
+  <button data-bs-toggle="modal" data-bs-target="#upload" type="button" style="float: right;" class="btn btn_custom "><span><i class="bi bi-arrow-bar-down"></i></span> Importer</button>
   </div>
   <br>
 <!-- Vertically centered scrollable modal -->

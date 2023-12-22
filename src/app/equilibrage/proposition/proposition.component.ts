@@ -13,7 +13,7 @@ declare var $ : any
 @Component({
   selector: 'app-proposition',
   templateUrl: './proposition.component.html',
-  styleUrls: ['./proposition.component.css']
+  styleUrls: ['./proposition.component.css','../equilibrage.component.css']
 })
 export class PropositionComponent implements OnInit {
   articles?: Article[];

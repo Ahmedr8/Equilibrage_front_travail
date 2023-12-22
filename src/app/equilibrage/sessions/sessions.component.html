@@ -1,18 +1,22 @@
+<div class="pt-2 ">
+  <p><b>Equilibrage /</b> Session</p>
+</div>
+<hr>
 <div class="card">
   <div class="card-header">
     Filter
   </div>
   <div class="card-body" >
     <div class="row">
-      <div class="col-md-4">
+      <div class="col-md-3">
         <label for="validationCustom01" class="form-label">code session</label>
         <input type="text" class="form-control" id="validationCustom01" placeholder="code session" [(ngModel)]="cs" >
       </div>
-      <div class="col-md-4">
+      <div class="col-md-3">
         <label for="validationCustom02" class="form-label">date session</label>
         <input type="date" class="form-control" id="validationCustom02" placeholder="code a barre" [(ngModel)]="date" >
       </div>
-      <div class="col-md-4">
+      <div class="col-md-3">
         <label for="validationCustomUsername" class="form-label">critere</label>
         <div class="input-group has-validation">   
           <select class="form-select" aria-label="Default select example" [(ngModel)]="crit" required>
@@ -21,17 +25,17 @@
           </select>
         </div>
       </div>
-    </div>
-      <br>
-      <div class="container " style="text-align: center;">
+      <div  class="col-md-3 mt-4" style="text-align: center;">
         
-        <button class="btn btn-primary" type="button" (click)="Filtrer()"><span><i class="bi bi-funnel-fill"></i></span>Filtrer</button>
+        <button class="btn btn_custom" type="button" (click)="Filtrer_click()"><span><i class="bi bi-funnel-fill"></i></span>Filtrer</button>
       </div>
+    </div>
+      
   </div>
   </div>
 <br>
 <div style="display: flow-root;">
-<button routerLink='/equilibrage/add_prop' style="float: right;" class="btn btn-info "><span><i class="bi bi-plus-square-fill"></i></span> Crée Session</button>
+<button routerLink='/equilibrage/add_prop' style="float: right;" class="btn btn_custom "><span><i class="bi bi-plus-square-fill"></i></span> Crée Session</button>
 </div>
 <br>
 <div class="card" >

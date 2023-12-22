@@ -1,3 +1,7 @@
+<div class="pt-2 ">
+  <p><b>Equilibrage/</b> Creation d'une Session</p>
+</div>
+<hr>
 <div class="progress" *ngIf="!submitted" >
   <div class="progress-bar" role="progressbar" style="width: 25%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
 </div>
@@ -25,7 +29,7 @@
           </div>
           <br>
           <div class="d-flex justify-content-end">
-            <button class="btn btn-primary" type="button" (click)="Ajouter()">Next</button>
+            <button class="btn btn_custom" type="button" (click)="Ajouter()">Next</button>
             <!-- The empty span below is for spacing -->
             <span></span>
           </div>
@@ -57,15 +61,15 @@
     </div>
     <div class="card-body" >
       <div class="row">
-        <div class="col-md-4">
+        <div class="col-md-3">
           <label for="validationCustom01" class="form-label">code article generique</label>
           <input type="text" class="form-control" id="validationCustom01" placeholder="code article generique" [(ngModel)]="cag" >
         </div>
-        <div class="col-md-4">
+        <div class="col-md-3">
           <label for="validationCustom02" class="form-label">code a barre</label>
           <input type="text" class="form-control" id="validationCustom02" placeholder="code a barre" [(ngModel)]="cb" >
         </div>
-        <div class="col-md-4">
+        <div class="col-md-3">
           <label for="validationCustomUsername" class="form-label">code fournisseur</label>
           <div class="input-group has-validation">   
           <input type="text" class="form-control" id="validationCustomUsername" aria-describedby="inputGroupPrepend" placeholder="code fournissuer" [(ngModel)]="cf">
@@ -73,30 +77,30 @@
         </div>
       </div>
       <div class="row">
-        <div class="col-md-4">
+        <div class="col-md-3">
           <label for="validationCustom03" class="form-label">Model</label>
           <input type="text" class="form-control" id="validationCustom03" placeholder="Model" [(ngModel)]="m">
         </div>
-        <div class="col-md-4">
+        <div class="col-md-3">
           <label for="validationCustom04" class="form-label">Categorie</label>
           <input type="text" name="" id="" placeholder="Categorie" class="form-control" [(ngModel)]="c">
         </div>
-        <div class="col-md-4">
+        <div class="col-md-3">
           <label for="validationCustom04" class="form-label">Sous Categorie</label>
           <input type="text" name="" id="" placeholder="Sous Categorie" class="form-control" [(ngModel)]="sc">
           </div>
+          <div class="col-md-3 " style="text-align: center;">
+          
+            <button class="btn btn_custom" type="button" (click)="Filtrer()"><span><i class="bi bi-funnel-fill"></i></span>Filtrer</button>
+          </div>
         </div>
         <br>
-        <div class="container " style="text-align: center;">
-          
-          <button class="btn btn-primary" type="button" (click)="Filtrer()"><span><i class="bi bi-funnel-fill"></i></span>Filtrer</button>
-        </div>
     </div>
     </div>
     <br>
     <div class="d-flex justify-content-between">
-      <button class="btn btn-primary" type="button" disabled>Previous</button>
-      <button class="btn btn-primary" type="button" (click)="articleShow(false)">Next</button>
+      <button class="btn btn_custom" type="button" disabled>Previous</button>
+      <button class="btn btn_custom" type="button" (click)="articleShow(false)">Next</button>
     </div>
     <br>
     
@@ -133,32 +137,32 @@
     </div>
     <div class="card-body" >
       <div class="row">
-        <div class="col-md-4">
+        <div class="col-md-3">
           <label for="validationCustom01" class="form-label">codde Etablissement</label>
           <input type="text" class="form-control" id="validationCustom01" placeholder="code Etablissement" [(ngModel)]="ce" >
         </div>
-        <div class="col-md-4">
+        <div class="col-md-3">
           <label for="validationCustom02" class="form-label">adresse</label>
           <input type="text" class="form-control" id="validationCustom02" placeholder="adresse" [(ngModel)]="adr" >
         </div>
-        <div class="col-md-4">
+        <div class="col-md-3">
           <label for="validationCustomUsername" class="form-label">type</label>
           <div class="input-group has-validation">   
           <input type="text" class="form-control" id="validationCustomUsername" aria-describedby="inputGroupPrepend" placeholder="Type" [(ngModel)]="type">
           </div>
         </div>
-      </div>
-        <br>
-        <div class="container " style="text-align: center;">
+        <div  class="col-md-3 mt-4" style="text-align: center;">
           
-          <button class="btn btn-primary" type="button" (click)="Filtrer2()"><span><i class="bi bi-funnel-fill"></i></span>Filtrer</button>
+          <button class="btn btn_custom" type="button" (click)="Filtrer2()"><span><i class="bi bi-funnel-fill"></i></span>Filtrer</button>
         </div>
+      </div>
+
     </div>
     </div>
     <br>
     <div class="d-flex justify-content-between">
-      <button class="btn btn-primary" type="button" (click)="articleShow(true)">Previous</button>
-      <button class="btn btn-primary" type="button" (click)="createProp()">Next</button>
+      <button class="btn btn_custom" type="button" (click)="articleShow(true)">Previous</button>
+      <button class="btn btn_custom" type="button" (click)="createProp()">Next</button>
     </div>
     <br>
   <div class="card" >
@@ -203,6 +207,7 @@
           <th >code article generique</th>
           <th >code article dimensionee</th>
           <th >code barre</th>
+          <th>code depot emmeteur</th>
           <th >libellle taille</th>
           <th >libelle couleur</th>
           <th >emmeteur</th>
@@ -220,6 +225,7 @@
           <td>{{prop.code_article_gen}}</td>
           <td>{{prop.code_article_dem}}</td>
           <td>{{prop.code_barre}}</td>
+          <td>{{prop.code_depot_emet}}</td>
           <td>{{prop.lib_taille}}</td>
           <td>{{prop.lib_couleur}}</td>
           <td>{{prop.emet}}</td>

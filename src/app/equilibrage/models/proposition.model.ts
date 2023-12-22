@@ -12,7 +12,8 @@ export class propAffiche{
         ordre_trf!: string;
         code_article_gen!: string;
         code_article_dem!: string;
-        code_barre!: string;     
+        code_barre!: string;    
+        code_depot_emet!:string; 
         lib_taille!: string;
         lib_couleur!: string;
         emet!: string;

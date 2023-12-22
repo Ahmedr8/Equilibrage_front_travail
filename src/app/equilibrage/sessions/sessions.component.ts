@@ -19,7 +19,7 @@ export class SessionsComponent implements OnInit {
   props?:propAffiche[];
   date:any='';
   cs:any='';
-  crit:any='';
+  crit:any="stock_min";
   table_sessions:any;
   table_props:any;
   end_of_data:boolean=false;
@@ -84,9 +84,9 @@ export class SessionsComponent implements OnInit {
     this.table_sessions=$('#datatable').DataTable({ data : this.sessions,
       columns: [
         { data: 'code_session', title: 'code sessoin' },
-        { data: 'libelle', title: 'libelle' },
+        { data: 'libelle', title: 'nom' },
         { data: 'date', title: 'date' },
-        { data: 'id_user', title: 'user' },
+        { data: 'id_user', title: 'id utilisateur' },
         { data: 'critere', title: 'critere' },
         {
           title: 'Actions',
@@ -135,8 +135,9 @@ export class SessionsComponent implements OnInit {
         { data: 'code_article_gen', title: 'code article generique' },
         { data: 'code_article_dem', title: 'code article dimensionee' },
         { data: 'code_barre', title: 'code barre' },
-        { data: 'lib_taille', title: 'libellle taille' },
-        { data: 'lib_couleur', title: 'libelle couleur' },
+        { data: 'code_depot_emet', title: 'code depot emmeteur' },
+        { data: 'lib_taille', title: ' taille' },
+        { data: 'lib_couleur', title: ' couleur' },
         { data: 'emet', title: 'emmeteur' },
         { data: 'qte_trf', title: 'recepteur' },
         { data: 'code_session', title: 'quantite a transferer' },
@@ -160,6 +161,27 @@ export class SessionsComponent implements OnInit {
   }
 
   Filtrer(): void{
+    const data = {
+      date: this.date,
+      code_session: this.cs,
+      critere: this.crit
+    };
+    this.sessionService.getsessiosMultipleParams(data,this.page_number.toString())
+    .subscribe({
+      next: (data) => {
+        this.sessions = data;
+        console.log(this.sessions);
+        
+      },
+      error: (e) => console.error(e)
+      ,
+       complete : () => {
+          this.refresh_sessionsList()
+      }
+    });
+  }
+  Filtrer_click(): void{
+    this.page_number=1
     const data = {
       date: this.date,
       code_session: this.cs,

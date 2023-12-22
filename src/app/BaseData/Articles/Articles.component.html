@@ -1,18 +1,22 @@
+<div class="pt-2 ">
+  <p><b>données de base /</b> Articles</p>
+</div>
+<hr>
 <div class="card">
   <div class="card-header">
     Filter
   </div>
   <div class="card-body" >
     <div class="row">
-      <div class="col-md-4">
+      <div class="col-md-3">
         <label for="validationCustom01" class="form-label">code article generique</label>
         <input type="text" class="form-control" id="validationCustom01" placeholder="code article generique" [(ngModel)]="cag" >
       </div>
-      <div class="col-md-4">
+      <div class="col-md-3">
         <label for="validationCustom02" class="form-label">code a barre</label>
         <input type="text" class="form-control" id="validationCustom02" placeholder="code a barre" [(ngModel)]="cb" >
       </div>
-      <div class="col-md-4">
+      <div class="col-md-3">
         <label for="validationCustomUsername" class="form-label">code fournisseur</label>
         <div class="input-group has-validation">   
         <input type="text" class="form-control" id="validationCustomUsername" aria-describedby="inputGroupPrepend" placeholder="code fournissuer" [(ngModel)]="cf">
@@ -20,29 +24,28 @@
       </div>
     </div>
     <div class="row">
-      <div class="col-md-4">
+      <div class="col-md-3">
         <label for="validationCustom03" class="form-label">Model</label>
         <input type="text" class="form-control" id="validationCustom03" placeholder="Model" [(ngModel)]="m">
       </div>
-      <div class="col-md-4">
+      <div class="col-md-3">
         <label for="validationCustom04" class="form-label">Categorie</label>
         <input type="text" name="" id="" placeholder="Categorie" class="form-control" [(ngModel)]="c">
       </div>
-      <div class="col-md-4">
+      <div class="col-md-3">
         <label for="validationCustom04" class="form-label">Sous Categorie</label>
         <input type="text" name="" id="" placeholder="Sous Categorie" class="form-control" [(ngModel)]="sc">
         </div>
-      </div>
-      <br>
-      <div class="container " style="text-align: center;">
+        <div class="col-md-3 " style="text-align: center;">
         
-        <button class="btn btn-primary" type="button" (click)="Filtrer_click()"><span><i class="bi bi-funnel-fill"></i></span>Filtrer</button>
+          <button class="btn btn_custom" type="button" (click)="Filtrer_click()"><span><i class="bi bi-funnel-fill"></i></span>Filtrer</button>
+        </div>
       </div>
   </div>
   </div>
   <br>
   <div style="display: flow-root;">
-  <button data-bs-toggle="modal" data-bs-target="#upload" type="button" style="float: right;" class="btn btn-info "><span><i class="bi bi-arrow-bar-down"></i></span> Importer</button>
+  <button data-bs-toggle="modal" data-bs-target="#upload" type="button" style="float: right;" class="btn btn_custom "><span><i class="bi bi-arrow-bar-down"></i></span> Importer</button>
   </div>
   <br>
 <!-- Vertically centered scrollable modal -->

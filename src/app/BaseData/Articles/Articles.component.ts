@@ -25,7 +25,7 @@ export class ArticlesComponent implements OnInit {
   dtOptions: DataTables.Settings = {};
   end_of_data:boolean=false;
   no_previous:boolean=true;
-  totalColumns:number=15;
+  totalColumns:number=11;
   id_to_delete: string='';
 
 
@@ -86,16 +86,12 @@ export class ArticlesComponent implements OnInit {
         { data: 'code_barre', title: 'Code Barre' },
         { data: 'code_article_gen', title: 'Code Article Gen' },
         { data: 'libelle', title: 'Libelle' },
-        { data: 'code_taille', title: 'Code Taille' },
-        { data: 'lib_taille', title: 'Libelle Taille' },
-        { data: 'code_couleur', title: 'Code Couleur' },
-        { data: 'lib_couleur', title: 'Libelle Couleur' },
+        { data: 'lib_taille', title: 'Taille' },
+        { data: 'lib_couleur', title: 'Couleur' },
         { data: 'code_fournisseur', title: 'Code Fournisseur' },
         { data: 'fam1', title: 'Model' },
         { data: 'fam2', title: 'Categorie' },
         { data: 'fam3', title: 'Sous Categorie' },
-        { data: 'fam4', title: 'Famille 4' },
-        { data: 'fam5', title: 'Famille 5' },
         {
           title: 'Actions',
           orderable: false,
