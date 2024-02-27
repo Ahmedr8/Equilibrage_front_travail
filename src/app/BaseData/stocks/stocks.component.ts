@@ -42,7 +42,7 @@ export class StocksComponent implements OnInit {
   }
 
   next_page():void{
-    if(this.Stocks.length>=200){
+    if(this.Stocks.length>=10){
     this.end_of_data=false
     this.page_number=this.page_number+1
     this.no_previous=false;

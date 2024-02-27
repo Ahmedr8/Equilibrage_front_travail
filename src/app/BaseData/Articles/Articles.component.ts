@@ -37,7 +37,7 @@ export class ArticlesComponent implements OnInit {
   }
 
   next_page():void{
-    if(this.articles.length>=200){
+    if(this.articles.length>=10){
     this.end_of_data=false
     this.page_number=this.page_number+1
     this.no_previous=false;

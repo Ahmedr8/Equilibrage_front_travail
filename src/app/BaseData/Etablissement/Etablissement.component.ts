@@ -33,7 +33,7 @@ export class EtablissementComponent implements OnInit {
     (window as any).myAngularApp = this;
   }
   next_page():void{
-    if(this.etabs.length>=200){
+    if(this.etabs.length>=10){
     this.end_of_data=false
     this.page_number=this.page_number+1
     this.no_previous=false;
