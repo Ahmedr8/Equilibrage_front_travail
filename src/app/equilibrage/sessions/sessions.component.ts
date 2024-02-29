@@ -13,7 +13,7 @@ declare var $ : any
 })
 export class SessionsComponent implements OnInit {
   sessions: Session[]=[];
-  sessionDetails?:DetailSession[];
+  sessionDetails:DetailSession[]=[];
   etabs:any[]=[];
   articles:any[]=[];  
   props?:propAffiche[];
@@ -38,7 +38,7 @@ export class SessionsComponent implements OnInit {
     (window as any).myAngularApp = this;
   }
   next_page():void{
-    if(this.sessions.length>=200){
+    if(this.sessions.length>=10){
     this.end_of_data=false
     this.page_number=this.page_number+1
     this.no_previous=false;
@@ -182,6 +182,8 @@ export class SessionsComponent implements OnInit {
   }
   Filtrer_click(): void{
     this.page_number=1
+    this.end_of_data=false;
+    this.no_previous=true;
     const data = {
       date: this.date,
       code_session: this.cs,
@@ -204,31 +206,6 @@ export class SessionsComponent implements OnInit {
 
   sessionDetail(id: string): void {
     console.log("details")
-    this.detailDetailSessionService.getDetailSessionsById(id)
-      .subscribe({
-        next: (data) => {
-          this.sessionDetails = data;
-          
-          // Initialize articles and etabs as empty arrays
-          this.articles = [];
-          this.etabs = [];
-  
-          for (let detail of this.sessionDetails) {
-
-            if (!this.articles.includes(detail.code_article_dem)) {
-              this.articles.push(detail.code_article_dem);
-            }
-  
-            if (!this.etabs.includes(detail.code_etab)) {
-              this.etabs.push(detail.code_etab);
-            }
-          }
-  
-          console.log(this.articles);
-          console.log(this.etabs);
-        },
-        error: (e) => console.error(e)
-      });
       this.propositionService.getPropositionsById(id)
       .subscribe({
         next: (propos) => {
@@ -239,6 +216,33 @@ export class SessionsComponent implements OnInit {
         ,
         complete: ()=> {
           this.refreshList_prop()
+        }
+      });
+      this.detailDetailSessionService.getDetailSessionsById(id)
+      .subscribe({
+        next: (data) => {
+          this.sessionDetails = data;
+          // Initialize articles and etabs as empty arrays
+          this.articles=[];
+          this.etabs=[];
+          for (let detail of this.sessionDetails) {
+
+            if (!this.articles.includes(detail.code_article_dem)) {
+              this.articles = [...this.articles, detail.code_article_dem];
+            }
+  
+            if (!this.etabs.includes(detail.code_etab)) {
+              this.etabs.push(detail.code_etab);
+            }
+          }
+
+        },
+        error: (e) => console.error(e)
+        ,
+        complete: ()=> {
+  
+          console.log(this.articles);
+          console.log(this.etabs);
         }
       });
   }

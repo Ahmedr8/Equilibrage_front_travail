@@ -28,6 +28,8 @@ export class PropositionComponent implements OnInit {
   type:any='';
   adr:any='';
   selected_articles:any[]=[];
+  selected_etabs:any[]=[];
+  selected_prio_etabs:any=[];
   etabs: Etablissement[]=[];
   props?:propAffiche[];
   lib:any="S_"+this.datePipe.transform(new Date(), 'yyyy_MM_dd_hh_mm_ss');
@@ -128,6 +130,20 @@ refreshList_articles(){
 
   refreshList_etabs(){
     if(this.tableEtabs){
+      const tab1=this.tableEtabs.rows({selected:  true}).data();
+      const tab2=this.tableEtabs.rows({selected:  false}).data();
+      for (var i=0; i < tab1.length ;i++){
+        if (!this.selected_etabs.includes(tab1[i][1])) {
+        this.selected_etabs.push(tab1[i][1]);
+        this.selected_prio_etabs.push(this.etabs[i].priorite)
+        }
+      }
+      for (var i=0; i < tab2.length ;i++){
+        if (this.selected_etabs.indexOf(tab2[i][1])!=-1){
+          this.selected_etabs.splice(this.selected_etabs.indexOf(tab2[i][1]), 1);
+          this.selected_prio_etabs.splice(this.selected_etabs.indexOf(tab2[i][1]), 1)
+        }
+      }
       this.tableEtabs.destroy();
     }
     $(document).ready(() => {
@@ -152,6 +168,11 @@ refreshList_articles(){
     dom: 'Bfrtip'
     }
       );
+      for(var j=0;j<this.etabs.length;j++){
+        if (this.selected_etabs.find(item => item === this.etabs[j].code_etab)){
+          this.tableEtabs.rows(j).select();
+        }
+      }
     });
   
 
@@ -263,15 +284,11 @@ refreshList_articles(){
       });
   }
   createProp():void{
-    
-    const tab2 = this.tableEtabs.rows({selected:  true}).data();
-    const id_etabs=[]; 
-    const prio_etabs=[]      
-      for (var i=0; i < tab2.length ;i++){
-        id_etabs.push(tab2[i][1]);
-        console.log(this.etabs[i].priorite)
-        prio_etabs.push(this.etabs[i].priorite)
-      }  
+    this.refreshList_articles();
+    this.refreshList_etabs();
+    const id_etabs=this.selected_etabs; 
+    const prio_etabs=this.selected_prio_etabs;    
+      
       const id_articles=this.selected_articles;       
       const datatosend={
         articles:id_articles,

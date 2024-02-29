@@ -144,6 +144,8 @@ export class ArticlesComponent implements OnInit {
 
   Filtrer_click(): void{
     this.page_number=1
+    this.end_of_data=false;
+    this.no_previous=true;
     const data = {
       code_barre: this.cb,
       code_article_gen: this.cag,

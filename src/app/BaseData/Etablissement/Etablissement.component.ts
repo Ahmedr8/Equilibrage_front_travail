@@ -107,6 +107,8 @@ export class EtablissementComponent implements OnInit {
 
     Filtrer_click(): void{
       this.page_number=1
+      this.end_of_data=false;
+      this.no_previous=true;
       const data = {
         code_etab: this.ce,
         adresse1: this.adr,
