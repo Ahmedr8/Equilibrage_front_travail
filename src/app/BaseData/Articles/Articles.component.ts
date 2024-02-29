@@ -19,6 +19,7 @@ export class ArticlesComponent implements OnInit {
   m:any='';
   c:any='';
   sc:any='';
+  fam4:any='';
   table:any;
   page_number:number=1;
   datatableElement !: DataTableDirective;
