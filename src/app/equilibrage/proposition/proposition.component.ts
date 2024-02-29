@@ -16,7 +16,7 @@ declare var $ : any
   styleUrls: ['./proposition.component.css','../equilibrage.component.css']
 })
 export class PropositionComponent implements OnInit {
-  articles?: Article[];
+  articles: Article[]=[];
   cag:any='';
   cad:any='';
   cb:any='';
@@ -27,6 +27,7 @@ export class PropositionComponent implements OnInit {
   ce:any='';
   type:any='';
   adr:any='';
+  selected_articles:any[]=[];
   etabs: Etablissement[]=[];
   props?:propAffiche[];
   lib:any="S_"+this.datePipe.transform(new Date(), 'yyyy_MM_dd_hh_mm_ss');
@@ -66,6 +67,19 @@ export class PropositionComponent implements OnInit {
 
 refreshList_articles(){
   if(this.tablepending){
+    const tab1=this.tablepending.rows({selected:  true}).data();
+    const tab2=this.tablepending.rows({selected:  false}).data();
+    for (var i=0; i < tab1.length ;i++){
+      if (!this.selected_articles.includes(tab1[i][1])) {
+        this.selected_articles.push(tab1[i][1]);
+    }
+    }
+    for (var i=0; i < tab2.length ;i++){
+      if (this.selected_articles.indexOf(tab2[i][1])!=-1){
+        this.selected_articles.splice(this.selected_articles.indexOf(tab2[i][1]), 1);
+      }
+    }
+    console.log(this.selected_articles);
     this.tablepending.destroy();
   }
   $(document).ready(() => {
@@ -90,6 +104,11 @@ refreshList_articles(){
   dom: 'Bfrtip'
   }
     );
+    for(var j=0;j<this.articles.length;j++){
+      if (this.selected_articles.find(item => item === this.articles[j].code_article_dem)){
+        this.tablepending.rows(j).select();
+      }
+    }
   });
 }
 
@@ -253,11 +272,7 @@ refreshList_articles(){
         console.log(this.etabs[i].priorite)
         prio_etabs.push(this.etabs[i].priorite)
       }  
-      const tab1 = this.tablepending.rows({selected:  true}).data();
-      const id_articles=[];       
-         for (var i=0; i < tab1.length ;i++){
-           id_articles.push(tab1[i][1]);
-         }
+      const id_articles=this.selected_articles;       
       const datatosend={
         articles:id_articles,
         etabs: id_etabs,
