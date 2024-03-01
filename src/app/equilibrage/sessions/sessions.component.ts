@@ -5,6 +5,8 @@ import { DetailDetailSessionService } from '../services/detail_session.services'
 import { DetailSession } from '../models/detail_session.model';
 import { PropositionService } from '../services/proposition.services';
 import { propAffiche } from '../models/proposition.model';
+import { NgZone } from '@angular/core';
+
 declare var $ : any
 @Component({
   selector: 'app-sessions',
@@ -27,7 +29,7 @@ export class SessionsComponent implements OnInit {
   totalColumns:number=6;
   id_to_delete: string='';
   page_number:number=1;
-  constructor(private sessionService : SessionService,private detailDetailSessionService:DetailDetailSessionService,private propositionService:PropositionService) { }
+  constructor(private sessionService : SessionService,private detailDetailSessionService:DetailDetailSessionService,private propositionService:PropositionService,private zone: NgZone) { }
 
   ngOnInit() {
     this.retrieveSessions();
@@ -199,6 +201,7 @@ export class SessionsComponent implements OnInit {
       error: (e) => console.error(e)
       ,
        complete : () => {
+          
           this.refresh_sessionsList()
       }
     });
@@ -206,6 +209,7 @@ export class SessionsComponent implements OnInit {
 
   sessionDetail(id: string): void {
     console.log("details")
+    this.articles=[...this.articles,"aaa"];
       this.propositionService.getPropositionsById(id)
       .subscribe({
         next: (propos) => {
@@ -222,27 +226,15 @@ export class SessionsComponent implements OnInit {
       .subscribe({
         next: (data) => {
           this.sessionDetails = data;
-          // Initialize articles and etabs as empty arrays
-          this.articles=[];
-          this.etabs=[];
-          for (let detail of this.sessionDetails) {
-
-            if (!this.articles.includes(detail.code_article_dem)) {
-              this.articles = [...this.articles, detail.code_article_dem];
-            }
-  
-            if (!this.etabs.includes(detail.code_etab)) {
-              this.etabs.push(detail.code_etab);
-            }
-          }
-
         },
         error: (e) => console.error(e)
         ,
         complete: ()=> {
-  
-          console.log(this.articles);
-          console.log(this.etabs);
+          this.articles=[];
+          this.etabs=[];
+          this.refresh_details();
+          console.log(this.articles.length);
+          console.log(this.etabs.length);
         }
       });
   }
@@ -269,7 +261,20 @@ export class SessionsComponent implements OnInit {
     console.log(this.id_to_delete)
   }
 
+refresh_details():void{
+  this.zone.run(() => {
+  for (let detail of this.sessionDetails) {
 
+    if (!this.articles.includes(detail.code_article_dem)) {
+      this.articles = [...this.articles, detail.code_article_dem];
+    }
+
+    if (!this.etabs.includes(detail.code_etab)) {
+      this.etabs.push(detail.code_etab);
+    }
+  }
+});
+}
 
 
   
