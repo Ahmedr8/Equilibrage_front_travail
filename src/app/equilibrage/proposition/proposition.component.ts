@@ -288,12 +288,13 @@ refreshList_articles(){
     this.refreshList_etabs();
     const id_etabs=this.selected_etabs; 
     const prio_etabs=this.selected_prio_etabs;    
-      
+    const critere=this.crit  
       const id_articles=this.selected_articles;       
       const datatosend={
         articles:id_articles,
         etabs: id_etabs,
-        prios : prio_etabs
+        prios : prio_etabs,
+        critere: critere,
       }
       this.detailDetailSessionService.createDetailSession(datatosend,this.id_session)
       .subscribe({
