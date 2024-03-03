@@ -43,6 +43,9 @@ export class PropositionComponent implements OnInit {
   created=false;
   articleA=true;
   etabA=false;
+  totalColumns:number=3;
+  end_of_data:boolean=false;
+  no_previous:boolean=true;
   page_number:number=1;
   constructor(private articleService: ArticleService,private etabService: EtablissementService,private sessionService:SessionService,private datePipe: DatePipe,private detailDetailSessionService: DetailDetailSessionService,private propositionService:PropositionService) { }
 
@@ -72,20 +75,19 @@ refreshList_articles(){
     const tab1=this.tablepending.rows({selected:  true}).data();
     const tab2=this.tablepending.rows({selected:  false}).data();
     for (var i=0; i < tab1.length ;i++){
-      if (!this.selected_articles.includes(tab1[i][1])) {
-        this.selected_articles.push(tab1[i][1]);
+      if (!this.selected_articles.includes(tab1[i].code_article_dem)) {
+        this.selected_articles.push(tab1[i].code_article_dem);
     }
     }
     for (var i=0; i < tab2.length ;i++){
-      if (this.selected_articles.indexOf(tab2[i][1])!=-1){
-        this.selected_articles.splice(this.selected_articles.indexOf(tab2[i][1]), 1);
+      if (this.selected_articles.indexOf(tab2[i].code_article_dem)!=-1){
+        this.selected_articles.splice(this.selected_articles.indexOf(tab2[i].code_article_dem), 1);
       }
     }
     console.log(this.selected_articles);
     this.tablepending.destroy();
   }
-  $(document).ready(() => {
-  this.tablepending= $('#datatable1').DataTable({
+  /*this.tablepending= $('#datatable1').DataTable({
     columnDefs: [
       {
         orderable: false,
@@ -104,18 +106,41 @@ refreshList_articles(){
       'selectNone'
   ],
   dom: 'Bfrtip'
-  }
-    );
-    for(var j=0;j<this.articles.length;j++){
-      if (this.selected_articles.find(item => item === this.articles[j].code_article_dem)){
-        this.tablepending.rows(j).select();
-      }
-    }
+  });*/
+  this.tablepending=$('#datatable1').DataTable({ data : this.articles,
+    columns: [
+      { data: 'code_article_dem', title: 'Code DIM' },
+      { data: 'code_barre', title: 'Code Barre' },
+      { data: 'libelle', title: 'Désignation' },
+    ],
+    columnDefs: [
+      {
+        orderable: false,
+      },
+      
+    ],
+    select: {
+      style: 'os multi',
+    },
+    order: [[1, 'asc']],
+    buttons: [
+      'selectAll',
+      'selectNone'
+  ],
+  dom: 'Bfrtip',
+  paging: false,        
   });
+  $(document).ready(() => {
+  for(var j=0;j<this.articles.length;j++){
+    if (this.selected_articles.find(item => item === this.articles[j].code_article_dem)){
+      this.tablepending.rows(j).select();
+    }
+  }
+});
 }
 
   retrieveEtabs(): void {
-    this.etabService.getEtablissements('1')
+    this.etabService.getAllEtablissements()
       .subscribe({
         next: (data) => {
           this.etabs = data;
@@ -216,7 +241,30 @@ refreshList_articles(){
     );
   });
   }
-
+  next_page():void{
+    if(this.articles.length>=10){
+    this.end_of_data=false
+    this.page_number=this.page_number+1
+    this.no_previous=false;
+    this.Filtrer();
+    if (this.articles.length=0)
+    {
+      this.end_of_data=true
+    }
+    }else{
+      this.end_of_data=true
+    }
+  }
+  previous_page():void{
+    if(this.page_number>1){
+    this.page_number=this.page_number-1
+    this.end_of_data=false
+    this.Filtrer();
+    this.no_previous=false
+    }else{
+      this.no_previous=true
+    }
+  }
   Filtrer(): void{
     const data = {
       code_barre: this.cb,
@@ -236,6 +284,30 @@ refreshList_articles(){
       ,
        complete : () => {
           this.refreshList_articles()
+      }
+    });
+  }
+  Filtrer_click(): void{
+    this.page_number=1
+    this.end_of_data=false;
+    this.no_previous=true;
+    const data = {
+      code_barre: this.cb,
+      code_article_gen: this.cag,
+      code_fournisseur: this.cf,
+      fam1: this.m,
+      fam2: this.c,
+      fam3:this.sc
+    };
+    this.articleService.getArticlesMultipleParams(data,this.page_number.toString())
+    .subscribe({
+      next: (data) => {
+        this.articles = data;
+        console.log(this.articles);
+      },
+      error: (e) => console.error(e)
+      , complete: ()=> {
+        this.refreshList_articles()
       }
     });
   }

@@ -18,6 +18,10 @@ export class EtablissementService {
     return this.http.get<Etablissement[]>(this.apiUrl+'etablissements/page='+page_number);
   }
 
+  getAllEtablissements(): Observable<Etablissement[]> {
+    return this.http.get<Etablissement[]>(this.apiUrl+'etablissements/all');
+  }
+
   getEtablissementById(id: string): Observable<Etablissement> {
     const url = `${this.apiUrl}etablissements/${id}`;
     return this.http.get<Etablissement>(url);
