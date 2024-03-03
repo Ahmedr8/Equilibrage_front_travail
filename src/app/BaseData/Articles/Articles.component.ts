@@ -111,7 +111,6 @@ export class ArticlesComponent implements OnInit {
                 
             }
               </script><div class="d-flex flex-inline">
-              <button class="btn btn-success btn-sm rounded-2 m-1" data-id="${row.code_article_dem}" onclick="editButtonClick(${row})">Edit</button>
               <button class="btn btn-danger btn-sm rounded-2 m-1" data-id="${row.code_article_dem}" data-bs-toggle="modal" data-bs-target="#delete" onclick="deleteButtonClick('${row.code_article_dem}')">Delete</button>
               </div>
             `;

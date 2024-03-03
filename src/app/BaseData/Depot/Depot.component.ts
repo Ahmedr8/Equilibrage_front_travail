@@ -99,8 +99,9 @@ export class DepotComponent implements OnInit {
                 }
                 
             }
-              </script><div class="d-flex flex-inline">
-              <button class="btn btn-success btn-sm rounded-2 m-1" data-id="${row.code_depot}" onclick="editButtonClick(${row})">Edit</button>
+              </script><div class="d-flex flex-inline" style="display: flex;
+              justify-content: center;
+              align-items: center;">
               <button class="btn btn-danger btn-sm rounded-2 m-1" data-id="${row.code_depot}" data-bs-toggle="modal" data-bs-target="#delete" onclick="deleteButtonClick('${row.code_depot}')">Delete</button>
               </div>
             `;
