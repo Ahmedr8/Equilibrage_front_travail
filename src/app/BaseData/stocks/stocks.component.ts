@@ -24,6 +24,7 @@ export class StocksComponent implements OnInit {
   dtOptions: DataTables.Settings = {};
   end_of_data:boolean=false;
   no_previous:boolean=true;
+  loading:boolean=false;
   totalColumns:number=7;
   id_to_delete: string='';
   page_number:number=1;
@@ -171,7 +172,7 @@ export class StocksComponent implements OnInit {
       console.log('No file selected.');
       return;
     }
-
+    this.loading=true;
     this.StockService.uploadFile(fileInput.files[0]).subscribe(
       (response) => {
         console.log('File uploaded successfully:', response);
@@ -185,6 +186,7 @@ export class StocksComponent implements OnInit {
       () => {
           this.retrieveStocks()
           fileInput.value = '';
+          this.loading=false;
       }
     );
 

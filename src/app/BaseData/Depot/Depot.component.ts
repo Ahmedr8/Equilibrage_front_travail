@@ -20,6 +20,7 @@ export class DepotComponent implements OnInit {
   page_number: number=1;
   end_of_data:boolean=false;
   no_previous:boolean=true;
+  loading:boolean=false;
   totalColumns:number=5;
   id_to_delete: string='';
 
@@ -157,7 +158,7 @@ export class DepotComponent implements OnInit {
       console.log('No file selected.');
       return;
     }
-
+    this.loading=true;
     this.DepotService.uploadFile(fileInput.files[0]).subscribe(
       (response) => {
         console.log('File uploaded successfully:', response);
@@ -168,6 +169,7 @@ export class DepotComponent implements OnInit {
         
       },()=> {
         this.retrieveDepots()
+        this.loading=false;
       }
     );
 

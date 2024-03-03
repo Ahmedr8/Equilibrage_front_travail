@@ -26,6 +26,7 @@ export class ArticlesComponent implements OnInit {
   dtOptions: DataTables.Settings = {};
   end_of_data:boolean=false;
   no_previous:boolean=true;
+  loading:boolean=false;
   totalColumns:number=11;
   id_to_delete: string='';
 
@@ -173,7 +174,7 @@ export class ArticlesComponent implements OnInit {
       console.log('No file selected.');
       return;
     }
-
+    this.loading=true;
     this.articleService.uploadFile(fileInput.files[0]).subscribe(
       (response) => {
         console.log('File uploaded successfully:', response);
@@ -184,6 +185,7 @@ export class ArticlesComponent implements OnInit {
       },
       () => {
           this.retrieveArticles()
+          this.loading=false;
       }
     );
 

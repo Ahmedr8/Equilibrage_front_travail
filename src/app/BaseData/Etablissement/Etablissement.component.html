@@ -37,14 +37,14 @@
   </div>
   <br>
   <!-- Modal -->
-<div class="modal fade" id="upload" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="upload" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" data-bs-backdrop="static">
   <div class="modal-dialog  modal-dialog-centered modal-dialog-scrollable">
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title" id="exampleModalLabel">Upload csv File</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
-      <div class="modal-body">
+      <div class="modal-body" *ngIf="!loading">
         <div className="container ">
           <div className="row">
             <div className="col-12 col-sm-7 col-md-6 m-auto">
@@ -63,10 +63,22 @@
           </div>
         </div>
       </div>
+      <div class="modal-body" *ngIf="loading">
+        <div class="card border-0 ">
+          <div class="card-body">
+            <div class="d-flex justify-content-center">
+              <div class="spinner-border" role="status">
+                <span class="visually-hidden">Loading...</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
       </div>
     </div>
+
   </div>
 </div>
 <!-- Modal -->

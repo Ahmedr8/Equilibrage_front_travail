@@ -17,6 +17,7 @@ export class EtablissementComponent implements OnInit {
   editMode=false;
   end_of_data:boolean=false;
   no_previous:boolean=true;
+  loading:boolean=false;
   totalColumns:number=7;
   id_to_delete: string='';
   page_number:number=1;
@@ -134,7 +135,7 @@ export class EtablissementComponent implements OnInit {
         console.log('No file selected.');
         return;
       }
-  
+      this.loading=true;
       this.etabService.uploadFile(fileInput.files[0]).subscribe(
         (response) => {
           console.log('File uploaded successfully:', response);
@@ -146,7 +147,7 @@ export class EtablissementComponent implements OnInit {
         }
         , () => {
           this.retrieveEtabs()
-          
+          this.loading=false;
         }
       );
   
