@@ -43,7 +43,7 @@ export class PropositionComponent implements OnInit {
   created=false;
   articleA=true;
   etabA=false;
-  totalColumns:number=3;
+  totalColumns:number=4;
   end_of_data:boolean=false;
   no_previous:boolean=true;
   page_number:number=1;
@@ -109,6 +109,7 @@ refreshList_articles(){
   });*/
   this.tablepending=$('#datatable1').DataTable({ data : this.articles,
     columns: [
+      { data:null, defaultContent: '' },
       { data: 'code_article_dem', title: 'Code DIM' },
       { data: 'code_barre', title: 'Code Barre' },
       { data: 'libelle', title: 'Désignation' },
@@ -116,11 +117,14 @@ refreshList_articles(){
     columnDefs: [
       {
         orderable: false,
+        className: 'select-checkbox',
+        targets: 0 
       },
       
     ],
     select: {
       style: 'os multi',
+      selector: 'td:first-child' 
     },
     order: [[1, 'asc']],
     buttons: [
@@ -318,7 +322,7 @@ refreshList_articles(){
       type: this.type,
       
     };
-    this.etabService.getEtabssMultipleParams(data,'1')
+    this.etabService.getEtabssMultipleParams(data,'1000')
     .subscribe({
       next: (data) => {
         this.etabs = data;
