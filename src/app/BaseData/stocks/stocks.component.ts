@@ -25,7 +25,7 @@ export class StocksComponent implements OnInit {
   end_of_data:boolean=false;
   no_previous:boolean=true;
   loading:boolean=false;
-  totalColumns:number=7;
+  totalColumns:number=8;
   id_to_delete: string='';
   page_number:number=1;
 
@@ -94,6 +94,7 @@ export class StocksComponent implements OnInit {
         { data: 'code_depot', title: 'Code Dépot' },
         { data: 'stock_min', title: 'Stock Min' },
         { data: 'stock_physique', title: 'Stock Physique' },
+        { data: 'ventes', title: 'quantite vendu' },
         {
           title: 'Actions',
           orderable: false,
