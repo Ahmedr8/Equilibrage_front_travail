@@ -19,8 +19,9 @@
       <div class="col-md-3">
         <label for="validationCustomUsername" class="form-label labelBold">Critère</label>
         <div class="input-group has-validation">
-          <select class="form-select" aria-label="Default select example" [(ngModel)]="crit" required>
-            <option value="stock_min" selected>Stock minimale</option>
+          <select class="form-select" aria-label="Default select example" [(ngModel)]="crit"  required>
+            <option value="" disabled selected>choisir un critére</option>
+            <option value="stock_min" >Stock minimale</option>
             <option value="moy_ventes">Moyenne des ventes</option>
             <option value="emet">par Emmeteur</option>
           </select>

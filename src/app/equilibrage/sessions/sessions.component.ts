@@ -21,7 +21,7 @@ export class SessionsComponent implements OnInit {
   props?:propAffiche[];
   date:any='';
   cs:any='';
-  crit:any="stock_min";
+  crit:any="";
   table_sessions:any;
   table_props:any;
   end_of_data:boolean=false;
