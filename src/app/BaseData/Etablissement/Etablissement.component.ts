@@ -24,6 +24,7 @@ export class EtablissementComponent implements OnInit {
   modif_data: Etablissement=this.etabs[0];
   constructor(private etabService: EtablissementService) { }
   @ViewChild('fileInput') fileInput!: ElementRef;
+  @ViewChild('closeModal') closebutton!: ElementRef;
   ngOnInit() {
     this.retrieveEtabs();
     this.exposeAngularFunctionGlobally();
@@ -147,6 +148,7 @@ export class EtablissementComponent implements OnInit {
         }
         , () => {
           this.retrieveEtabs()
+          this.closebutton.nativeElement.click();
           this.loading=false;
         }
       );

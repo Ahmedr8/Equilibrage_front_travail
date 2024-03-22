@@ -10,6 +10,7 @@ declare var $ : any
 })
 export class DepotComponent implements OnInit {
   @ViewChild('fileInput') fileInput!: ElementRef;
+  @ViewChild('closeModal') closebutton!: ElementRef;
   Depots: Depot[]=[];
   cd:any='';
   ce:any='';
@@ -170,6 +171,7 @@ export class DepotComponent implements OnInit {
         
       },()=> {
         this.retrieveDepots()
+        this.closebutton.nativeElement.click();
         this.loading=false;
       }
     );

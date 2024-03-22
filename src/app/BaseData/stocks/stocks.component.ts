@@ -12,6 +12,7 @@ declare var $ : any
 export class StocksComponent implements OnInit {
 
   @ViewChild('fileInput') fileInput!: ElementRef;
+  @ViewChild('closeModal') closebutton!: ElementRef;
   Stocks: Stock[]=[];
   ce:any='';
   cb:any='';
@@ -186,6 +187,7 @@ export class StocksComponent implements OnInit {
       () => {
           this.retrieveStocks()
           fileInput.value = '';
+          this.closebutton.nativeElement.click();
           this.loading=false;
       }
     );

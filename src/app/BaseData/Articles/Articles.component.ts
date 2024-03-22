@@ -11,6 +11,7 @@ declare var $ : any
 })
 export class ArticlesComponent implements OnInit {
   @ViewChild('fileInput') fileInput!: ElementRef;
+  @ViewChild('closeModal') closebutton!: ElementRef;
   articles: Article[]=[];
   cag:any='';
   cad:any='';
@@ -184,7 +185,9 @@ export class ArticlesComponent implements OnInit {
       },
       () => {
           this.retrieveArticles()
+          this.closebutton.nativeElement.click();
           this.loading=false;
+
       }
     );
 
