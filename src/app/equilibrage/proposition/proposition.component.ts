@@ -376,7 +376,7 @@ deselectListener =() => {
     const id_etabs=this.selected_etabs; 
     const prio_etabs=this.selected_prio_etabs;    
     const critere=this.crit  
-      const id_articles=this.selected_articles;       
+    const id_articles = this.selected_articles.map(article => article.code_article_dem);      
       const datatosend={
         articles:id_articles,
         etabs: id_etabs,
