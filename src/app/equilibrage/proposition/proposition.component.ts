@@ -72,19 +72,8 @@ export class PropositionComponent implements OnInit {
 
 refreshList_articles(){
   if(this.tablepending){
-    const tab1=this.tablepending.rows({selected:  true}).data();
-    const tab2=this.tablepending.rows({selected:  false}).data();
-    for (var i=0; i < tab1.length ;i++){
-      if (!this.selected_articles.includes(tab1[i].code_article_dem)) {
-        this.selected_articles.push(tab1[i].code_article_dem);
-    }
-    }
-    for (var i=0; i < tab2.length ;i++){
-      if (this.selected_articles.indexOf(tab2[i].code_article_dem)!=-1){
-        this.selected_articles.splice(this.selected_articles.indexOf(tab2[i].code_article_dem), 1);
-      }
-    }
-    console.log(this.selected_articles);
+    $('#datatable1').off('select.dt', this.selectListener);
+    $('#datatable1').off('deselect.dt', this.deselectListener);
     this.tablepending.destroy();
   }
   /*this.tablepending= $('#datatable1').DataTable({
@@ -136,12 +125,34 @@ refreshList_articles(){
   });
   $(document).ready(() => {
   for(var j=0;j<this.articles.length;j++){
-    if (this.selected_articles.find(item => item === this.articles[j].code_article_dem)){
+    if (this.selected_articles.find(item => item.code_article_dem === this.articles[j].code_article_dem)){
       this.tablepending.rows(j).select();
-    }
+    } 
   }
+  $('#datatable1').on('select.dt',this.selectListener )
+  $('#datatable1').on('deselect.dt', this.deselectListener);
 });
 }
+
+ selectListener =() => {
+  const selectedRows = this.tablepending.rows({ selected: true }).data().toArray();
+  selectedRows.forEach((row: { code_article_dem: any; }) => {
+    // Check if the row's code_article_dem already exists in selected_articles
+    if (!this.selected_articles.some(selected => selected.code_article_dem === row.code_article_dem)) {
+      this.selected_articles.push(row); // Push the row to selected_articles if not already present
+    }
+  });
+};
+
+deselectListener =() => {
+  const deselectedRows = this.tablepending.rows({ selected: false }).data().toArray();
+  deselectedRows.forEach((row: { code_article_dem: any; }) => {
+    const index = this.selected_articles.findIndex(selected => selected.code_article_dem === row.code_article_dem);
+    if (this.selected_articles.some(selected => selected.code_article_dem === row.code_article_dem)) {
+      this.selected_articles.splice(index, 1); // Remove deselected row data from the list
+    }
+  });
+};
 
   retrieveEtabs(): void {
     this.etabService.getAllEtablissements()
@@ -395,5 +406,15 @@ refreshList_articles(){
     
   }
 
+   Deselect_article(article:Article){
+    $(document).ready(() => {
+      for(var j=0;j<this.articles.length;j++){
+        if (this.articles[j].code_article_dem==article.code_article_dem){
+          this.tablepending.rows(j).deselect();
+        }
+      }
+    });
+    this.selected_articles.splice(this.selected_articles.indexOf(article),1)
+  }
 
 }
