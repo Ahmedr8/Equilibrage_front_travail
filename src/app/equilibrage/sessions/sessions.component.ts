@@ -29,9 +29,17 @@ export class SessionsComponent implements OnInit {
   totalColumns:number=6;
   id_to_delete: string='';
   page_number:number=1;
+  stock_min_value: number = 0;
   constructor(private sessionService : SessionService,private detailDetailSessionService:DetailDetailSessionService,private propositionService:PropositionService,private zone: NgZone) { }
 
   ngOnInit() {
+    const aux=localStorage.getItem('stock_min')
+    if (aux !=null) {
+      this.stock_min_value=+aux
+    }
+    else
+    {this.stock_min_value=1}
+
     this.retrieveSessions();
     this.exposeAngularFunctionGlobally();
   }
@@ -277,6 +285,14 @@ refresh_details():void{
 });
 }
 
+saveToLocalStorage():void{
+  if ( this.stock_min_value === null) {
+    this.stock_min_value=1
+    alert('le stock minimum a été réinitialisé à 1');
+
+  }
+  localStorage.setItem("stock_min", this.stock_min_value.toString());
+}
 
   
 

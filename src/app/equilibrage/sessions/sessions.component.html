@@ -1,6 +1,40 @@
-<div class="pt-2 ">
+<div class="d-flex justify-content-between align-items-center pt-2">
   <p style="color: rgb(82, 82, 222);"><b style="color: black;">Equilibrage /</b> Session</p>
+  <div class="dropdown">
+    <button class="btn  " type="button" id="dropdownMenuButton2" data-bs-toggle="dropdown" aria-expanded="false">
+      <i class="bi bi-gear"></i>
+    </button>
+    <ul class="dropdown-menu dropdown-menu" aria-labelledby="dropdownMenuButton2">
+      <li><button type="button" class="btn" data-bs-toggle="modal" data-bs-target="#stock_min_Modal">
+        Edit Stock minimale
+      </button></li>
+    </ul>
+  </div>
 </div>
+
+<!-- Modal -->
+<div class="modal fade" id="stock_min_Modal" tabindex="-1" aria-labelledby="stock_min_Modal" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Edit Stock minimale</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <!-- Input fields to store data -->
+        <div class="mb-3">
+          <label for="exampleFormControlInput2" class="form-label">valeur de stock minimale</label>
+          <input type="number" class="form-control" id="exampleFormControlInput2" [(ngModel)]="stock_min_value">
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary"  data-bs-dismiss="modal" (click)="saveToLocalStorage()">Edit</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <hr>
 <div class="card shadow">
   <div class="card-header py-1 headerColorBg" style=" color: white; font-weight: 600;">

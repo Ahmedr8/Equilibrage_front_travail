@@ -47,6 +47,7 @@ export class PropositionComponent implements OnInit {
   end_of_data:boolean=false;
   no_previous:boolean=true;
   page_number:number=1;
+  stock_min_value: number = 0;
   constructor(private articleService: ArticleService,private etabService: EtablissementService,private sessionService:SessionService,private datePipe: DatePipe,private detailDetailSessionService: DetailDetailSessionService,private propositionService:PropositionService) { }
 
   ngOnInit() {
@@ -376,12 +377,19 @@ deselectListener =() => {
     const id_etabs=this.selected_etabs; 
     const prio_etabs=this.selected_prio_etabs;    
     const critere=this.crit  
+    const aux=localStorage.getItem('stock_min')
+    if (aux !=null) {
+      this.stock_min_value=+aux
+    }
+    else
+    {this.stock_min_value=1}
     const id_articles = this.selected_articles.map(article => article.code_article_dem);      
       const datatosend={
         articles:id_articles,
         etabs: id_etabs,
         prios : prio_etabs,
         critere: critere,
+        stock_min:this.stock_min_value
       }
       this.detailDetailSessionService.createDetailSession(datatosend,this.id_session)
       .subscribe({
