@@ -30,6 +30,10 @@ export class SessionsComponent implements OnInit {
   id_to_delete: string='';
   page_number:number=1;
   stock_min_value: number = 0;
+  filter_clicked:boolean=false;
+  date_filter:any='';
+  cs_filter:any='';
+  crit_filter:any="";
   constructor(private sessionService : SessionService,private detailDetailSessionService:DetailDetailSessionService,private propositionService:PropositionService,private zone: NgZone) { }
 
   ngOnInit() {
@@ -188,6 +192,13 @@ export class SessionsComponent implements OnInit {
       ,
        complete : () => {
           this.refresh_sessionsList()
+          if ((this.cs!='')|| (this.date!='')||(this.crit!='')){
+            this.filter_clicked=true
+            this.cs_filter=this.cs
+            this.date_filter=this.date
+            this.crit_filter=this.crit
+          }else
+          {this.filter_clicked=false}
       }
     });
   }
@@ -212,8 +223,26 @@ export class SessionsComponent implements OnInit {
        complete : () => {
           
           this.refresh_sessionsList()
+          if ((this.cs!='')|| (this.date!='')||(this.crit!='')){
+            this.filter_clicked=true
+            this.cs_filter=this.cs
+            this.date_filter=this.date
+            this.crit_filter=this.crit
+          }else
+          {this.filter_clicked=false}
       }
     });
+  }
+
+  del_filter(filter:any){
+    if (filter==this.cs){
+      this.cs=''
+    }else if (filter==this.date){
+      this.date=''
+    }else{
+      this.crit=''
+    }
+    this.Filtrer()
   }
 
   sessionDetail(id: string): void {

@@ -18,3 +18,17 @@
     color: white;
     margin: 4px;
   }
+
+  .rounded-btn {
+    display: inline-flex;
+      border-radius: 20px;
+      background-color: antiquewhite;
+      padding: 5px 10px;
+      cursor: pointer;
+      margin-right: 6px;
+  }
+
+  .item_filter{
+    border-right: 1px solid;
+    padding-right: 6px;
+  }

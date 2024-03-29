@@ -57,7 +57,7 @@
             <option value="" disabled selected>choisir un critére</option>
             <option value="stock_min" >Stock minimale</option>
             <option value="moy_ventes">Moyenne des ventes</option>
-            <option value="emet">par Emmeteur</option>
+            <option value="seul_emet">par Emmeteur</option>
           </select>
         </div>
       </div>
@@ -75,6 +75,25 @@
 </div>
 <br>
 <div class="card">
+  <div class="card-header" *ngIf="filter_clicked" >
+    <span class="filter-text" > <i class="bi bi-funnel-fill"></i> Filtre  </span>
+    <div class="rounded-btn" *ngIf="cs_filter!=''">
+      <span class="item_filter">Cose Session={{cs_filter}} </span>
+      <button type="button" class="btn-close" aria-label="Close" (click)="del_filter(cs)"></button>
+    </div>
+
+    <div class="rounded-btn" *ngIf="date_filter!=''">
+    <span class="item_filter">date={{date_filter}} </span>
+    <button type="button" class="btn-close" aria-label="Close" (click)="del_filter(date)"></button>
+    </div>
+
+    <div class="rounded-btn" *ngIf="crit_filter!=''">
+    <span class="item_filter">critére={{crit_filter}} </span>
+    <button type="button" class="btn-close" aria-label="Close" (click)="del_filter(crit)"></button>
+  </div>
+
+  </div>
+
   <div class="card-body">
     <div class="table-responsive">
       <table class="display" id="datatable" width="100%" cellspacing="0">

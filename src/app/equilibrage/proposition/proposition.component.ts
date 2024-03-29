@@ -48,14 +48,12 @@ export class PropositionComponent implements OnInit {
   no_previous:boolean=true;
   page_number:number=1;
   stock_min_value: number = 0;
+  select_style:string=""
   constructor(private articleService: ArticleService,private etabService: EtablissementService,private sessionService:SessionService,private datePipe: DatePipe,private detailDetailSessionService: DetailDetailSessionService,private propositionService:PropositionService) { }
 
   ngOnInit() {
     this.retrieveArticles();
     this.retrieveEtabs();
-    
-    
-  
   }
   retrieveArticles(): void {
     this.articleService.getArticles(this.page_number.toString())
@@ -170,6 +168,7 @@ deselectListener =() => {
   }
 
   refreshList_etabs(){
+    if (this.crit=="seul_emet") this.select_style="single"
     if(this.tableEtabs){
       const tab1=this.tableEtabs.rows({selected:  true}).data();
       const tab2=this.tableEtabs.rows({selected:  false}).data();
@@ -198,7 +197,7 @@ deselectListener =() => {
         
       ],
       select: {
-        style: 'os multi', 
+        style: this.select_style, 
         selector: 'td:first-child' 
       },
       order: [[1, 'asc']],
@@ -369,6 +368,10 @@ deselectListener =() => {
           this.submitted = true;
         },
         error: (e) => console.error(e)
+        ,
+        complete: () => {
+          this.refreshList_etabs()
+        }
       });
   }
   createProp():void{
