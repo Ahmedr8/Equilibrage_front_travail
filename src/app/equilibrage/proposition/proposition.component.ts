@@ -338,7 +338,11 @@ deselectListener =() => {
           'print'
       ],
       dom: 'Bfrtip',
-      
+      createdRow: (row: any, data: any, dataIndex: any) => {
+        if (data[7] == "SIEGE") {
+          $(row).addClass('bg-danger text-white');
+        }
+      }
       }
     );
   });
