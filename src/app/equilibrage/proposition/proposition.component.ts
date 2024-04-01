@@ -17,6 +17,7 @@ declare var $ : any
 })
 export class PropositionComponent implements OnInit {
   articles: Article[]=[];
+  articles_gen: Article[]=[];
   cag:any='';
   cad:any='';
   cb:any='';
@@ -27,6 +28,7 @@ export class PropositionComponent implements OnInit {
   ce:any='';
   type:any='';
   adr:any='';
+  desig:any='';
   selected_articles:any[]=[];
   selected_etabs:any[]=[];
   selected_prio_etabs:any=[];
@@ -39,6 +41,7 @@ export class PropositionComponent implements OnInit {
   id_session:any;
   tablepending:any;
   tableEtabs:any;
+  articleGenList:any;
   submitted = false;
   created=false;
   articleA=true;
@@ -50,12 +53,12 @@ export class PropositionComponent implements OnInit {
   stock_min_value: number = 0;
   select_style:string=""
   constructor(private articleService: ArticleService,private etabService: EtablissementService,private sessionService:SessionService,private datePipe: DatePipe,private detailDetailSessionService: DetailDetailSessionService,private propositionService:PropositionService) { }
-
-  ngOnInit() {
-    this.retrieveArticles();
-    this.retrieveEtabs();
-  }
-  retrieveArticles(): void {
+ngOnInit() {
+  this.retrieveArticles();
+  this.retrieveEtabs();
+  this.retrieveArticlesGen();
+}
+retrieveArticles(): void {
     this.articleService.getArticles(this.page_number.toString())
       .subscribe({
         next: (data) => {
@@ -64,10 +67,70 @@ export class PropositionComponent implements OnInit {
         error: (e) => console.error(e)
         ,
        complete : () => {
+        console.log(this.articles)
           this.refreshList_articles()
       }
       });
-  }
+}
+retrieveArticlesGen(): void {
+    this.articleService.getArticlesGen(this.page_number.toString())
+      .subscribe({
+        next: (data) => {
+          this.articles_gen = data;
+        },
+        error: (e) => console.error(e)
+        ,
+       complete : () => {
+          console.log(this.articles_gen)
+          this.refreshList_articles_gen()
+      }
+      });
+}
+
+refreshList_articles_gen(){
+    if(this.articleGenList){
+      $('#datatable4').off('select.dt', this.selectListener);
+      $('#datatable4').off('deselect.dt', this.deselectListener);
+      this.articleGenList.destroy();
+    }
+    this.articleGenList=$('#datatable4').DataTable({ data : this.articles_gen,
+      columns: [
+        { data:null, defaultContent: '' },
+        { data: 'code_article_gen', title: 'Code Gen' },
+        { data: 'libelle', title: 'Désignation' },
+        { data: 'fam1', title: 'Model' },
+      ],
+      columnDefs: [
+        {
+          orderable: false,
+          className: 'select-checkbox',
+          targets: 0 
+        },
+        
+      ],
+      select: {
+        style: 'os multi',
+        selector: 'td:first-child' 
+      },
+      order: [[1, 'asc']],
+      buttons: [
+        'selectAll',
+        'selectNone'
+    ],
+    dom: 'Bfrtip',
+    paging: false,        
+    });
+    $(document).ready(() => {
+      console.log(this.articleGenList)
+    for(var j=0;j<this.articles_gen.length;j++){
+      if (this.selected_articles.find(item => item.code_article_gen === this.articles[j].code_article_gen)){
+        this.tablepending.rows(j).select();
+      } 
+    }
+    $('#datatable4').on('select.dt',this.selectListener )
+    $('#datatable4').on('deselect.dt', this.deselectListener);
+  });
+}
 
 refreshList_articles(){
   if(this.tablepending){
@@ -123,6 +186,7 @@ refreshList_articles(){
   paging: false,        
   });
   $(document).ready(() => {
+    console.log(this.tablepending)
   for(var j=0;j<this.articles.length;j++){
     if (this.selected_articles.find(item => item.code_article_dem === this.articles[j].code_article_dem)){
       this.tablepending.rows(j).select();
@@ -134,6 +198,17 @@ refreshList_articles(){
 }
 
  selectListener =() => {
+  if(this.crit=="articles_dem"){
+    console.log('select')
+    const selectedRows = this.articleGenList.rows({ selected: true }).data().toArray();
+  selectedRows.forEach((row: { code_article_gen: any; }) => {
+    // Check if the row's code_article_dem already exists in selected_articles
+    if (!this.selected_articles.some(selected => selected.code_article_gen === row.code_article_gen)) {
+      this.selected_articles.push(row); // Push the row to selected_articles if not already present
+    }
+  });
+  }
+  else{
   const selectedRows = this.tablepending.rows({ selected: true }).data().toArray();
   selectedRows.forEach((row: { code_article_dem: any; }) => {
     // Check if the row's code_article_dem already exists in selected_articles
@@ -141,9 +216,20 @@ refreshList_articles(){
       this.selected_articles.push(row); // Push the row to selected_articles if not already present
     }
   });
+}
 };
 
 deselectListener =() => {
+  if(this.crit=="articles_dem"){
+    console.log("deslect")
+    const deselectedRows = this.articleGenList.rows({ selected: false }).data().toArray();
+    deselectedRows.forEach((row: { code_article_gen: any; }) => {
+      const index = this.selected_articles.findIndex(selected => selected.code_article_gen === row.code_article_gen);
+      if (this.selected_articles.some(selected => selected.code_article_gen === row.code_article_gen)) {
+        this.selected_articles.splice(index, 1); // Remove deselected row data from the list
+      }
+    });
+  }else{
   const deselectedRows = this.tablepending.rows({ selected: false }).data().toArray();
   deselectedRows.forEach((row: { code_article_dem: any; }) => {
     const index = this.selected_articles.findIndex(selected => selected.code_article_dem === row.code_article_dem);
@@ -151,6 +237,7 @@ deselectListener =() => {
       this.selected_articles.splice(index, 1); // Remove deselected row data from the list
     }
   });
+}
 };
 
   retrieveEtabs(): void {
@@ -270,11 +357,35 @@ deselectListener =() => {
       this.end_of_data=true
     }
   }
+  next_page_articles_gen():void{
+    if(this.articles_gen.length>10){
+    this.end_of_data=false
+    this.page_number=this.page_number+1
+    this.no_previous=false;
+    this.Filtrer_articles_gen();
+    if (this.articles_gen.length=0)
+    {
+      this.end_of_data=true
+    }
+    }else{
+      this.end_of_data=true
+    }
+  }
   previous_page():void{
     if(this.page_number>1){
     this.page_number=this.page_number-1
     this.end_of_data=false
     this.Filtrer();
+    this.no_previous=false
+    }else{
+      this.no_previous=true
+    }
+  }
+  previous_page_articles_gen():void{
+    if(this.page_number>1){
+    this.page_number=this.page_number-1
+    this.end_of_data=false
+    this.Filtrer_articles_gen();
     this.no_previous=false
     }else{
       this.no_previous=true
@@ -302,6 +413,26 @@ deselectListener =() => {
       }
     });
   }
+  Filtrer_articles_gen(): void{
+    const data = {
+      code_article_gen: this.cag,
+      code_fournisseur: this.cf,
+      fam1: this.m,
+      libelle:this.desig
+    };
+    this.articleService.getArticlesGenMultipleParams(data,this.page_number.toString())
+    .subscribe({
+      next: (data) => {
+        this.articles_gen = data;
+        console.log(this.articles);
+      },
+      error: (e) => console.error(e)
+      ,
+       complete : () => {
+          this.refreshList_articles_gen()
+      }
+    });
+  }
   Filtrer_click(): void{
     this.page_number=1
     this.end_of_data=false;
@@ -322,7 +453,30 @@ deselectListener =() => {
       },
       error: (e) => console.error(e)
       , complete: ()=> {
-        this.refreshList_articles()
+        this.refreshList_articles_gen()
+      }
+    });
+  }
+  Filtrer_click_articles_gen(): void{
+    this.page_number=1
+    this.end_of_data=false;
+    this.no_previous=true;
+    const data = {
+      code_barre: this.cb,
+      code_article_gen: this.cag,
+      code_fournisseur: this.cf,
+      fam1: this.m,
+      libelle: this.desig
+    };
+    this.articleService.getArticlesGenMultipleParams(data,this.page_number.toString())
+    .subscribe({
+      next: (data) => {
+        this.articles_gen = data;
+        console.log(this.articles);
+      },
+      error: (e) => console.error(e)
+      , complete: ()=> {
+        this.refreshList_articles_gen()
       }
     });
   }
@@ -375,8 +529,16 @@ deselectListener =() => {
       });
   }
   createProp():void{
-    this.refreshList_articles();
+    var id_articles
     this.refreshList_etabs();
+    if(this.crit=="articles_dem"){
+      this.refreshList_articles_gen()
+       id_articles = this.selected_articles.map(article => article.code_article_gen);  
+    }
+      else{
+        this.refreshList_articles();
+         id_articles = this.selected_articles.map(article => article.code_article_dem);  
+      }
     const id_etabs=this.selected_etabs; 
     const prio_etabs=this.selected_prio_etabs;    
     const critere=this.crit  
@@ -385,8 +547,7 @@ deselectListener =() => {
       this.stock_min_value=+aux
     }
     else
-    {this.stock_min_value=1}
-    const id_articles = this.selected_articles.map(article => article.code_article_dem);      
+    {this.stock_min_value=1}    
       const datatosend={
         articles:id_articles,
         etabs: id_etabs,
@@ -422,6 +583,17 @@ deselectListener =() => {
       for(var j=0;j<this.articles.length;j++){
         if (this.articles[j].code_article_dem==article.code_article_dem){
           this.tablepending.rows(j).deselect();
+        }
+      }
+    });
+    this.selected_articles.splice(this.selected_articles.indexOf(article),1)
+  }
+
+  Deselect_article_gen(article:Article){
+    $(document).ready(() => {
+      for(var j=0;j<this.articles_gen.length;j++){
+        if (this.articles_gen[j].code_article_gen==article.code_article_gen){
+          this.articleGenList.rows(j).deselect();
         }
       }
     });

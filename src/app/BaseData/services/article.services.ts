@@ -19,9 +19,18 @@ export class ArticleService {
     return this.http.get<Article[]>(this.apiUrl+'articles/page='+page_number);
   }
 
+  getArticlesGen(page_number:string): Observable<Article[]> {
+    return this.http.get<Article[]>(this.apiUrl+'articles/generique/page='+page_number);
+  }
+
   getArticlesMultipleParams(f:any,page_number:string): Observable<Article[]> {
     let queryParams = f;
     return this.http.get<Article[]>(this.apiUrl+'articles/filtred/page='+page_number,{params:queryParams});
+}
+
+getArticlesGenMultipleParams(f:any,page_number:string): Observable<Article[]> {
+  let queryParams = f;
+  return this.http.get<Article[]>(this.apiUrl+'articles/generique/filtred/page='+page_number,{params:queryParams});
 }
 
   getArticleById(id: string): Observable<Article> {
