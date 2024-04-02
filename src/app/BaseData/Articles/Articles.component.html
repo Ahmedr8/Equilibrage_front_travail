@@ -124,6 +124,45 @@
 
 
 <div class="card">
+  <div class="card-header" *ngIf="filter_clicked" >
+    <span class="filter-text" > <i class="bi bi-funnel-fill"></i> Filtre  </span>
+    
+    <div class="rounded-btn" *ngIf="cag_filter!=''">
+      <span class="item_filter">code article gen={{cag_filter}} </span>
+      <button type="button" class="btn-close" aria-label="Close" (click)="del_filter(cag)"></button>
+    </div>
+
+    <div class="rounded-btn" *ngIf="cb_filter!=''">
+    <span class="item_filter">code barre={{cb_filter}} </span>
+    <button type="button" class="btn-close" aria-label="Close" (click)="del_filter(cb)"></button>
+    </div>
+
+    <div class="rounded-btn" *ngIf="cf_filter!=''">
+    <span class="item_filter">code fournisseur={{cf_filter}} </span>
+    <button type="button" class="btn-close" aria-label="Close" (click)="del_filter(cf)"></button>
+  </div>
+
+  <div class="rounded-btn" *ngIf="m_filter!=''">
+    <span class="item_filter">Model={{m_filter}} </span>
+    <button type="button" class="btn-close" aria-label="Close" (click)="del_filter(m)"></button>
+  </div>
+
+  <div class="rounded-btn" *ngIf="c_filter!=''">
+    <span class="item_filter">catégorie={{c_filter}} </span>
+    <button type="button" class="btn-close" aria-label="Close" (click)="del_filter(c)"></button>
+  </div>
+
+  <div class="rounded-btn" *ngIf="sc_filter!=''">
+    <span class="item_filter">sous catégorie={{sc_filter}} </span>
+    <button type="button" class="btn-close" aria-label="Close" (click)="del_filter(sc)"></button>
+  </div>
+
+  <div class="rounded-btn" *ngIf="fam4_filter!=''">
+    <span class="item_filter">sous catégorie={{fam4_filter}} </span>
+    <button type="button" class="btn-close" aria-label="Close" (click)="del_filter(fam4)"></button>
+  </div>
+
+  </div>
   <div class="card-body">
     <div class="table-responsive">
       <table class="display" id="datatable" width="100%" cellspacing="0">

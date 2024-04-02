@@ -21,6 +21,14 @@ export class ArticlesComponent implements OnInit {
   c:any='';
   sc:any='';
   fam4:any='';
+  cag_filter:any='';
+  cb_filter:any='';
+  cf_filter:any='';
+  m_filter:any='';
+  c_filter:any='';
+  sc_filter:any='';
+  fam4_filter:any='';
+  filter_clicked:boolean=false;
   table:any;
   page_number:number=1;
   datatableElement !: DataTableDirective;
@@ -139,6 +147,17 @@ export class ArticlesComponent implements OnInit {
       error: (e) => console.error(e)
       , complete: ()=> {
         this.refreshList()
+        if ((this.cag!='')|| (this.cb!='')||(this.cf!='')||(this.m!='')|| (this.c!='')||(this.sc!='')||(this.fam4!='')){
+          this.filter_clicked=true
+          this.sc_filter=this.sc
+          this.m_filter=this.m
+          this.c_filter=this.c
+          this.cb_filter=this.cb
+          this.cag_filter=this.cag
+          this.cf_filter=this.cf
+          this.fam4_filter=this.fam4
+        }else
+        {this.filter_clicked=false}
       }
     });
   }
@@ -164,6 +183,17 @@ export class ArticlesComponent implements OnInit {
       error: (e) => console.error(e)
       , complete: ()=> {
         this.refreshList()
+        if ((this.cag!='')|| (this.cb!='')||(this.cf!='')||(this.m!='')|| (this.c!='')||(this.sc!='')||(this.fam4!='')){
+          this.filter_clicked=true
+          this.sc_filter=this.sc
+          this.m_filter=this.m
+          this.c_filter=this.c
+          this.cb_filter=this.cb
+          this.cag_filter=this.cag
+          this.cf_filter=this.cf
+          this.fam4_filter=this.fam4
+        }else
+        {this.filter_clicked=false}
       }
     });
   }
@@ -236,6 +266,26 @@ export class ArticlesComponent implements OnInit {
   exposeAngularFunctionGlobally(): void {
     // Expose the Angular application globally
     (window as any).myAngularApp = this;
+  }
+
+  del_filter(filter:any){
+    if (filter==this.sc){
+      this.sc=''
+    }else if (filter==this.cf){
+      this.cf=''
+    }else  if (filter==this.cag){
+      this.cag=''
+    }
+    else if (filter==this.m){
+      this.m=''
+    }else if (filter==this.c){
+      this.c=''
+    }else if(filter==this.cb){
+      this.cb=''
+    }else{
+      this.fam4=''
+    }
+    this.Filtrer()
   }
 
   }
