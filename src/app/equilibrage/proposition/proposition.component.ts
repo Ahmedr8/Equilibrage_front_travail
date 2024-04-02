@@ -31,6 +31,7 @@ export class PropositionComponent implements OnInit {
   m_filter:any='';
   c_filter:any='';
   sc_filter:any='';
+  desig_filter:any='';
   filter_clicked:boolean=false;
   ce:any='';
   type:any='';
@@ -451,6 +452,14 @@ deselectListener =() => {
       ,
        complete : () => {
           this.refreshList_articles_gen()
+          if ((this.cag!='')|| (this.desig!='')||(this.cf!='')||(this.m!='')){
+            this.filter_clicked=true
+            this.m_filter=this.m
+            this.desig_filter=this.desig
+            this.cag_filter=this.cag
+            this.cf_filter=this.cf
+          }else
+          {this.filter_clicked=false}
       }
     });
   }
@@ -508,6 +517,14 @@ deselectListener =() => {
       error: (e) => console.error(e)
       , complete: ()=> {
         this.refreshList_articles_gen()
+        if ((this.cag!='')|| (this.desig!='')||(this.cf!='')||(this.m!='')){
+          this.filter_clicked=true
+          this.m_filter=this.m
+          this.desig_filter=this.desig
+          this.cag_filter=this.cag
+          this.cf_filter=this.cf
+        }else
+        {this.filter_clicked=false}
       }
     });
   }
@@ -643,10 +660,13 @@ deselectListener =() => {
       this.m=''
     }else if (filter==this.c){
       this.c=''
-    }else{
+    }else if(filter==this.cb){
       this.cb=''
+    }else{
+      this.desig=''
     }
     this.Filtrer()
+    this.Filtrer_articles_gen()
   }
 
 }
