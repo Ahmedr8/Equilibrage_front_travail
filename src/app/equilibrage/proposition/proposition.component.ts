@@ -19,12 +19,19 @@ export class PropositionComponent implements OnInit {
   articles: Article[]=[];
   articles_gen: Article[]=[];
   cag:any='';
+  cag_filter:any='';
   cad:any='';
   cb:any='';
   cf:any='';
   m:any='';
   c:any='';
   sc:any='';
+  cb_filter:any='';
+  cf_filter:any='';
+  m_filter:any='';
+  c_filter:any='';
+  sc_filter:any='';
+  filter_clicked:boolean=false;
   ce:any='';
   type:any='';
   adr:any='';
@@ -414,6 +421,16 @@ deselectListener =() => {
       ,
        complete : () => {
           this.refreshList_articles()
+          if ((this.cag!='')|| (this.cb!='')||(this.cf!='')||(this.m!='')|| (this.c!='')||(this.sc!='')){
+            this.filter_clicked=true
+            this.sc_filter=this.sc
+            this.m_filter=this.m
+            this.c_filter=this.c
+            this.cb_filter=this.cb
+            this.cag_filter=this.cag
+            this.cf_filter=this.cf
+          }else
+          {this.filter_clicked=false}
       }
     });
   }
@@ -457,7 +474,17 @@ deselectListener =() => {
       },
       error: (e) => console.error(e)
       , complete: ()=> {
-        this.refreshList_articles_gen()
+        this.refreshList_articles()
+        if ((this.cag!='')|| (this.cb!='')||(this.cf!='')||(this.m!='')|| (this.c!='')||(this.sc!='')){
+          this.filter_clicked=true
+          this.sc_filter=this.sc
+          this.m_filter=this.m
+          this.c_filter=this.c
+          this.cb_filter=this.cb
+          this.cag_filter=this.cag
+          this.cf_filter=this.cf
+        }else
+        {this.filter_clicked=false}
       }
     });
   }
@@ -602,6 +629,24 @@ deselectListener =() => {
       }
     });
     this.selected_articles.splice(this.selected_articles.indexOf(article),1)
+  }
+
+  del_filter(filter:any){
+    if (filter==this.sc){
+      this.sc=''
+    }else if (filter==this.cf){
+      this.cf=''
+    }else  if (filter==this.cag){
+      this.cag=''
+    }
+    else if (filter==this.m){
+      this.m=''
+    }else if (filter==this.c){
+      this.c=''
+    }else{
+      this.cb=''
+    }
+    this.Filtrer()
   }
 
 }
