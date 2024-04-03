@@ -63,7 +63,11 @@ export class PropositionComponent implements OnInit {
   no_previous:boolean=true;
   page_number:number=1;
   stock_min_value: number = 0;
-  select_style:string=""
+  select_style:string="";
+  button_all:any=[
+    'selectAll',
+    'selectNone'
+]
   constructor(private articleService: ArticleService,private etabService: EtablissementService,private sessionService:SessionService,private datePipe: DatePipe,private detailDetailSessionService: DetailDetailSessionService,private propositionService:PropositionService) { }
 ngOnInit() {
   this.retrieveArticles();
@@ -267,7 +271,9 @@ deselectListener =() => {
   }
 
   refreshList_etabs(){
-    if (this.crit=="seul_emet") this.select_style="single"
+    if (this.crit=="seul_emet"){ this.select_style="single"
+    this.button_all=[]
+  }
     if(this.tableEtabs){
       const tab1=this.tableEtabs.rows({selected:  true}).data();
       const tab2=this.tableEtabs.rows({selected:  false}).data();
@@ -300,10 +306,7 @@ deselectListener =() => {
         selector: 'td:first-child' 
       },
       order: [[1, 'asc']],
-      buttons: [
-        'selectAll',
-        'selectNone'
-    ],
+      buttons: this.button_all,
     dom: 'Bfrtip'
     }
       );
