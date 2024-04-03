@@ -10,9 +10,13 @@ import { data } from 'jquery';
 })
 export class EtablissementComponent implements OnInit {
   etabs: Etablissement[]=[];
+  filter_clicked:boolean=false;
   ce:any='';
   type:any='';
   adr:any='';
+  ce_filter:any='';
+  type_filter:any='';
+  adr_filter:any='';
   prio:any;
   editMode=false;
   end_of_data:boolean=false;
@@ -102,6 +106,13 @@ export class EtablissementComponent implements OnInit {
         error: (e) => console.error(e)
         ,complete : () => {
           this.refreshList()
+          if ((this.ce!='')|| (this.adr!='')||(this.type!='')){
+            this.filter_clicked=true
+            this.ce_filter=this.ce
+            this.adr_filter=this.adr
+            this.type_filter=this.type
+          }else
+          {this.filter_clicked=false}
           
         }
       });
@@ -126,7 +137,13 @@ export class EtablissementComponent implements OnInit {
         error: (e) => console.error(e)
         ,complete : () => {
           this.refreshList()
-          
+          if ((this.ce!='')|| (this.adr!='')||(this.type!='')){
+            this.filter_clicked=true
+            this.ce_filter=this.ce
+            this.adr_filter=this.adr
+            this.type_filter=this.type
+          }else
+          {this.filter_clicked=false}
         }
       });
     }
@@ -192,5 +209,16 @@ export class EtablissementComponent implements OnInit {
     id_article_to_delete(id: string):void{
       this.id_to_delete=id
       console.log(this.id_to_delete)
+    }
+
+    del_filter(filter:any){
+      if (filter==this.ce){
+        this.ce=''
+      }else if (filter==this.type){
+        this.type=''
+      }else  if (filter==this.adr){
+        this.adr=''
+      }
+      this.Filtrer()
     }
 }

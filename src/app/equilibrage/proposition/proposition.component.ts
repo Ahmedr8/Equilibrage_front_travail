@@ -33,9 +33,13 @@ export class PropositionComponent implements OnInit {
   sc_filter:any='';
   desig_filter:any='';
   filter_clicked:boolean=false;
+  filter_clicked2:boolean=false;
   ce:any='';
   type:any='';
   adr:any='';
+  ce_filter:any='';
+  type_filter:any='';
+  adr_filter:any='';
   desig:any='';
   selected_articles:any[]=[];
   selected_etabs:any[]=[];
@@ -546,6 +550,13 @@ deselectListener =() => {
       ,
        complete : () => {
           this.refreshList_etabs()
+          if ((this.ce!='')|| (this.adr!='')||(this.type!='')){
+            this.filter_clicked2=true
+            this.ce_filter=this.ce
+            this.adr_filter=this.adr
+            this.type_filter=this.type
+          }else
+          {this.filter_clicked2=false}
       }
     });
   }
@@ -669,4 +680,14 @@ deselectListener =() => {
     this.Filtrer_articles_gen()
   }
 
+  del_filter2(filter:any){
+    if (filter==this.ce){
+      this.ce=''
+    }else if (filter==this.type){
+      this.type=''
+    }else  if (filter==this.adr){
+      this.adr=''
+    }
+    this.Filtrer2()
+  }
 }
