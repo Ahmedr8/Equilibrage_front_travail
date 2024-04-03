@@ -12,9 +12,13 @@ export class DepotComponent implements OnInit {
   @ViewChild('fileInput') fileInput!: ElementRef;
   @ViewChild('closeModal') closebutton!: ElementRef;
   Depots: Depot[]=[];
+  filter_clicked:boolean=false;
   cd:any='';
   ce:any='';
   type:any='';
+  ce_filter:any='';
+  type_filter:any='';
+  cd_filter:any='';
   table:any;
   datatableElement !: DataTableDirective;
   dtOptions: DataTables.Settings = {};
@@ -129,6 +133,13 @@ export class DepotComponent implements OnInit {
       error: (e) => console.error(e)
       , complete: ()=> {
         this.refreshList()
+        if ((this.ce!='')|| (this.cd!='')||(this.type!='')){
+          this.filter_clicked=true
+          this.ce_filter=this.ce
+          this.cd_filter=this.cd
+          this.type_filter=this.type
+        }else
+        {this.filter_clicked=false}
       }
     });
   }
@@ -151,6 +162,13 @@ export class DepotComponent implements OnInit {
       error: (e) => console.error(e)
       , complete: ()=> {
         this.refreshList()
+        if ((this.ce!='')|| (this.cd!='')||(this.type!='')){
+          this.filter_clicked=true
+          this.ce_filter=this.ce
+          this.cd_filter=this.cd
+          this.type_filter=this.type
+        }else
+        {this.filter_clicked=false}
       }
     });
   }
@@ -222,5 +240,16 @@ export class DepotComponent implements OnInit {
   exposeAngularFunctionGlobally(): void {
     // Expose the Angular application globally
     (window as any).myAngularApp = this;
+  }
+
+  del_filter(filter:any){
+    if (filter==this.cd){
+      this.cd=''
+    }else if (filter==this.ce){
+      this.ce=''
+    }else  if (filter==this.type){
+      this.type=''
+    }
+    this.Filtrer()
   }
 }

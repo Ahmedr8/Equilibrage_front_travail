@@ -14,12 +14,19 @@ export class StocksComponent implements OnInit {
   @ViewChild('fileInput') fileInput!: ElementRef;
   @ViewChild('closeModal') closebutton!: ElementRef;
   Stocks: Stock[]=[];
+  filter_clicked:boolean=false;
   ce:any='';
   cb:any='';
   cd:any='';
   m:any='';
   c:any='';
   sc:any='';
+  cd_filter:any='';
+  cb_filter:any='';
+  ce_filter:any='';
+  m_filter:any='';
+  c_filter:any='';
+  sc_filter:any='';
   table:any;
   datatableElement !: DataTableDirective;
   dtOptions: DataTables.Settings = {};
@@ -142,6 +149,16 @@ export class StocksComponent implements OnInit {
       error: (e) => console.error(e)
       , complete: ()=> {
         this.refreshList()
+        if ((this.cd!='')|| (this.cb!='')||(this.ce!='')||(this.m!='')|| (this.c!='')||(this.sc!='')){
+          this.filter_clicked=true
+          this.sc_filter=this.sc
+          this.m_filter=this.m
+          this.c_filter=this.c
+          this.cb_filter=this.cb
+          this.cd_filter=this.cd
+          this.ce_filter=this.ce
+        }else
+        {this.filter_clicked=false}
       }
     });
   }
@@ -163,6 +180,16 @@ export class StocksComponent implements OnInit {
       error: (e) => console.error(e)
       , complete: ()=> {
         this.refreshList()
+        if ((this.cd!='')|| (this.cb!='')||(this.ce!='')||(this.m!='')|| (this.c!='')||(this.sc!='')){
+          this.filter_clicked=true
+          this.sc_filter=this.sc
+          this.m_filter=this.m
+          this.c_filter=this.c
+          this.cb_filter=this.cb
+          this.cd_filter=this.cd
+          this.ce_filter=this.ce
+        }else
+        {this.filter_clicked=false}
       }
     });
   }
@@ -232,5 +259,23 @@ export class StocksComponent implements OnInit {
   id_article_to_delete(id: string):void{
     this.id_to_delete=id
     console.log(this.id_to_delete)
+  }
+
+  del_filter(filter:any){
+    if (filter==this.sc){
+      this.sc=''
+    }else if (filter==this.ce){
+      this.ce=''
+    }else  if (filter==this.cd){
+      this.cd=''
+    }
+    else if (filter==this.m){
+      this.m=''
+    }else if (filter==this.c){
+      this.c=''
+    }else if(filter==this.cb){
+      this.cb=''
+    }
+    this.Filtrer()
   }
 }
