@@ -348,9 +348,23 @@ deselectListener =() => {
         buttons: [
           'selectAll',
           'selectNone',
-          'excel',
+          {
+            extend: 'excelHtml5',
+            text: 'Export to Excel',
+            className: 'btn btn-success',
+            customize: this.customizeExcelExport
+          },
           'colvis',
-          'print'
+          {
+            extend: 'print',
+            text: 'Print',
+            customize: function(win:any) {
+                // Fit content to page
+                $(win.document.body).css('zoom', '90%');
+            }
+        }
+          
+          
       ],
       dom: 'Bfrtip',
       createdRow: (row: any, data: any, dataIndex: any) => {
@@ -362,6 +376,21 @@ deselectListener =() => {
     );
   });
   }
+
+  customizeExcelExport(xlsx: any): void {
+    const sheet = xlsx.xl.worksheets['sheet1.xml'];
+  
+    sheet.querySelectorAll('row').forEach((row: any) => {
+      let cell = row.querySelector('c[r^="H"] is t');
+  
+      if (cell && cell.textContent === 'SIEGE') {
+        Array.from(row.children).forEach((cell: any) => {
+          cell.setAttribute('s', '10');
+        });
+      }
+    });
+  }
+
   next_page():void{
     if(this.articles.length>=10){
     this.end_of_data=false
