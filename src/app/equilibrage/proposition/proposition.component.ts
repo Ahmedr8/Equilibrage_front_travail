@@ -358,11 +358,24 @@ deselectListener =() => {
           {
             extend: 'print',
             text: 'Print',
-            customize: function(win:any) {
+            customize: function (win: any) {
                 // Fit content to page
                 $(win.document.body).css('zoom', '90%');
+
+                $('table', win.document.body).find('td').each((index: any, cell: any) => {
+                    var cellText = $(cell).text();
+                    if (cellText === 'SIEGE') {
+                        //$(cell).closest('tr').addClass('bg-danger text-white')
+                        $(cell).closest('tr').css('background-color', 'red');
+                        $(cell).closest('tr').css('color', 'white');
+                        $(cell).closest('tr').css('print-color-adjust', 'exact');
+                    }
+                });
+        
             }
         }
+        
+        
           
           
       ],
