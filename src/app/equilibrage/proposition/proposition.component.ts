@@ -26,12 +26,16 @@ export class PropositionComponent implements OnInit {
   m:any='';
   c:any='';
   sc:any='';
+  fp:any='';
+  date_injection:any='';
   cb_filter:any='';
   cf_filter:any='';
   m_filter:any='';
   c_filter:any='';
   sc_filter:any='';
   desig_filter:any='';
+  fp_filter:any='';
+  date_injection_filter:any='';
   filter_clicked:boolean=false;
   filter_clicked2:boolean=false;
   ce:any='';
@@ -110,6 +114,7 @@ refreshList_articles_gen(){
       this.articleGenList.destroy();
     }
     this.articleGenList=$('#datatable4').DataTable({ data : this.articles_gen,
+      info: false,
       columns: [
         { data:null, defaultContent: '' },
         { data: 'code_article_gen', title: 'Code Gen' },
@@ -175,6 +180,7 @@ refreshList_articles(){
   dom: 'Bfrtip'
   });*/
   this.tablepending=$('#datatable1').DataTable({ data : this.articles,
+    info: false,
     columns: [
       { data:null, defaultContent: '' },
       { data: 'code_article_dem', title: 'Code DIM' },
@@ -459,7 +465,9 @@ deselectListener =() => {
       code_fournisseur: this.cf,
       fam1: this.m,
       fam2: this.c,
-      fam3:this.sc
+      fam3:this.sc,
+      date_injection:this.date_injection,
+      fournisseur_principale:this.fp
     };
     this.articleService.getArticlesMultipleParams(data,this.page_number.toString())
     .subscribe({
@@ -471,7 +479,7 @@ deselectListener =() => {
       ,
        complete : () => {
           this.refreshList_articles()
-          if ((this.cag!='')|| (this.cb!='')||(this.cf!='')||(this.m!='')|| (this.c!='')||(this.sc!='')){
+          if ((this.cag!='')|| (this.cb!='')||(this.cf!='')||(this.m!='')|| (this.c!='')||(this.sc!='') || (this.fp!='')||(this.date_injection!='')){
             this.filter_clicked=true
             this.sc_filter=this.sc
             this.m_filter=this.m
@@ -479,6 +487,8 @@ deselectListener =() => {
             this.cb_filter=this.cb
             this.cag_filter=this.cag
             this.cf_filter=this.cf
+            this.fp_filter=this.fp
+            this.date_injection_filter=this.date_injection
           }else
           {this.filter_clicked=false}
       }
@@ -522,7 +532,9 @@ deselectListener =() => {
       code_fournisseur: this.cf,
       fam1: this.m,
       fam2: this.c,
-      fam3:this.sc
+      fam3:this.sc,
+      date_injection:this.date_injection,
+      fournisseur_principale:this.fp
     };
     this.articleService.getArticlesMultipleParams(data,this.page_number.toString())
     .subscribe({
@@ -533,7 +545,7 @@ deselectListener =() => {
       error: (e) => console.error(e)
       , complete: ()=> {
         this.refreshList_articles()
-        if ((this.cag!='')|| (this.cb!='')||(this.cf!='')||(this.m!='')|| (this.c!='')||(this.sc!='')){
+        if ((this.cag!='')|| (this.cb!='')||(this.cf!='')||(this.m!='')|| (this.c!='')||(this.sc!='') || (this.fp!='')||(this.date_injection!='')){
           this.filter_clicked=true
           this.sc_filter=this.sc
           this.m_filter=this.m
@@ -541,6 +553,8 @@ deselectListener =() => {
           this.cb_filter=this.cb
           this.cag_filter=this.cag
           this.cf_filter=this.cf
+          this.fp_filter=this.fp
+          this.date_injection_filter=this.date_injection
         }else
         {this.filter_clicked=false}
       }
@@ -718,8 +732,12 @@ deselectListener =() => {
       this.c=''
     }else if(filter==this.cb){
       this.cb=''
-    }else{
+    }else if(filter==this.desig){
       this.desig=''
+    }else if(filter==this.fp){
+      this.fp=''
+    }else if(filter==this.date_injection){
+      this.date_injection=''
     }
     this.Filtrer()
     this.Filtrer_articles_gen()

@@ -25,27 +25,30 @@
             aria-describedby="inputGroupPrepend" placeholder="Code fournisseur" [(ngModel)]="cf">
         </div>
       </div>
+      <div class="col-md-3">
+        <label for="validationCustom03" class="form-label labelBold">Fournisseur Principale</label>
+        <input type="text" class="form-control custom-placeholder" id="validationCustom03" placeholder="Fournisseur Principale" [(ngModel)]="fp">
+      </div>
     </div>
     <div class="row" style="margin-top: 1%;">
       <div class="col-md-3">
-        <label for="validationCustom03" class="form-label labelBold">Modèle</label>
-        <input type="text" class="form-control custom-placeholder" id="validationCustom03" placeholder="Modèle"
+        <label for="validationCustom03" class="form-label labelBold">Collection</label>
+        <input type="text" class="form-control custom-placeholder" id="validationCustom03" placeholder="Collection"
           [(ngModel)]="m">
       </div>
       <div class="col-md-3">
-        <label for="validationCustom04" class="form-label labelBold">Catégorie</label>
-        <input type="text" name="" id="" placeholder="Catégorie" class="form-control custom-placeholder"
+        <label for="validationCustom04" class="form-label labelBold">Famille</label>
+        <input type="text" name="" id="" placeholder="Famille" class="form-control custom-placeholder"
           [(ngModel)]="c">
       </div>
       <div class="col-md-3">
-        <label for="validationCustom04" class="form-label labelBold">Sous Catégorie</label>
-        <input type="text" name="" id="" placeholder="Sous Catégorie" class="form-control custom-placeholder"
+        <label for="validationCustom04" class="form-label labelBold">Sous Famille</label>
+        <input type="text" name="" id="" placeholder="Sous Famille" class="form-control custom-placeholder"
           [(ngModel)]="sc">
       </div>
       <div class="col-md-3">
-        <label for="validationCustom07" class="form-label labelBold">Famille niveau 4</label>
-        <input type="text" class="form-control custom-placeholder" id="validationCustom01" placeholder="Famille niv 4"
-          [(ngModel)]="fam4">
+        <label for="validationCustom02" class="form-label labelBold">Date Injection</label>
+        <input type="date" class="form-control custom-placeholder" id="validationCustom02" placeholder="Date Injection" [(ngModel)]="date_injection">
       </div>
     </div>
     
@@ -143,23 +146,32 @@
   </div>
 
   <div class="rounded-btn" *ngIf="m_filter!=''">
-    <span class="item_filter">Model={{m_filter}} </span>
+    <span class="item_filter">Collection={{m_filter}} </span>
     <button type="button" class="btn-close" aria-label="Close" (click)="del_filter(m)"></button>
   </div>
 
   <div class="rounded-btn" *ngIf="c_filter!=''">
-    <span class="item_filter">catégorie={{c_filter}} </span>
+    <span class="item_filter">Famille={{c_filter}} </span>
     <button type="button" class="btn-close" aria-label="Close" (click)="del_filter(c)"></button>
   </div>
 
   <div class="rounded-btn" *ngIf="sc_filter!=''">
-    <span class="item_filter">sous catégorie={{sc_filter}} </span>
+    <span class="item_filter">sous Famille={{sc_filter}} </span>
     <button type="button" class="btn-close" aria-label="Close" (click)="del_filter(sc)"></button>
   </div>
 
   <div class="rounded-btn" *ngIf="fam4_filter!=''">
-    <span class="item_filter">sous catégorie={{fam4_filter}} </span>
+    <span class="item_filter">Famille niv4={{fam4_filter}} </span>
     <button type="button" class="btn-close" aria-label="Close" (click)="del_filter(fam4)"></button>
+  </div>
+  <div class="rounded-btn" *ngIf="fp_filter!=''">
+    <span class="item_filter">Fournisseur Principale={{fp}} </span>
+    <button type="button" class="btn-close" aria-label="Close" (click)="del_filter(fp)"></button>
+  </div>
+
+  <div class="rounded-btn" *ngIf="date_injection_filter!=''">
+    <span class="item_filter">Date Injection={{date_injection_filter}} </span>
+    <button type="button" class="btn-close" aria-label="Close" (click)="del_filter(date_injection)"></button>
   </div>
 
   </div>

@@ -21,6 +21,8 @@ export class ArticlesComponent implements OnInit {
   c:any='';
   sc:any='';
   fam4:any='';
+  fp:any='';
+  date_injection:any='';
   cag_filter:any='';
   cb_filter:any='';
   cf_filter:any='';
@@ -28,6 +30,8 @@ export class ArticlesComponent implements OnInit {
   c_filter:any='';
   sc_filter:any='';
   fam4_filter:any='';
+  fp_filter:any='';
+  date_injection_filter:any='';
   filter_clicked:boolean=false;
   table:any;
   page_number:number=1;
@@ -100,9 +104,9 @@ export class ArticlesComponent implements OnInit {
         { data: 'lib_taille', title: 'Taille' },
         { data: 'lib_couleur', title: 'Couleur' },
         { data: 'code_fournisseur', title: 'Code Fournisseur' },
-        { data: 'fam1', title: 'Modèle' },
-        { data: 'fam2', title: 'Catégorie' },
-        { data: 'fam3', title: 'Sous Catégorie' },
+        { data: 'fam1', title: 'Collection' },
+        { data: 'fam2', title: 'Famille' },
+        { data: 'fam3', title: 'Sous Famille' },
         {
           title: 'Actions',
           orderable: false,
@@ -136,7 +140,9 @@ export class ArticlesComponent implements OnInit {
       code_fournisseur: this.cf,
       fam1: this.m,
       fam2: this.c,
-      fam3:this.sc
+      fam3:this.sc,
+      date_injection:this.date_injection,
+      fournisseur_principale:this.fp
     };
     this.articleService.getArticlesMultipleParams(data,this.page_number.toString())
     .subscribe({
@@ -147,7 +153,7 @@ export class ArticlesComponent implements OnInit {
       error: (e) => console.error(e)
       , complete: ()=> {
         this.refreshList()
-        if ((this.cag!='')|| (this.cb!='')||(this.cf!='')||(this.m!='')|| (this.c!='')||(this.sc!='')||(this.fam4!='')){
+        if ((this.cag!='')|| (this.cb!='')||(this.cf!='')||(this.m!='')|| (this.c!='')||(this.sc!='') || (this.fp!='')||(this.date_injection!='')){
           this.filter_clicked=true
           this.sc_filter=this.sc
           this.m_filter=this.m
@@ -155,7 +161,8 @@ export class ArticlesComponent implements OnInit {
           this.cb_filter=this.cb
           this.cag_filter=this.cag
           this.cf_filter=this.cf
-          this.fam4_filter=this.fam4
+          this.fp_filter=this.fp
+          this.date_injection_filter=this.date_injection
         }else
         {this.filter_clicked=false}
       }
@@ -172,7 +179,9 @@ export class ArticlesComponent implements OnInit {
       code_fournisseur: this.cf,
       fam1: this.m,
       fam2: this.c,
-      fam3:this.sc
+      fam3:this.sc,
+      date_injection:this.date_injection,
+      fournisseur_principale:this.fp
     };
     this.articleService.getArticlesMultipleParams(data,this.page_number.toString())
     .subscribe({
@@ -183,7 +192,7 @@ export class ArticlesComponent implements OnInit {
       error: (e) => console.error(e)
       , complete: ()=> {
         this.refreshList()
-        if ((this.cag!='')|| (this.cb!='')||(this.cf!='')||(this.m!='')|| (this.c!='')||(this.sc!='')||(this.fam4!='')){
+        if ((this.cag!='')|| (this.cb!='')||(this.cf!='')||(this.m!='')|| (this.c!='')||(this.sc!='') || (this.fp!='')||(this.date_injection!='')){
           this.filter_clicked=true
           this.sc_filter=this.sc
           this.m_filter=this.m
@@ -191,7 +200,8 @@ export class ArticlesComponent implements OnInit {
           this.cb_filter=this.cb
           this.cag_filter=this.cag
           this.cf_filter=this.cf
-          this.fam4_filter=this.fam4
+          this.fp_filter=this.fp
+          this.date_injection_filter=this.date_injection
         }else
         {this.filter_clicked=false}
       }
@@ -282,8 +292,10 @@ export class ArticlesComponent implements OnInit {
       this.c=''
     }else if(filter==this.cb){
       this.cb=''
-    }else{
-      this.fam4=''
+    }else if(filter==this.fp){
+      this.fp=''
+    }else if(filter==this.date_injection){
+      this.date_injection=''
     }
     this.Filtrer()
   }
