@@ -178,6 +178,7 @@
           <tfoot>
             <tr>
               <td [attr.colspan]="totalColumns">
+                {{selected_articles.length}} item selected
                 <div style="display: flex; align-items: center; justify-content: center; "><button class="btn switch_page"
                     (click)="previous_page()" [disabled]="no_previous">&laquo; Previous</button>
                   <button class="btn switch_page" (click)="next_page()" [disabled]="end_of_data">Next &raquo;</button>
@@ -300,6 +301,7 @@
             <tfoot>
               <tr>
                 <td [attr.colspan]="totalColumns">
+                  {{selected_articles.length}} item selected
                   <div style="display: flex; align-items: center; justify-content: center; "><button class="btn switch_page"
                       (click)="previous_page_articles_gen()" [disabled]="no_previous">&laquo; Previous</button>
                     <button class="btn switch_page" (click)="next_page_articles_gen()" [disabled]="end_of_data">Next &raquo;</button>
