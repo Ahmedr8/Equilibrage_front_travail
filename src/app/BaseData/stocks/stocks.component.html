@@ -30,18 +30,18 @@
     </div>
     <div class="row" style="margin-top: 1%;">
       <div class="col-md-3">
-        <label for="validationCustom03" class="form-label labelBold">Modèle</label>
-        <input type="text" class="form-control custom-placeholder" id="validationCustom03" placeholder="Modèle"
+        <label for="validationCustom03" class="form-label labelBold">Collection</label>
+        <input type="text" class="form-control custom-placeholder" id="validationCustom03" placeholder="Collection"
           [(ngModel)]="m">
       </div>
       <div class="col-md-3">
-        <label for="validationCustom04" class="form-label labelBold">Catégorie</label>
-        <input type="text" name="" id="" placeholder="Catégorie" class="form-control custom-placeholder"
+        <label for="validationCustom04" class="form-label labelBold">Famille</label>
+        <input type="text" name="" id="" placeholder="Famille" class="form-control custom-placeholder"
           [(ngModel)]="c">
       </div>
       <div class="col-md-3">
-        <label for="validationCustom04" class="form-label labelBold">Sous Catégorie</label>
-        <input type="text" name="" id="" placeholder="Sous Catégorie" class="form-control custom-placeholder"
+        <label for="validationCustom04" class="form-label labelBold">Sous Famille</label>
+        <input type="text" name="" id="" placeholder="Sous Famille" class="form-control custom-placeholder"
           [(ngModel)]="sc">
       </div>
     </div>
@@ -140,17 +140,17 @@
   </div>
 
   <div class="rounded-btn" *ngIf="m_filter!=''">
-    <span class="item_filter">Model={{m_filter}} </span>
+    <span class="item_filter">Collection={{m_filter}} </span>
     <button type="button" class="btn-close" aria-label="Close" (click)="del_filter(m)"></button>
   </div>
 
   <div class="rounded-btn" *ngIf="c_filter!=''">
-    <span class="item_filter">catégorie={{c_filter}} </span>
+    <span class="item_filter">Famille={{c_filter}} </span>
     <button type="button" class="btn-close" aria-label="Close" (click)="del_filter(c)"></button>
   </div>
 
   <div class="rounded-btn" *ngIf="sc_filter!=''">
-    <span class="item_filter">sous catégorie={{sc_filter}} </span>
+    <span class="item_filter">sous Famille={{sc_filter}} </span>
     <button type="button" class="btn-close" aria-label="Close" (click)="del_filter(sc)"></button>
   </div>
 

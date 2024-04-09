@@ -169,7 +169,10 @@ export class StocksComponent implements OnInit {
     const data = {
       code_barre: this.cb,
       code_etab: this.ce,
-      code_depot: this.cd
+      code_depot: this.cd,
+      fam1: this.m,
+      fam2: this.c,
+      fam3: this.sc
     };
     this.StockService.getStocksMultipleParams(data,this.page_number.toString())
     .subscribe({
