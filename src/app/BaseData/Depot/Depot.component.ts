@@ -251,6 +251,8 @@ export class DepotComponent implements OnInit {
       this.type=''
     }
     this.page_number=1
+    this.end_of_data=false;
+    this.no_previous=true;
     this.Filtrer()
   }
 }
