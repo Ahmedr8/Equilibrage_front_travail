@@ -276,6 +276,7 @@ export class StocksComponent implements OnInit {
     }else if(filter==this.cb){
       this.cb=''
     }
+    this.page_number=1
     this.Filtrer()
   }
 }

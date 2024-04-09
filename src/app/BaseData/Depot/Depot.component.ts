@@ -250,6 +250,7 @@ export class DepotComponent implements OnInit {
     }else  if (filter==this.type){
       this.type=''
     }
+    this.page_number=1
     this.Filtrer()
   }
 }

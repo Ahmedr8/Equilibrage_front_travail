@@ -297,6 +297,7 @@ export class ArticlesComponent implements OnInit {
     }else if(filter==this.date_injection){
       this.date_injection=''
     }
+    this.page_number=1
     this.Filtrer()
   }
 

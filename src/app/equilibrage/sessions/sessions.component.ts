@@ -139,6 +139,21 @@ export class SessionsComponent implements OnInit {
       paging: false,        
     });
   }
+
+  customizeExcelExport(xlsx: any): void {
+    const sheet = xlsx.xl.worksheets['sheet1.xml'];
+  
+    sheet.querySelectorAll('row').forEach((row: any) => {
+      let cell = row.querySelector('c[r^="H"] is t');
+  
+      if (cell && cell.textContent === 'SIEGE') {
+        Array.from(row.children).forEach((cell: any) => {
+          cell.setAttribute('s', '10');
+        });
+      }
+    });
+  }
+
   refreshList_prop(): void {
     if (this.table_props) {
       this.table_props.destroy();
@@ -146,19 +161,19 @@ export class SessionsComponent implements OnInit {
     this.table_props=$('#datatable3').DataTable({ data : this.props,
       columns: [
         { data: 'ordre_trf', title: 'ordre de transfert' },
-        { data: 'code_article_gen', title: 'code article generique' },
-        { data: 'code_article_dem', title: 'code article dimensionee' },
+        { data: 'code_article_gen', title: 'Code Gén' },
+        { data: 'code_article_dem', title: 'Code DIM' },
         { data: 'code_barre', title: 'code barre' },
-        { data: 'emet', title: 'etablissement emmeteur' },
-        { data: 'code_depot_emet', title: 'depot emmeteur' },
-        { data: 'qte_trf', title: 'quantite a transferer' },
-        { data: 'recep', title: 'reçepteur' },
+        { data: 'code_depot_emet', title: 'Code Dépot Emmet' },
         { data: 'lib_taille', title: ' taille' },
         { data: 'lib_couleur', title: ' couleur' },
+        { data: 'emet', title: 'Emmeteur' },
+        { data: 'recep', title: 'Récepteur' },
+        { data: 'qte_trf', title: 'Qté à Transferer' },
         { data: 'code_session', title: 'code session' },
         { data: 'date', title: 'date' },
-        { data: 'nom', title: 'nom createur' },
-        { data: 'statut', title: 'statut proposition' }
+        { data: 'nom', title: 'createur' },
+        { data: 'statut', title: 'statut' }
       ],
       select: {
         style: 'multi', // Style of the selection
@@ -166,12 +181,40 @@ export class SessionsComponent implements OnInit {
       buttons: [
         'selectAll',
         'selectNone',
-        'excel',
+        {
+          extend: 'excelHtml5',
+          text: 'Export to Excel',
+          className: 'btn btn-success',
+          customize: this.customizeExcelExport
+        },
         'colvis',
-        'print'
+        {
+          extend: 'print',
+          text: 'Print',
+          customize: function (win: any) {
+              // Fit content to page
+              $(win.document.body).css('zoom', '90%');
+
+              $('table', win.document.body).find('td').each((index: any, cell: any) => {
+                  var cellText = $(cell).text();
+                  if (cellText === 'SIEGE') {
+                      //$(cell).closest('tr').addClass('bg-danger text-white')
+                      $(cell).closest('tr').css('background-color', 'red');
+                      $(cell).closest('tr').css('color', 'white');
+                      $(cell).closest('tr').css('print-color-adjust', 'exact');
+                  }
+              });
+      
+          }
+      }
+        
     ],
     dom: 'Bfrtip',
-        
+    createdRow: (row: any, data: any, dataIndex: any) => {
+      if (data.emet == "SIEGE") {
+        $(row).addClass('bg-danger text-white');
+      }
+    }
     });
   }
 
@@ -242,6 +285,7 @@ export class SessionsComponent implements OnInit {
     }else{
       this.crit=''
     }
+    this.page_number=1
     this.Filtrer()
   }
 

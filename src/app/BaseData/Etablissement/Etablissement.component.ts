@@ -219,6 +219,7 @@ export class EtablissementComponent implements OnInit {
       }else  if (filter==this.adr){
         this.adr=''
       }
+      this.page_number=1
       this.Filtrer()
     }
 }
