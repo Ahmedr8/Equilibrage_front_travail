@@ -26,6 +26,7 @@ export class EtablissementComponent implements OnInit {
   id_to_delete: string='';
   page_number:number=1;
   modif_data: Etablissement=this.etabs[0];
+  dataLoading:boolean=true
   constructor(private etabService: EtablissementService) { }
   @ViewChild('fileInput') fileInput!: ElementRef;
   @ViewChild('closeModal') closebutton!: ElementRef;
@@ -71,6 +72,7 @@ export class EtablissementComponent implements OnInit {
         },
         error: (e) => console.error(e)
         ,complete : () => {
+          this.dataLoading=false
           this.refreshList()
           
         }

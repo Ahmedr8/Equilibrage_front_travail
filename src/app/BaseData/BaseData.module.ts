@@ -9,6 +9,7 @@ import { EtablissementComponent } from './Etablissement/Etablissement.component'
 import { FormsModule }   from '@angular/forms';
 import { StocksComponent } from './stocks/stocks.component';
 import { DepotComponent } from './Depot/Depot.component';
+import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
 
 
 @NgModule({
@@ -17,7 +18,8 @@ import { DepotComponent } from './Depot/Depot.component';
     FormsModule,
     BaseDataRouteRoutes,
     HttpClientModule,
-    DataTablesModule
+    DataTablesModule,
+    NgxSkeletonLoaderModule
   ],
   declarations: [BaseDataComponent,ArticlesComponent,EtablissementComponent,StocksComponent,DepotComponent]
 })

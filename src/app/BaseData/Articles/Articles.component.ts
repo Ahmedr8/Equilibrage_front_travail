@@ -42,6 +42,7 @@ export class ArticlesComponent implements OnInit {
   loading:boolean=false;
   totalColumns:number=11;
   id_to_delete: string='';
+  dataLoading:boolean=true
 
 
   constructor(private articleService: ArticleService) { }
@@ -85,6 +86,7 @@ export class ArticlesComponent implements OnInit {
         error: (e) => {console.error(e)
         },
        complete : () => {
+        this.dataLoading=false
           this.refreshList()
       }
       

@@ -36,7 +36,7 @@ export class StocksComponent implements OnInit {
   totalColumns:number=8;
   id_to_delete: string='';
   page_number:number=1;
-
+  dataLoading:boolean=true
 
   constructor(private StockService: StockService) { }
 
@@ -85,6 +85,7 @@ export class StocksComponent implements OnInit {
         error: (e) => console.error(e)
         ,
        complete : () => {
+        this.dataLoading=false
           this.refreshList()
       }
       });

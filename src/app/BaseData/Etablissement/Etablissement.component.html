@@ -154,6 +154,19 @@
         <th>Action</th>
       </tr>
     </thead>
+    <tr>
+      <td>
+        <div style="margin: 5% 10% 0% 5%;" *ngIf="dataLoading==true"><ngx-skeleton-loader #skeletonLoader [count]="10" [appearance]="'line'"></ngx-skeleton-loader></div>
+      </td>
+      <td><div style="margin: 5% 10% 0% 5%;" *ngIf="dataLoading==true"><ngx-skeleton-loader #skeletonLoader [count]="10" [appearance]="'line'"></ngx-skeleton-loader></div></td>
+    
+      <td><div style="margin: 5% 10% 0% 5%;" *ngIf="dataLoading==true"><ngx-skeleton-loader #skeletonLoader [count]="10" [appearance]="'line'"></ngx-skeleton-loader></div></td>
+    
+      <td><div style="margin: 5% 10% 0% 5%;" *ngIf="dataLoading==true"><ngx-skeleton-loader #skeletonLoader [count]="10" [appearance]="'line'"></ngx-skeleton-loader></div></td>
+      <td><div style="margin: 5% 10% 0% 5%;" *ngIf="dataLoading==true"><ngx-skeleton-loader #skeletonLoader [count]="10" [appearance]="'line'"></ngx-skeleton-loader></div></td>
+      <td><div style="margin: 5% 10% 0% 5%;" *ngIf="dataLoading==true"><ngx-skeleton-loader #skeletonLoader [count]="10" [appearance]="'line'"></ngx-skeleton-loader></div></td>
+      <td><div style="margin: 5% 10% 0% 5%;" *ngIf="dataLoading==true"><ngx-skeleton-loader #skeletonLoader [count]="10" [appearance]="'line'"></ngx-skeleton-loader></div></td>
+    </tr>
     <tbody>
       <tr  *ngFor="let etab of etabs">
         <td>{{etab.code_etab}}</td>

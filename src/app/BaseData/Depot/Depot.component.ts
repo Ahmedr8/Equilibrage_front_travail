@@ -28,7 +28,7 @@ export class DepotComponent implements OnInit {
   loading:boolean=false;
   totalColumns:number=5;
   id_to_delete: string='';
-
+  dataLoading:boolean=true
 
   constructor(private DepotService: DepotService) { }
 
@@ -73,6 +73,7 @@ export class DepotComponent implements OnInit {
         error: (e) => console.error(e)
         ,
        complete : () => {
+        this.dataLoading=false
           this.refreshList()
       }
       });

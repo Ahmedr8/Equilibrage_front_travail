@@ -175,6 +175,41 @@
   </div>
 
   </div>
+
+  <table *ngIf="dataLoading==true">
+    <thead>
+      <tr>
+        <th>Code DIM</th>
+        <th>Code Barre</th>
+        <th>Code Gen</th>
+        <th>Désignation</th>
+        <th>Taille</th>
+        <th>Couleur</th>
+        <th>Code Fournisseur</th>
+        <th>Collection</th>
+        <th>Famille</th>
+        <th>Sous Famille</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tr>
+      <td>
+        <div><ngx-skeleton-loader #skeletonLoader [count]="10" [appearance]="'line'"></ngx-skeleton-loader></div>
+      </td>
+      <td><div style="margin: 10%;"><ngx-skeleton-loader #skeletonLoader [count]="10" [appearance]="'line'"></ngx-skeleton-loader></div></td>
+      <td><div style="margin: 10%;" ><ngx-skeleton-loader #skeletonLoader [count]="10" [appearance]="'line'"></ngx-skeleton-loader></div></td>    
+      <td><div style="margin: 10%;" ><ngx-skeleton-loader #skeletonLoader [count]="10" [appearance]="'line'"></ngx-skeleton-loader></div></td>
+      <td><div style="margin: 10%;"><ngx-skeleton-loader #skeletonLoader [count]="10" [appearance]="'line'"></ngx-skeleton-loader></div></td>
+      <td><div style="margin: 10%;"><ngx-skeleton-loader #skeletonLoader [count]="10" [appearance]="'line'"></ngx-skeleton-loader></div></td>
+      <td><div style="margin: 10%;"><ngx-skeleton-loader #skeletonLoader [count]="10" [appearance]="'line'"></ngx-skeleton-loader></div></td>
+      <td><div style="margin: 10%;" ><ngx-skeleton-loader #skeletonLoader [count]="10" [appearance]="'line'"></ngx-skeleton-loader></div></td>
+      <td><div style="margin: 10%;" ><ngx-skeleton-loader #skeletonLoader [count]="10" [appearance]="'line'"></ngx-skeleton-loader></div></td>
+      <td><div style="margin: 10%;" ><ngx-skeleton-loader #skeletonLoader [count]="10" [appearance]="'line'"></ngx-skeleton-loader></div></td>
+      <td><div style="margin: 10%;"><ngx-skeleton-loader #skeletonLoader [count]="10" [appearance]="'line'"></ngx-skeleton-loader></div></td>
+    
+    </tr>
+  </table>
+
   <div class="card-body">
     <div class="table-responsive">
       <table class="display" id="datatable" width="100%" cellspacing="0">

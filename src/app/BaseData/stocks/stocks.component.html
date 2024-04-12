@@ -155,6 +155,35 @@
   </div>
 
   </div>
+  
+  <table *ngIf="dataLoading==true">
+    <thead>
+      <tr>
+        <th>Code DIM</th>
+        <th>Code Barre</th>
+        <th>Code Etablissement</th>
+        <th>Code Dépot</th>
+        <th>Stock Min</th>
+        <th>Stock Physique</th>
+        <th>quantite vendu</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tr>
+      <td>
+        <div style="margin: 10%;"><ngx-skeleton-loader #skeletonLoader [count]="10" [appearance]="'line'"></ngx-skeleton-loader></div>
+      </td>
+      <td><div style="margin: 10%;"><ngx-skeleton-loader #skeletonLoader [count]="10" [appearance]="'line'"></ngx-skeleton-loader></div></td>
+      <td><div style="margin: 10%;"><ngx-skeleton-loader #skeletonLoader [count]="10" [appearance]="'line'"></ngx-skeleton-loader></div></td>    
+      <td><div style="margin: 10%;"><ngx-skeleton-loader #skeletonLoader [count]="10" [appearance]="'line'"></ngx-skeleton-loader></div></td>
+      <td><div style="margin: 10%;"><ngx-skeleton-loader #skeletonLoader [count]="10" [appearance]="'line'"></ngx-skeleton-loader></div></td>
+      <td><div style="margin: 10%;" ><ngx-skeleton-loader #skeletonLoader [count]="10" [appearance]="'line'"></ngx-skeleton-loader></div></td>
+      <td><div style="margin: 10%;"><ngx-skeleton-loader #skeletonLoader [count]="10" [appearance]="'line'"></ngx-skeleton-loader></div></td>
+      <td><div style="margin: 10%;"><ngx-skeleton-loader #skeletonLoader [count]="10" [appearance]="'line'"></ngx-skeleton-loader></div></td>
+    
+    </tr>
+  </table>
+  
   <div class="card-body">
     <div class="table-responsive">
       <table class="display" id="datatable" width="100%" cellspacing="0">

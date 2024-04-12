@@ -34,6 +34,7 @@ export class SessionsComponent implements OnInit {
   date_filter:any='';
   cs_filter:any='';
   crit_filter:any="";
+  dataLoading:boolean=true
   constructor(private sessionService : SessionService,private detailDetailSessionService:DetailDetailSessionService,private propositionService:PropositionService,private zone: NgZone) { }
 
   ngOnInit() {
@@ -86,6 +87,7 @@ export class SessionsComponent implements OnInit {
         error: (e) => console.error(e)
         ,
        complete : () => {
+        this.dataLoading=false
           this.refresh_sessionsList()
       }
       });

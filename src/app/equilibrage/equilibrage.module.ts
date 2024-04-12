@@ -8,6 +8,7 @@ import { DataTablesModule } from 'angular-datatables';
 import { PropositionComponent } from './proposition/proposition.component';
 import { FormsModule }   from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
+import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
 
 @NgModule({
   imports: [
@@ -16,7 +17,8 @@ import { ReactiveFormsModule } from '@angular/forms';
     ReactiveFormsModule,
     EquilibrageRouteRoutes,
     HttpClientModule,
-    DataTablesModule
+    DataTablesModule,
+    NgxSkeletonLoaderModule
 
   ],
   declarations: [EquilibrageComponent,SessionsComponent,PropositionComponent]
