@@ -9,6 +9,7 @@ import { DatePipe } from '@angular/common';
 import { DetailDetailSessionService } from '../services/detail_session.services';
 import { PropositionService } from '../services/proposition.services';
 import { propAffiche } from '../models/proposition.model';
+import { filter } from 'rxjs';
 declare var $ : any
 @Component({
   selector: 'app-proposition',
@@ -154,31 +155,12 @@ refreshList_articles_gen(){
 }
 
 refreshList_articles(){
+  const that = this;
   if(this.tablepending){
     $('#datatable1').off('select.dt', this.selectListener);
     $('#datatable1').off('deselect.dt', this.deselectListener);
     this.tablepending.destroy();
   }
-  /*this.tablepending= $('#datatable1').DataTable({
-    columnDefs: [
-      {
-        orderable: false,
-        className: 'select-checkbox',
-        targets: 0 
-      },
-      
-    ],
-    select: {
-      style: 'os multi',
-      selector: 'td:first-child' 
-    },
-    order: [[1, 'asc']],
-    buttons: [
-      'selectAll',
-      'selectNone'
-  ],
-  dom: 'Bfrtip'
-  });*/
   this.tablepending=$('#datatable1').DataTable({ data : this.articles,
     info: false,
     columns: [
@@ -201,8 +183,19 @@ refreshList_articles(){
     },
     order: [[1, 'asc']],
     buttons: [
-      'selectAll',
-      'selectNone'
+      {
+          extend: 'selectAll',
+          text: 'Select All',
+          action: function ( e:any, dt:any, node:any, config:any ) {
+              // Custom action for select all
+              dt.rows().select();
+              that.selectAllfct()
+          }
+      },
+      {
+          extend: 'selectNone',
+          text: 'Deselect All'
+      }
   ],
   dom: 'Bfrtip',
   paging: false,        
@@ -425,7 +418,7 @@ deselectListener =() => {
     }
   }
   next_page_articles_gen():void{
-    if(this.articles_gen.length>10){
+    if(this.articles_gen.length>=10){
     this.end_of_data=false
     this.page_number=this.page_number+1
     this.no_previous=false;
@@ -472,7 +465,12 @@ deselectListener =() => {
     this.articleService.getArticlesMultipleParams(data,this.page_number.toString())
     .subscribe({
       next: (data) => {
-        this.articles = data;
+        if (this.page_number==0){
+          this.selected_articles = data
+        }
+        else{
+          this.articles = data
+        }
         console.log(this.articles);
       },
       error: (e) => console.error(e)
@@ -753,4 +751,12 @@ deselectListener =() => {
     }
     this.Filtrer2()
   }
+
+  async selectAllfct() {
+    let pg=this.page_number
+    this.page_number=0
+    await this.Filtrer()
+    console.log('Select All button clicked');
+  }
 }
+
