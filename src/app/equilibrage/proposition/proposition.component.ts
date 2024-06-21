@@ -88,7 +88,6 @@ retrieveArticles(): void {
         error: (e) => console.error(e)
         ,
        complete : () => {
-        console.log(this.articles)
           this.refreshList_articles()
       }
       });
@@ -102,7 +101,6 @@ retrieveArticlesGen(): void {
         error: (e) => console.error(e)
         ,
        complete : () => {
-          console.log(this.articles_gen)
           this.refreshList_articles_gen()
       }
       });
@@ -143,10 +141,9 @@ refreshList_articles_gen(){
     paging: false,        
     });
     $(document).ready(() => {
-      console.log(this.articleGenList)
     for(var j=0;j<this.articles_gen.length;j++){
       if (this.selected_articles.find(item => item.code_article_gen === this.articles[j].code_article_gen)){
-        this.tablepending.rows(j).select();
+        this.articleGenList.rows(j).select();
       } 
     }
     $('#datatable4').on('select.dt',this.selectListener )
@@ -194,14 +191,17 @@ refreshList_articles(){
       },
       {
           extend: 'selectNone',
-          text: 'Deselect All'
+          text: 'Deselect All',
+          action: function ( e:any, dt:any, node:any, config:any ) {
+            dt.rows().deselect();
+            that.deselectAllfct()
+        }
       }
   ],
   dom: 'Bfrtip',
   paging: false,        
   });
   $(document).ready(() => {
-    console.log(this.tablepending)
   for(var j=0;j<this.articles.length;j++){
     if (this.selected_articles.find(item => item.code_article_dem === this.articles[j].code_article_dem)){
       this.tablepending.rows(j).select();
@@ -214,7 +214,6 @@ refreshList_articles(){
 
  selectListener =() => {
   if(this.crit=="articles_dem"){
-    console.log('select')
     const selectedRows = this.articleGenList.rows({ selected: true }).data().toArray();
   selectedRows.forEach((row: { code_article_gen: any; }) => {
     // Check if the row's code_article_dem already exists in selected_articles
@@ -236,7 +235,6 @@ refreshList_articles(){
 
 deselectListener =() => {
   if(this.crit=="articles_dem"){
-    console.log("deslect")
     const deselectedRows = this.articleGenList.rows({ selected: false }).data().toArray();
     deselectedRows.forEach((row: { code_article_gen: any; }) => {
       const index = this.selected_articles.findIndex(selected => selected.code_article_gen === row.code_article_gen);
@@ -248,7 +246,7 @@ deselectListener =() => {
   const deselectedRows = this.tablepending.rows({ selected: false }).data().toArray();
   deselectedRows.forEach((row: { code_article_dem: any; }) => {
     const index = this.selected_articles.findIndex(selected => selected.code_article_dem === row.code_article_dem);
-    if (this.selected_articles.some(selected => selected.code_article_dem === row.code_article_dem)) {
+    if (index!=-1) {
       this.selected_articles.splice(index, 1); // Remove deselected row data from the list
     }
   });
@@ -324,7 +322,6 @@ deselectListener =() => {
       .subscribe({
         next: (data) => {
           this.props = data;
-          console.log(this.props)
         },
         error: (e) => console.error(e)
         ,
@@ -451,7 +448,7 @@ deselectListener =() => {
       this.no_previous=true
     }
   }
-  Filtrer(): void{
+  Filtrer(pg?: any): void{
     const data = {
       code_barre: this.cb,
       code_article_gen: this.cag,
@@ -466,12 +463,12 @@ deselectListener =() => {
     .subscribe({
       next: (data) => {
         if (this.page_number==0){
-          this.selected_articles = data
+          this.selected_articles = [...this.selected_articles, ...data];
+          this.page_number=pg
         }
         else{
           this.articles = data
         }
-        console.log(this.articles);
       },
       error: (e) => console.error(e)
       ,
@@ -503,7 +500,6 @@ deselectListener =() => {
     .subscribe({
       next: (data) => {
         this.articles_gen = data;
-        console.log(this.articles);
       },
       error: (e) => console.error(e)
       ,
@@ -538,7 +534,6 @@ deselectListener =() => {
     .subscribe({
       next: (data) => {
         this.articles = data;
-        console.log(this.articles);
       },
       error: (e) => console.error(e)
       , complete: ()=> {
@@ -573,7 +568,6 @@ deselectListener =() => {
     .subscribe({
       next: (data) => {
         this.articles_gen = data;
-        console.log(this.articles);
       },
       error: (e) => console.error(e)
       , complete: ()=> {
@@ -600,7 +594,6 @@ deselectListener =() => {
     .subscribe({
       next: (data) => {
         this.etabs = data;
-        console.log(this.etabs);
         
       },
       error: (e) => console.error(e)
@@ -633,7 +626,6 @@ deselectListener =() => {
     this.sessionService.createSession(data)
       .subscribe({
         next: (res) => {
-          console.log(res);
           this.id_session=res.code_session;
           this.submitted = true;
         },
@@ -674,7 +666,6 @@ deselectListener =() => {
       this.detailDetailSessionService.createDetailSession(datatosend,this.id_session)
       .subscribe({
         next: (res) => {
-          console.log(res);
         },
         error: (e) => console.error(e)
         ,
@@ -752,11 +743,13 @@ deselectListener =() => {
     this.Filtrer2()
   }
 
-  async selectAllfct() {
+  selectAllfct() {
     let pg=this.page_number
     this.page_number=0
-    await this.Filtrer()
-    console.log('Select All button clicked');
+    this.Filtrer(pg)
+  }
+  deselectAllfct(){
+    this.selected_articles=[]
   }
 }
 
