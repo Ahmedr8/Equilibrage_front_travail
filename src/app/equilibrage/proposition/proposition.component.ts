@@ -107,6 +107,9 @@ retrieveArticlesGen(): void {
 }
 
 refreshList_articles_gen(){
+  console.log('refresh articles gen')
+  console.log('selected articles',this.selected_articles)
+  const that = this;
     if(this.articleGenList){
       $('#datatable4').off('select.dt', this.selectListener);
       $('#datatable4').off('deselect.dt', this.deselectListener);
@@ -134,15 +137,31 @@ refreshList_articles_gen(){
       },
       order: [[1, 'asc']],
       buttons: [
-        'selectAll',
-        'selectNone'
+        {
+            extend: 'selectAll',
+            text: 'Select All',
+            action: function ( e:any, dt:any, node:any, config:any ) {
+                // Custom action for select all
+                dt.rows().select();
+                that.selectAllfct()
+            }
+        },
+        {
+            extend: 'selectNone',
+            text: 'Deselect All',
+            action: function ( e:any, dt:any, node:any, config:any ) {
+              dt.rows().deselect();
+              that.deselectAllfct()
+          }
+        }
     ],
     dom: 'Bfrtip',
     paging: false,        
     });
     $(document).ready(() => {
+      console.log(this.selected_articles)
     for(var j=0;j<this.articles_gen.length;j++){
-      if (this.selected_articles.find(item => item.code_article_gen === this.articles[j].code_article_gen)){
+      if (this.selected_articles.find(item => item.code_article_gen === this.articles_gen[j].code_article_gen)){
         this.articleGenList.rows(j).select();
       } 
     }
@@ -214,6 +233,7 @@ refreshList_articles(){
 
  selectListener =() => {
   if(this.crit=="articles_dem"){
+    console.log('select')
     const selectedRows = this.articleGenList.rows({ selected: true }).data().toArray();
   selectedRows.forEach((row: { code_article_gen: any; }) => {
     // Check if the row's code_article_dem already exists in selected_articles
@@ -235,10 +255,11 @@ refreshList_articles(){
 
 deselectListener =() => {
   if(this.crit=="articles_dem"){
+    console.log('deselect')
     const deselectedRows = this.articleGenList.rows({ selected: false }).data().toArray();
     deselectedRows.forEach((row: { code_article_gen: any; }) => {
       const index = this.selected_articles.findIndex(selected => selected.code_article_gen === row.code_article_gen);
-      if (this.selected_articles.some(selected => selected.code_article_gen === row.code_article_gen)) {
+      if (index!=-1) {
         this.selected_articles.splice(index, 1); // Remove deselected row data from the list
       }
     });
@@ -463,7 +484,9 @@ deselectListener =() => {
     .subscribe({
       next: (data) => {
         if (this.page_number==0){
-          this.selected_articles = [...this.selected_articles, ...data];
+                 const combinedArticles = [...this.selected_articles, ...data];
+        this.selected_articles = Array.from(new Set(combinedArticles.map(article => JSON.stringify(article))))
+                                      .map(articleStr => JSON.parse(articleStr));
           this.page_number=pg
         }
         else{
@@ -489,7 +512,8 @@ deselectListener =() => {
       }
     });
   }
-  Filtrer_articles_gen(): void{
+  Filtrer_articles_gen(pg?: any): void{
+    console.log('filtrer aeticle gen')
     const data = {
       code_article_gen: this.cag,
       code_fournisseur: this.cf,
@@ -499,7 +523,15 @@ deselectListener =() => {
     this.articleService.getArticlesGenMultipleParams(data,this.page_number.toString())
     .subscribe({
       next: (data) => {
-        this.articles_gen = data;
+        if (this.page_number==0){
+          const combinedArticles = [...this.selected_articles, ...data];
+          this.selected_articles = Array.from(new Set(combinedArticles.map(article => JSON.stringify(article))))
+                                        .map(articleStr => JSON.parse(articleStr));
+          this.page_number=pg
+        }
+        else{
+          this.articles_gen = data;
+        }
       },
       error: (e) => console.error(e)
       ,
@@ -666,6 +698,7 @@ deselectListener =() => {
       this.detailDetailSessionService.createDetailSession(datatosend,this.id_session)
       .subscribe({
         next: (res) => {
+          //adding the sekeleton loader
         },
         error: (e) => console.error(e)
         ,
@@ -743,12 +776,17 @@ deselectListener =() => {
     this.Filtrer2()
   }
 
-  selectAllfct() {
+  selectAllfct() {console.log("select all")
     let pg=this.page_number
     this.page_number=0
-    this.Filtrer(pg)
+    if(this.crit=="articles_dem"){
+    this.Filtrer_articles_gen(pg)
+    }else{
+      this.Filtrer(pg)
+    }
   }
   deselectAllfct(){
+    console.log("deselect all")
     this.selected_articles=[]
   }
 }
