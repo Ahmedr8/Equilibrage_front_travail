@@ -1,0 +1,24 @@
+.table-container {
+    max-height: calc(10 * 38px); /* Assuming each row is approximately 38px high */
+    overflow-y: auto;
+  }
+  
+  .table-container table {
+    margin-bottom: 0; /* Remove bottom margin to fit within the container */
+  }
+  
+
+  
+  .table-container table thead {
+    width: calc(100% - 1em); /* Adjust width for scrollbar */
+  }
+  
+  .table-container table tbody {
+    width: 100%; /* Full width for the tbody */
+  }
+  
+  .table-container table td, .table-container table th {
+    width: 100%; /* Ensure proper width for table cells */
+    box-sizing: border-box; /* Ensure padding and border are included in the width */
+  }
+  

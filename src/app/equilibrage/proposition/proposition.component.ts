@@ -63,6 +63,7 @@ export class PropositionComponent implements OnInit {
   created=false;
   articleA=true;
   etabA=false;
+  dataLoading=false;
   totalColumns:number=4;
   end_of_data:boolean=false;
   no_previous:boolean=true;
@@ -669,6 +670,10 @@ deselectListener =() => {
       });
   }
   createProp():void{
+    console.log('loading')
+        this.dataLoading = true;
+        this.articleA=false;
+        this.etabA=false;
     var id_articles
     this.refreshList_etabs();
     if(this.crit=="articles_dem"){
@@ -703,10 +708,9 @@ deselectListener =() => {
         error: (e) => console.error(e)
         ,
        complete : () => {
+        this.dataLoading = false;
         this.retrieveprops();
         this.created = true;
-        this.articleA=false;
-        this.etabA=false;
       }
       });
 

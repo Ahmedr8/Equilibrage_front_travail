@@ -153,7 +153,10 @@
               <div class="card-header">
                 Articles inclus
               </div>
-              <ul class="list-group list-group-flush" >
+              <ngx-skeleton-loader *ngIf="articlesisloading" count="4" appearance="line" 
+                    [theme]="{ height: '40px', margin: '10px 0' }">
+              </ngx-skeleton-loader>
+              <ul *ngIf="!articlesisloading" class="list-group list-group-flush scrollable-list" >
                 <li class="list-group-item" *ngFor="let item of articles">{{item}}</li>
               </ul>
             </div>
@@ -161,7 +164,10 @@
               <div class="card-header">
                 Etablissements inclus
               </div>
-              <ul class="list-group list-group-flush">
+              <ngx-skeleton-loader *ngIf="articlesisloading" count="4" appearance="line" 
+              [theme]="{ height: '40px', margin: '10px 0' }">
+              </ngx-skeleton-loader>
+              <ul *ngIf="!articlesisloading" class="list-group list-group-flush scrollable-list">
                 <li class="list-group-item" *ngFor="let etab of etabs">{{etab}}</li>
               </ul>
 
@@ -169,12 +175,56 @@
             <div class="card">
               <div class="card-body">
                 <div class="table-responsive">
-                  <table class="display" id="datatable3" width="100%" cellspacing="0">
-                    <thead>
-                    </thead>
-                    <tbody>
-                    </tbody>
-                  </table>
+                  <div [ngStyle]="{ 'display': !tableisloading ? 'block' : 'none'} " >
+                    <table class="display" id="datatable3" width="100%" cellspacing="0">
+                      <thead>
+                      </thead>
+                      <tbody>
+                      </tbody>
+                    </table>
+                  </div>
+                  <div [ngStyle]="{ 'display': tableisloading ? 'block' : 'none'} " >
+                    <table class="table" >
+                      <thead>
+                        <tr>
+                          <th>Ordre transfert</th>
+                          <th>Code Gén</th>
+                          <th>Code DIM</th>
+                          <th>Code Barre</th>
+                          <th>Code Dépot Emmet</th>
+                          <th>Taille</th>
+                          <th>Couleur</th>
+                          <th>Emmeteur</th>
+                          <th>Récepteur</th>
+                          <th>Qté à Transferer</th>
+                          <th>Code session</th>
+                          <th>Date création</th>
+                          <th>Créateur</th>
+                          <th>Statut</th>
+                        </tr>
+                      </thead>
+                      <tr>
+                        <td>
+                          <div style="width: 70%; margin-left: 5%; "><ngx-skeleton-loader #skeletonLoader [count]="10" [appearance]="'line'"></ngx-skeleton-loader></div>
+                        </td>
+                        <td><div style="margin: 10%;"><ngx-skeleton-loader #skeletonLoader [count]="10" [appearance]="'line'"></ngx-skeleton-loader></div></td>
+                        <td><div style="margin: 10%;" ><ngx-skeleton-loader #skeletonLoader [count]="10" [appearance]="'line'"></ngx-skeleton-loader></div></td>    
+                        <td><div style="margin: 10%;" ><ngx-skeleton-loader #skeletonLoader [count]="10" [appearance]="'line'"></ngx-skeleton-loader></div></td>
+                        <td><div style="margin: 10%;"><ngx-skeleton-loader #skeletonLoader [count]="10" [appearance]="'line'"></ngx-skeleton-loader></div></td>
+                        <td><div style="margin: 10%;"><ngx-skeleton-loader #skeletonLoader [count]="10" [appearance]="'line'"></ngx-skeleton-loader></div></td>
+                        <td><div style="margin: 10%;"><ngx-skeleton-loader #skeletonLoader [count]="10" [appearance]="'line'"></ngx-skeleton-loader></div></td>
+                        <td><div style="margin: 10%;" ><ngx-skeleton-loader #skeletonLoader [count]="10" [appearance]="'line'"></ngx-skeleton-loader></div></td>    
+                        <td><div style="margin: 10%;" ><ngx-skeleton-loader #skeletonLoader [count]="10" [appearance]="'line'"></ngx-skeleton-loader></div></td>
+                        <td><div style="margin: 10%;"><ngx-skeleton-loader #skeletonLoader [count]="10" [appearance]="'line'"></ngx-skeleton-loader></div></td>
+                        <td><div style="margin: 10%;"><ngx-skeleton-loader #skeletonLoader [count]="10" [appearance]="'line'"></ngx-skeleton-loader></div></td>
+                        <td><div style="margin: 10%;"><ngx-skeleton-loader #skeletonLoader [count]="10" [appearance]="'line'"></ngx-skeleton-loader></div></td>
+                        <td><div style="margin: 10%;" ><ngx-skeleton-loader #skeletonLoader [count]="10" [appearance]="'line'"></ngx-skeleton-loader></div></td>    
+                        <td><div style="margin: 10%;" ><ngx-skeleton-loader #skeletonLoader [count]="10" [appearance]="'line'"></ngx-skeleton-loader></div></td>
+                        <td><div style="margin: 10%;"><ngx-skeleton-loader #skeletonLoader [count]="10" [appearance]="'line'"></ngx-skeleton-loader></div></td>
+                      
+                      </tr>
+                    </table>
+                  </div >
                 </div>
               </div>
             </div>

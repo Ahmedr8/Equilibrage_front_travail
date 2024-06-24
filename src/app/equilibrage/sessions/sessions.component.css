@@ -1,0 +1,9 @@
+.scrollable-list {
+    max-height: 300px; /* Set the desired height */
+    overflow-y: auto; /* Enable vertical scrolling */
+  }
+  
+  .list-group-item {
+    word-wrap: break-word; /* Ensure long words break and don't overflow */
+  }
+  

@@ -35,6 +35,9 @@ export class SessionsComponent implements OnInit {
   cs_filter:any='';
   crit_filter:any="";
   dataLoading:boolean=true
+  tableisloading=false;
+  etabEtArticlesLoading=false;
+  articlesisloading=false;
   constructor(private sessionService : SessionService,private detailDetailSessionService:DetailDetailSessionService,private propositionService:PropositionService,private zone: NgZone) { }
 
   ngOnInit() {
@@ -294,8 +297,12 @@ export class SessionsComponent implements OnInit {
   }
 
   sessionDetail(id: string): void {
+    this.tableisloading=true
+    this.articlesisloading=true
+    console.log('loading')
+    this.etabEtArticlesLoading=true
     console.log("details")
-    this.articles=[...this.articles,"aaa"];
+    this.articles=[...this.articles];
       this.propositionService.getPropositionsById(id)
       .subscribe({
         next: (propos) => {
@@ -306,6 +313,8 @@ export class SessionsComponent implements OnInit {
         ,
         complete: ()=> {
           this.refreshList_prop()
+          console.log('showing')
+          this.tableisloading=false
         }
       });
       this.detailDetailSessionService.getDetailSessionsById(id)
@@ -316,11 +325,14 @@ export class SessionsComponent implements OnInit {
         error: (e) => console.error(e)
         ,
         complete: ()=> {
+          this.etabEtArticlesLoading=false
+          this.articlesisloading=false
           this.articles=[];
           this.etabs=[];
           this.refresh_details();
           console.log(this.articles.length);
           console.log(this.etabs.length);
+          
         }
       });
   }

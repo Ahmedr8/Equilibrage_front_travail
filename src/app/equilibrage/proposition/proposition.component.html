@@ -193,30 +193,33 @@
     </div>
   </div>
   <br>
+  <!-- scroll bar  -->
 <div class="card" *ngIf="selected_articles.length > 0" >
   <div class="card-header py-1 headerColorBg d-flex justify-content-between align-items-center" style="color: white; font-weight: 600;">
     <div>Selected Articles</div>
     <div><span>{{selected_articles.length}} items selected</span></div>
   </div>
-  <table class="table table-hover table-striped">
-    <thead>
-      <tr>
-        <th style="width:40%">Code article DIM </th>
-        <th style="width:50%">Code à barre</th>
-        <th style="width:7%">Désignation</th>
-        <th style="width:3%">action</th>
-        <th></th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let article of selected_articles">
-        <td>{{article.code_article_dem}}</td>
-        <td>{{article.code_barre}}</td>
-        <td>{{article.libelle}}</td>
-        <td><button class="btn btn-danger btn-sm rounded-2 m-1" type="button" (click)="Deselect_article(article)">Deselect</button></td>
-      </tr>
-    </tbody>
-  </table>
+  <div class="table-container">
+    <table class="table table-hover table-striped">
+      <thead>
+        <tr>
+          <th style="width:40%">Code article DIM </th>
+          <th style="width:50%">Code à barre</th>
+          <th style="width:7%">Désignation</th>
+          <th style="width:3%">action</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let article of selected_articles">
+          <td>{{article.code_article_dem}}</td>
+          <td>{{article.code_barre}}</td>
+          <td>{{article.libelle}}</td>
+          <td><button class="btn btn-danger btn-sm rounded-2 m-1" type="button" (click)="Deselect_article(article)">Deselect</button></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
   <div class="card-footer">
     {{selected_articles.length}} items selected
   </div>
@@ -316,30 +319,33 @@
       </div>
     </div>
     <br>
+    <!-- scroll bar -->
     <div class="card" *ngIf="selected_articles.length > 0" >
     <div class="card-header py-1 headerColorBg d-flex justify-content-between align-items-center" style="color: white; font-weight: 600;">
       <div>Selected Articles</div>
       <div><span>{{selected_articles.length}} items selected</span></div>
     </div>
-    <table class="table table-hover table-striped">
-      <thead>
-        <tr>
-          <th style="width:40%">Code article Gen </th>
-          <th style="width:50%">Désignation</th>
-          <th style="width:7%">Model</th>
-          <th style="width:3%">action</th>
-          <th></th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let article of selected_articles">
-          <td>{{article.code_article_gen}}</td>
-          <td>{{article.libelle}}</td>
-          <td>{{article.fam1}}</td>
-          <td><button class="btn btn-danger btn-sm rounded-2 m-1" type="button" (click)="Deselect_article_gen(article)">Deselect</button></td>
-        </tr>
-      </tbody>
-    </table>
+    <div class="table-container">
+      <table class="table table-hover table-striped">
+        <thead>
+          <tr>
+            <th style="width:40%">Code article Gen </th>
+            <th style="width:50%">Désignation</th>
+            <th style="width:7%">Model</th>
+            <th style="width:3%">action</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let article of selected_articles">
+            <td>{{article.code_article_gen}}</td>
+            <td>{{article.libelle}}</td>
+            <td>{{article.fam1}}</td>
+            <td><button class="btn btn-danger btn-sm rounded-2 m-1" type="button" (click)="Deselect_article_gen(article)">Deselect</button></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
     <div class="card-footer">
       {{selected_articles.length}} items selected
     </div>
@@ -434,6 +440,48 @@
         </div>
       </div>
     </div>
+  </div>
+  <div [ngStyle]="{ 'display': dataLoading ? 'block' : 'none'} ">
+    <table class="table table-responsive">
+      <thead>
+        <tr>
+          <th>Ordre transfert</th>
+          <th>Code Gén</th>
+          <th>Code DIM</th>
+          <th>Code Barre</th>
+          <th>Code Dépot Emmet</th>
+          <th>Taille</th>
+          <th>Couleur</th>
+          <th>Emmeteur</th>
+          <th>Récepteur</th>
+          <th>Qté à Transferer</th>
+          <th>Code session</th>
+          <th>Date création</th>
+          <th>Créateur</th>
+          <th>Statut</th>
+        </tr>
+      </thead>
+      <tr>
+        <td>
+          <div style="width: 70%; margin-left: 5%; "><ngx-skeleton-loader #skeletonLoader [count]="10" [appearance]="'line'"></ngx-skeleton-loader></div>
+        </td>
+        <td><div style="margin: 10%;"><ngx-skeleton-loader #skeletonLoader [count]="10" [appearance]="'line'"></ngx-skeleton-loader></div></td>
+        <td><div style="margin: 10%;" ><ngx-skeleton-loader #skeletonLoader [count]="10" [appearance]="'line'"></ngx-skeleton-loader></div></td>    
+        <td><div style="margin: 10%;" ><ngx-skeleton-loader #skeletonLoader [count]="10" [appearance]="'line'"></ngx-skeleton-loader></div></td>
+        <td><div style="margin: 10%;"><ngx-skeleton-loader #skeletonLoader [count]="10" [appearance]="'line'"></ngx-skeleton-loader></div></td>
+        <td><div style="margin: 10%;"><ngx-skeleton-loader #skeletonLoader [count]="10" [appearance]="'line'"></ngx-skeleton-loader></div></td>
+        <td><div style="margin: 10%;"><ngx-skeleton-loader #skeletonLoader [count]="10" [appearance]="'line'"></ngx-skeleton-loader></div></td>
+        <td><div style="margin: 10%;" ><ngx-skeleton-loader #skeletonLoader [count]="10" [appearance]="'line'"></ngx-skeleton-loader></div></td>    
+        <td><div style="margin: 10%;" ><ngx-skeleton-loader #skeletonLoader [count]="10" [appearance]="'line'"></ngx-skeleton-loader></div></td>
+        <td><div style="margin: 10%;"><ngx-skeleton-loader #skeletonLoader [count]="10" [appearance]="'line'"></ngx-skeleton-loader></div></td>
+        <td><div style="margin: 10%;"><ngx-skeleton-loader #skeletonLoader [count]="10" [appearance]="'line'"></ngx-skeleton-loader></div></td>
+        <td><div style="margin: 10%;"><ngx-skeleton-loader #skeletonLoader [count]="10" [appearance]="'line'"></ngx-skeleton-loader></div></td>
+        <td><div style="margin: 10%;" ><ngx-skeleton-loader #skeletonLoader [count]="10" [appearance]="'line'"></ngx-skeleton-loader></div></td>    
+        <td><div style="margin: 10%;" ><ngx-skeleton-loader #skeletonLoader [count]="10" [appearance]="'line'"></ngx-skeleton-loader></div></td>
+        <td><div style="margin: 10%;"><ngx-skeleton-loader #skeletonLoader [count]="10" [appearance]="'line'"></ngx-skeleton-loader></div></td>
+      
+      </tr>
+    </table>
   </div>
   <div [ngStyle]="{ 'display': created ? 'block' : 'none'} ">
     <div class="card">
