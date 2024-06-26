@@ -24,3 +24,13 @@
 .custom-placeholder::placeholder {
     font-size: 14px;
 }
+
+.success {
+    background-color: #4caf50 !important; /* Green */
+    color: #fff !important;
+  }
+  
+  .error {
+    background-color: #f44336 !important; /* Red */
+    color: #fff !important;
+  }
