@@ -162,11 +162,13 @@ export class EtablissementComponent implements OnInit {
          
         },
         (error) => {
+          this.closebutton.nativeElement.click();
+          this.loading=false;
           console.error('File upload failed:', error);
           // Handle error, e.g., show an error message
         }
         , () => {
-          this.retrieveEtabs()
+          this.Filtrer()
           this.closebutton.nativeElement.click();
           this.loading=false;
         }
@@ -203,7 +205,7 @@ export class EtablissementComponent implements OnInit {
         error: (e) => {console.error(e)
         },
        complete : () => {
-          this.retrieveEtabs()
+          this.Filtrer()
       }
       
     });

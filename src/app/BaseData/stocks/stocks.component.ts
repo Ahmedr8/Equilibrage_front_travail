@@ -213,10 +213,12 @@ export class StocksComponent implements OnInit {
       },
       (error) => {
         console.error('File upload failed:', error);
+        this.closebutton.nativeElement.click();
+        this.loading=false;
         // Handle error, e.g., show an error message
       },
       () => {
-          this.retrieveStocks()
+          this.Filtrer()
           fileInput.value = '';
           this.closebutton.nativeElement.click();
           this.loading=false;
@@ -253,7 +255,7 @@ export class StocksComponent implements OnInit {
       error: (e) => {console.error(e)
       },
      complete : () => {
-        this.retrieveStocks()
+        this.Filtrer()
     }
     
   });

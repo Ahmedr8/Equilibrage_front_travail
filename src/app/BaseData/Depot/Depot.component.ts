@@ -187,9 +187,10 @@ export class DepotComponent implements OnInit {
       },
       (error) => {
         console.error('File upload failed:', error);
-        
+        this.closebutton.nativeElement.click();
+        this.loading=false;
       },()=> {
-        this.retrieveDepots()
+        this.Filtrer()
         this.closebutton.nativeElement.click();
         this.loading=false;
       }
@@ -226,7 +227,7 @@ export class DepotComponent implements OnInit {
       error: (e) => {console.error(e)
       },
      complete : () => {
-        this.retrieveDepots()
+        this.Filtrer()
     }
     
   });

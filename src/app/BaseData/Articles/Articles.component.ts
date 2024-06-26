@@ -112,7 +112,7 @@ export class ArticlesComponent implements OnInit {
         {
           title: 'Actions',
           orderable: false,
-          render: function (data: any, type: any, row: { code_article_dem: any; }, meta: any) {
+          render: function (data: any, type: any, row: { code_barre: any; }, meta: any) {
             return `
               <script> myAngularApp = window.myAngularApp;
               function deleteButtonClick(data) {
@@ -126,7 +126,7 @@ export class ArticlesComponent implements OnInit {
                 
             }
               </script><div class="d-flex flex-inline">
-              <button class="btn btn-danger btn-sm rounded-2 m-1" data-id="${row.code_article_dem}" data-bs-toggle="modal" data-bs-target="#delete" onclick="deleteButtonClick('${row.code_article_dem}')">Delete</button>
+              <button class="btn btn-danger btn-sm rounded-2 m-1" data-id="${row.code_barre}" data-bs-toggle="modal" data-bs-target="#delete" onclick="deleteButtonClick('${row.code_barre}')">Delete</button>
               </div>
             `;
           },
@@ -217,21 +217,21 @@ export class ArticlesComponent implements OnInit {
       return;
     }
     this.loading=true;
-    this.articleService.uploadFile(fileInput.files[0]).subscribe(
-      (response) => {
+    this.articleService.uploadFile(fileInput.files[0]).subscribe({
+      next: (response) => {
         console.log('File uploaded successfully:', response);
-        this.retrieveArticles();
       },
-      (error) => {
+      error: (error) => {
+        this.closebutton.nativeElement.click();
+        this.loading = false;
         console.error('File upload failed:', error);
       },
-      () => {
-          this.retrieveArticles()
-          this.closebutton.nativeElement.click();
-          this.loading=false;
-
+      complete: () => {
+        this.Filtrer();
+        this.closebutton.nativeElement.click();
+        this.loading = false;
       }
-    );
+    });
 
     // Clear the file input
     fileInput.value = '';
@@ -263,7 +263,7 @@ export class ArticlesComponent implements OnInit {
       error: (e) => {console.error(e)
       },
      complete : () => {
-        this.retrieveArticles()
+        this.Filtrer()
     }
     
   });

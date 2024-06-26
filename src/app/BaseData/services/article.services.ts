@@ -43,7 +43,7 @@ getArticlesGenMultipleParams(f:any,page_number:string): Observable<Article[]> {
   }
 
   updateArticle(article: Article): Observable<Article> {
-    const url = `${this.apiUrl}articles/${article.code_article_dem}`;
+    const url = `${this.apiUrl}articles/${article.code_barre}`;
     return this.http.put<Article>(url, article);
   }
 
@@ -56,6 +56,6 @@ getArticlesGenMultipleParams(f:any,page_number:string): Observable<Article[]> {
     const formData = new FormData();
     formData.append('file', file);
 
-    return this.http.post(this.apiUrl+'articles/page=1', formData);
+    return this.http.post(this.apiUrl+'articles/page=1', formData)
   }
 }
