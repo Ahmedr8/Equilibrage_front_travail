@@ -8,8 +8,8 @@ import { SideNavigationComponent } from './side-navigation/side-navigation.compo
 import { FormsModule } from '@angular/forms';
 import {DataTablesModule} from 'angular-datatables';
 import { DatePipe } from '@angular/common';
-import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { NotificationInterceptor } from './notification.interceptor';
+import { ToastrModule } from 'ngx-toastr';
 @NgModule({
   declarations: [	
     AppComponent,
@@ -22,7 +22,11 @@ import { NotificationInterceptor } from './notification.interceptor';
     FormsModule,
     DataTablesModule,
     BrowserAnimationsModule,
-    MatSnackBarModule
+    ToastrModule.forRoot({
+      timeOut: 3000,
+      positionClass: 'toast-top-right',
+      preventDuplicates: true,
+    })
   ],
   providers: [DatePipe,
     { provide: HTTP_INTERCEPTORS, useClass: NotificationInterceptor, multi: true }
