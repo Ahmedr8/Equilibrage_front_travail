@@ -174,8 +174,8 @@
             </div>
             <div class="card">
               <div class="card-body">
-                <div class="table-responsive">
-                  <div [ngStyle]="{ 'display': !tableisloading ? 'block' : 'none'} " >
+                <div class="table-responsive" [ngStyle]="{ 'display': !tableisloading ? 'block' : 'none'} ">
+                  <div>
                     <table class="display" id="datatable3" width="100%" cellspacing="0">
                       <thead>
                       </thead>
@@ -183,7 +183,9 @@
                       </tbody>
                     </table>
                   </div>
-                  <div [ngStyle]="{ 'display': tableisloading ? 'block' : 'none'} " >
+                </div>
+                <div class="table-responsive" [ngStyle]="{ 'display': tableisloading ? 'block' : 'none'} ">
+                  <div>
                     <table class="table" >
                       <thead>
                         <tr>

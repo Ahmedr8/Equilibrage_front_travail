@@ -313,8 +313,6 @@ export class SessionsComponent implements OnInit {
         ,
         complete: ()=> {
           this.refreshList_prop()
-          console.log('showing')
-          this.tableisloading=false
         }
       });
       this.detailDetailSessionService.getDetailSessionsById(id)
@@ -371,6 +369,7 @@ refresh_details():void{
       this.etabs.push(detail.code_etab);
     }
   }
+  this.tableisloading=false
 });
 }
 
