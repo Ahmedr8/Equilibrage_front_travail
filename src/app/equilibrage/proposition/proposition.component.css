@@ -21,4 +21,13 @@
     width: 100%; /* Ensure proper width for table cells */
     box-sizing: border-box; /* Ensure padding and border are included in the width */
   }
+  ::ng-deep .mat-horizontal-stepper-header {
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  ::ng-deep .mat-step-label {
+    margin-top: 8px; /* Adjust margin as needed */
+  }
+
   

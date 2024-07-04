@@ -2,11 +2,544 @@
   <p style="color: rgb(82, 82, 222);"><b style="color: black;">Equilibrage/</b> Création d'une Session</p>
 </div>
 <hr>
-<div class="progress" *ngIf="!submitted">
+<mat-stepper linear  (selectionChange)="onStepSelectionChange($event)">
+  <mat-step label="configuration" state="settings" [editable]="false">
+    <div class="container mt-5" *ngIf="!submitted">
+      <div class="row justify-content-center">
+        <div class="col-md-6">
+          <div class="card shadow">
+            <div class="card-header headerColorBg" style=" color: white; font-weight: 600;">
+              Session
+            </div>
+            <div class="card-body">
+              <div class="form-group">
+                <label for="validationCustom03" class="form-label labelBold">Libellé session</label>
+                <input type="text" class="form-control" id="validationCustom03" placeholder="Nom session" [(ngModel)]="lib"
+                  required>
+                <div class="invalid-feedback">
+                  Please provide a valid name.
+                </div>
+              </div>
+              <div class="form-group" style="margin-top: 3%;">
+                <label for="validationCustom04" class="form-label labelBold">Critère</label>
+                <select class="form-select" aria-label="Default select example" [(ngModel)]="crit" required>
+                  <option value="stock_min" selected>Stock min</option>
+                  <option value="moy_ventes">Moyenne des ventes</option>
+                  <option value="seul_emet">par Emmeteur</option>
+                  <option value="articles_dem">par Articles dimensionné</option>
+                </select>
+              </div>
+              <br>
+              <div class="d-flex justify-content-end">
+                <button class="btn btn_custom" type="button" (click)="Ajouter()"  matStepperNext>Suivant</button>
+                <!-- The empty span below is for spacing -->
+                <span></span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div>
+    </div>
+  </mat-step>
+  <mat-step label="Choisir Articles" state="article"  [editable]="articleA || etabA">
+    <div [ngStyle]="{ 'display': articleA ? 'block' : 'none'} ">
+      <br>
+      <div *ngIf="crit!='articles_dem'">
+      <div class="card shadow">
+        <div class="card-header py-1 headerColorBg" style=" color: white; font-weight: 600;">
+          Filtres
+        </div>
+        <div class="card-body">
+          <div class="row">
+            <div class="col-md-3">
+              <label for="validationCustom01" class="form-label labelBold">Code Générique</label>
+              <input type="text" class="form-control custom-placeholder" id="validationCustom01" placeholder="Code Générique"
+                [(ngModel)]="cag">
+            </div>
+            <div class="col-md-3">
+              <label for="validationCustom02" class="form-label labelBold">Code à barre</label>
+              <input type="text" class="form-control custom-placeholder" id="validationCustom02" placeholder="Code à barre" [(ngModel)]="cb">
+            </div>
+            <div class="col-md-3">
+              <label for="validationCustomUsername" class="form-label labelBold">Code fournisseur</label>
+              <div class="input-group has-validation">
+                <input type="text" class="form-control custom-placeholder" id="validationCustomUsername" aria-describedby="inputGroupPrepend"
+                  placeholder="Code fournissuer" [(ngModel)]="cf">
+              </div>
+            </div>
+            <div class="col-md-3">
+              <label for="validationCustom03" class="form-label labelBold">Fournisseur Principale</label>
+              <input type="text" class="form-control custom-placeholder" id="validationCustom03" placeholder="Fournisseur Principale" [(ngModel)]="fp">
+            </div>
+          </div>
+          <div class="row" style="margin-top: 1%;">
+            <div class="col-md-3">
+              <label for="validationCustom03" class="form-label labelBold">Collection</label>
+              <input type="text" class="form-control custom-placeholder" id="validationCustom03" placeholder="Collection" [(ngModel)]="m">
+            </div>
+            <div class="col-md-3">
+              <label for="validationCustom04" class="form-label labelBold">Famille</label>
+              <input type="text" name="" id="" placeholder="Famille" class="form-control custom-placeholder" [(ngModel)]="c">
+            </div>
+            <div class="col-md-3">
+              <label for="validationCustom04" class="form-label labelBold">Sous Famille</label>
+              <input type="text" name="" id="" placeholder="Sous Famille" class="form-control custom-placeholder" [(ngModel)]="sc">
+            </div>
+            <div class="col-md-3">
+              <label for="validationCustom02" class="form-label labelBold">Date Injection</label>
+              <input type="date" class="form-control custom-placeholder" id="validationCustom02" placeholder="Date Injection" [(ngModel)]="date_injection">
+            </div>
+          </div>
+          <br>
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn_custom" type="button" (click)="Filtrer_click()" style="margin-right: 2%; margin-bottom: 1%; font-weight: bold;"><span><i
+            class="bi bi-funnel-fill"></i></span>Filtrer</button>
+        </div>
+      </div>
+      <br>
+      <div class="d-flex justify-content-between">
+        <button class="btn btn_custom" type="button" disabled  matStepperPrevious>Previous</button>
+        <button class="btn btn_custom" type="button" (click)="articleShow(false)"  matStepperNext>Next</button>
+      </div>
+      <br>
+    <div class="card">
+      <div class="card-header" *ngIf="filter_clicked" >
+        <span class="filter-text" > <i class="bi bi-funnel-fill"></i> Filtre  </span>
+  
+        <div class="rounded-btn" *ngIf="cag_filter!=''">
+          <span class="item_filter">code article gen={{cag_filter}} </span>
+          <button type="button" class="btn-close" aria-label="Close" (click)="del_filter(cag)"></button>
+        </div>
+  
+        <div class="rounded-btn" *ngIf="fp_filter!=''">
+          <span class="item_filter">Fournisseur Principale={{fp}} </span>
+          <button type="button" class="btn-close" aria-label="Close" (click)="del_filter(fp)"></button>
+        </div>
+  
+        <div class="rounded-btn" *ngIf="date_injection_filter!=''">
+          <span class="item_filter">Date Injection={{date_injection_filter}} </span>
+          <button type="button" class="btn-close" aria-label="Close" (click)="del_filter(date_injection)"></button>
+        </div>
+    
+        <div class="rounded-btn" *ngIf="cb_filter!=''">
+        <span class="item_filter">code barre={{cb_filter}} </span>
+        <button type="button" class="btn-close" aria-label="Close" (click)="del_filter(cb)"></button>
+        </div>
+    
+        <div class="rounded-btn" *ngIf="cf_filter!=''">
+        <span class="item_filter">code fournisseur={{cf_filter}} </span>
+        <button type="button" class="btn-close" aria-label="Close" (click)="del_filter(cf)"></button>
+      </div>
+  
+      <div class="rounded-btn" *ngIf="m_filter!=''">
+        <span class="item_filter">Collection={{m_filter}} </span>
+        <button type="button" class="btn-close" aria-label="Close" (click)="del_filter(m)"></button>
+      </div>
+    
+      <div class="rounded-btn" *ngIf="c_filter!=''">
+        <span class="item_filter">Famille={{c_filter}} </span>
+        <button type="button" class="btn-close" aria-label="Close" (click)="del_filter(c)"></button>
+      </div>
+  
+      <div class="rounded-btn" *ngIf="sc_filter!=''">
+        <span class="item_filter">sous Famille={{sc_filter}} </span>
+        <button type="button" class="btn-close" aria-label="Close" (click)="del_filter(sc)"></button>
+      </div>
+  
+      </div>
+      <div class="card-body">
+        <div class="table-responsive" >
+          <table class="display" id="datatable1" width="100%" cellspacing="0">
+            <thead>
+            </thead>
+            <tbody>
+            </tbody>
+            <tfoot>
+              <tr>
+                <td [attr.colspan]="totalColumns">
+                  {{selected_articles.length}} item selected
+                  <div style="display: flex; align-items: center; justify-content: center; "><button class="btn switch_page"
+                      (click)="previous_page()" [disabled]="no_previous">&laquo; Previous</button>
+                    <button class="btn switch_page" (click)="next_page()" [disabled]="end_of_data">Next &raquo;</button>
+                    <div><p style="  margin: 0 5px;padding: 5px 10px;">   page {{page_number}}</p></div>
+                  </div>
+                  <div></div>
+                </td>
+              </tr>
+            </tfoot>
+          </table>
+        </div>
+      </div>
+    </div>
+    <br>
+    <!-- scroll bar  -->
+  <div class="card" *ngIf="selected_articles.length > 0" >
+    <div class="card-header py-1 headerColorBg d-flex justify-content-between align-items-center" style="color: white; font-weight: 600;">
+      <div>Selected Articles</div>
+      <div><span>{{selected_articles.length}} items selected</span></div>
+    </div>
+    <div class="table-container">
+      <table class="table table-hover table-striped">
+        <thead>
+          <tr>
+            <th style="width:40%">Code article DIM </th>
+            <th style="width:50%">Code à barre</th>
+            <th style="width:7%">Désignation</th>
+            <th style="width:3%">action</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let article of selected_articles">
+            <td>{{article.code_article_dem}}</td>
+            <td>{{article.code_barre}}</td>
+            <td>{{article.libelle}}</td>
+            <td><button class="btn btn-danger btn-sm rounded-2 m-1" type="button" (click)="Deselect_article(article)">Deselect</button></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="card-footer">
+      {{selected_articles.length}} items selected
+    </div>
+  </div>
+      </div>
+  
+      <div [ngStyle]="{ 'display': crit=='articles_dem' ? 'block' : 'none'} ">
+        <div class="card shadow">
+          <div class="card-header py-1 headerColorBg" style=" color: white; font-weight: 600;">
+            Filtres
+          </div>
+          <div class="card-body">
+            <div class="row">
+              <div class="col-md-3">
+                <label for="validationCustom01" class="form-label labelBold">Code Générique</label>
+                <input type="text" class="form-control custom-placeholder" id="validationCustom01" placeholder="Code Générique"
+                  [(ngModel)]="cag">
+              </div>
+              <div class="col-md-3">
+                <label for="validationCustom02" class="form-label labelBold">Désignation</label>
+                <input type="text" class="form-control custom-placeholder" id="validationCustom02" placeholder="Désignation" [(ngModel)]="desig">
+              </div>
+              <div class="col-md-3">
+                <label for="validationCustomUsername" class="form-label labelBold">Code fournisseur</label>
+                <div class="input-group has-validation">
+                  <input type="text" class="form-control custom-placeholder" id="validationCustomUsername" aria-describedby="inputGroupPrepend"
+                    placeholder="Code fournissuer" [(ngModel)]="cf">
+                </div>
+              </div>
+            </div>
+            <div class="row" style="margin-top: 1%;">
+              <div class="col-md-3">
+                <label for="validationCustom03" class="form-label labelBold">Collection</label>
+                <input type="text" class="form-control custom-placeholder" id="validationCustom03" placeholder="Collection" [(ngModel)]="m">
+              </div>
+            </div>
+            <br>
+          </div>
+          <div class="modal-footer">
+            <button class="btn btn_custom" type="button" (click)="Filtrer_click_articles_gen()" style="margin-right: 2%; margin-bottom: 1%; font-weight: bold;"><span><i
+              class="bi bi-funnel-fill"></i></span>Filtrer</button>
+          </div>
+        </div>
+        <br>
+        <div class="d-flex justify-content-between">
+          <button class="btn btn_custom" type="button" disabled>Previous</button>
+          <button class="btn btn_custom" type="button" (click)="articleShow(false)">Next</button>
+        </div>
+        <br>
+      <div class="card">
+        <div class="card-header" *ngIf="filter_clicked" >
+          <span class="filter-text" > <i class="bi bi-funnel-fill"></i> Filtre  </span>
+          
+          <div class="rounded-btn" *ngIf="cag_filter!=''">
+            <span class="item_filter">code article gen={{cag_filter}} </span>
+            <button type="button" class="btn-close" aria-label="Close" (click)="del_filter(cag)"></button>
+          </div>
+      
+          <div class="rounded-btn" *ngIf="desig_filter!=''">
+          <span class="item_filter">code barre={{desig_filter}} </span>
+          <button type="button" class="btn-close" aria-label="Close" (click)="del_filter(desig)"></button>
+          </div>
+      
+          <div class="rounded-btn" *ngIf="cf_filter!=''">
+          <span class="item_filter">code fournisseur={{cf_filter}} </span>
+          <button type="button" class="btn-close" aria-label="Close" (click)="del_filter(cf)"></button>
+        </div>
+    
+        <div class="rounded-btn" *ngIf="m_filter!=''">
+          <span class="item_filter">Model={{m_filter}} </span>
+          <button type="button" class="btn-close" aria-label="Close" (click)="del_filter(m)"></button>
+        </div>
+    
+        </div>
+        <div class="card-body">
+          <div class="table-responsive" >
+            <table class="display" id="datatable4" width="100%" cellspacing="0">
+              <thead>
+              </thead>
+              <tbody>
+              </tbody>
+              <tfoot>
+                <tr>
+                  <td [attr.colspan]="totalColumns">
+                    {{selected_articles.length}} item selected
+                    <div style="display: flex; align-items: center; justify-content: center; "><button class="btn switch_page"
+                        (click)="previous_page_articles_gen()" [disabled]="no_previous">&laquo; Previous</button>
+                      <button class="btn switch_page" (click)="next_page_articles_gen()" [disabled]="end_of_data">Next &raquo;</button>
+                      <div><p style="  margin: 0 5px;padding: 5px 10px;">   page {{page_number}}</p></div>
+                    </div>
+                    <div></div>
+                  </td>
+                </tr>
+              </tfoot>
+            </table>
+          </div>
+        </div>
+      </div>
+      <br>
+      <!-- scroll bar -->
+      <div class="card" *ngIf="selected_articles.length > 0" >
+      <div class="card-header py-1 headerColorBg d-flex justify-content-between align-items-center" style="color: white; font-weight: 600;">
+        <div>Selected Articles</div>
+        <div><span>{{selected_articles.length}} items selected</span></div>
+      </div>
+      <div class="table-container">
+        <table class="table table-hover table-striped">
+          <thead>
+            <tr>
+              <th style="width:40%">Code article Gen </th>
+              <th style="width:50%">Désignation</th>
+              <th style="width:7%">Model</th>
+              <th style="width:3%">action</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let article of selected_articles">
+              <td>{{article.code_article_gen}}</td>
+              <td>{{article.libelle}}</td>
+              <td>{{article.fam1}}</td>
+              <td><button class="btn btn-danger btn-sm rounded-2 m-1" type="button" (click)="Deselect_article_gen(article)">Deselect</button></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="card-footer">
+        {{selected_articles.length}} items selected
+      </div>
+      </div>
+      </div>
+  
+  </div> 
+    <div>
+    </div>
+  </mat-step>
+  <mat-step label="Choisir Etablissements" state="etab" [editable]="etabA">
+    <div [ngStyle]="{ 'display': etabA ? 'block' : 'none'} ">
+      <br>
+      <div class="card">
+        <div class="card-header">
+          Filter
+        </div>
+        <div class="card-body">
+          <div class="row">
+            <div class="col-md-3">
+              <label for="validationCustom01" class="form-label labelBold">Code Etablissement</label>
+              <input type="text" class="form-control custom-placeholder" id="validationCustom01" placeholder="Code Etablissement"
+                [(ngModel)]="ce">
+            </div>
+            <div class="col-md-3">
+              <label for="validationCustom02" class="form-label labelBold">Adresse</label>
+              <input type="text" class="form-control custom-placeholder" id="validationCustom02" placeholder="Adresse" [(ngModel)]="adr">
+            </div>
+            <div class="col-md-3">
+              <label for="validationCustomUsername" class="form-label labelBold">Type</label>
+              <div class="input-group has-validation">
+                <input type="text" class="form-control custom-placeholder" id="validationCustomUsername" aria-describedby="inputGroupPrepend"
+                  placeholder="Type" [(ngModel)]="type">
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn_custom" type="button" (click)="Filtrer2()" style="margin-right: 2%; margin-bottom: 1%; font-weight: bold;"><span><i
+            class="bi bi-funnel-fill"></i></span>Filtrer</button>
+        </div>
+      </div>
+      <br>
+      <div class="d-flex justify-content-between">
+        <button class="btn btn_custom" type="button" (click)="articleShow(true)"  matStepperPrevious>Previous</button>
+        <button class="btn btn_custom" type="button" (click)="createProp()"  matStepperNext>Next</button>
+      </div>
+      <br>
+      <div class="card">
+        <div class="card-header" *ngIf="filter_clicked2" >
+          <span class="filter-text" > <i class="bi bi-funnel-fill"></i> Filtre  </span>
+    
+          <div class="rounded-btn" *ngIf="ce_filter!=''">
+            <span class="item_filter">code Etablissement={{ce_filter}} </span>
+            <button type="button" class="btn-close" aria-label="Close" (click)="del_filter2(ce)"></button>
+          </div>
+  
+          <div class="rounded-btn" *ngIf="adr_filter!=''">
+            <span class="item_filter">Adresse={{adr_filter}} </span>
+            <button type="button" class="btn-close" aria-label="Close" (click)="del_filter2(adr)"></button>
+          </div>
+  
+          <div class="rounded-btn" *ngIf="type!=''">
+            <span class="item_filter">Type Etablissement={{type_filter}} </span>
+            <button type="button" class="btn-close" aria-label="Close" (click)="del_filter2(type)"></button>
+          </div>
+  
+        </div>
+        <div class="card-body">
+          <div class="table-responsive">
+            <table class="display" id="datatable2" width="100%" cellspacing="0">
+              <thead>
+                <tr>
+                  <th style="width:3%"></th>
+                  <th style="width:14%">Code Etablissement </th>
+                  <th style="width:14%">Libellé</th>
+                  <th style="width:14%">Adresse1</th>
+                  <th style="width:14%">Adresse2</th>
+                  <th style="width:14%">Type</th>
+                  <th style="width:14%">Priorité</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let etab of etabs">
+                  <td></td>
+                  <td>{{etab.code_etab}}</td>
+                  <td>{{etab.libelle}}</td>
+                  <td>{{etab.adresse1}}</td>
+                  <td>{{etab.adresse2}}</td>
+                  <td>{{etab.type}}</td>
+                  <td><input type="number" placeholder="{{etab.priorite}}" [(ngModel)]="etab.priorite"
+                      (change)="onInputChange(etab)"></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div>
+    </div>
+  </mat-step>
+  <mat-step label="Propositions" state="prop" >
+    <div [ngStyle]="{ 'display': dataLoading ? 'block' : 'none'} ">
+      <table class="table table-responsive">
+        <thead>
+          <tr>
+            <th>Ordre transfert</th>
+            <th>Code Gén</th>
+            <th>Code DIM</th>
+            <th>Code Barre</th>
+            <th>Code Dépot Emmet</th>
+            <th>Taille</th>
+            <th>Couleur</th>
+            <th>Emmeteur</th>
+            <th>Récepteur</th>
+            <th>Qté à Transferer</th>
+            <th>Code session</th>
+            <th>Date création</th>
+            <th>Créateur</th>
+            <th>Statut</th>
+          </tr>
+        </thead>
+        <tr>
+          <td>
+            <div style="width: 70%; margin-left: 5%; "><ngx-skeleton-loader #skeletonLoader [count]="10" [appearance]="'line'"></ngx-skeleton-loader></div>
+          </td>
+          <td><div style="margin: 10%;"><ngx-skeleton-loader #skeletonLoader [count]="10" [appearance]="'line'"></ngx-skeleton-loader></div></td>
+          <td><div style="margin: 10%;" ><ngx-skeleton-loader #skeletonLoader [count]="10" [appearance]="'line'"></ngx-skeleton-loader></div></td>    
+          <td><div style="margin: 10%;" ><ngx-skeleton-loader #skeletonLoader [count]="10" [appearance]="'line'"></ngx-skeleton-loader></div></td>
+          <td><div style="margin: 10%;"><ngx-skeleton-loader #skeletonLoader [count]="10" [appearance]="'line'"></ngx-skeleton-loader></div></td>
+          <td><div style="margin: 10%;"><ngx-skeleton-loader #skeletonLoader [count]="10" [appearance]="'line'"></ngx-skeleton-loader></div></td>
+          <td><div style="margin: 10%;"><ngx-skeleton-loader #skeletonLoader [count]="10" [appearance]="'line'"></ngx-skeleton-loader></div></td>
+          <td><div style="margin: 10%;" ><ngx-skeleton-loader #skeletonLoader [count]="10" [appearance]="'line'"></ngx-skeleton-loader></div></td>    
+          <td><div style="margin: 10%;" ><ngx-skeleton-loader #skeletonLoader [count]="10" [appearance]="'line'"></ngx-skeleton-loader></div></td>
+          <td><div style="margin: 10%;"><ngx-skeleton-loader #skeletonLoader [count]="10" [appearance]="'line'"></ngx-skeleton-loader></div></td>
+          <td><div style="margin: 10%;"><ngx-skeleton-loader #skeletonLoader [count]="10" [appearance]="'line'"></ngx-skeleton-loader></div></td>
+          <td><div style="margin: 10%;"><ngx-skeleton-loader #skeletonLoader [count]="10" [appearance]="'line'"></ngx-skeleton-loader></div></td>
+          <td><div style="margin: 10%;" ><ngx-skeleton-loader #skeletonLoader [count]="10" [appearance]="'line'"></ngx-skeleton-loader></div></td>    
+          <td><div style="margin: 10%;" ><ngx-skeleton-loader #skeletonLoader [count]="10" [appearance]="'line'"></ngx-skeleton-loader></div></td>
+          <td><div style="margin: 10%;"><ngx-skeleton-loader #skeletonLoader [count]="10" [appearance]="'line'"></ngx-skeleton-loader></div></td>
+        
+        </tr>
+      </table>
+    </div>
+    <div [ngStyle]="{ 'display': created ? 'block' : 'none'} ">
+      <div class="card">
+        <div class="card-body">
+          <div class="table-responsive">
+            <table class="display" id="datatable3" width="100%" cellspacing="0">
+              <thead>
+                <tr>
+                  <th>Ordre transfert</th>
+                  <th>Code Gén</th>
+                  <th>Code DIM</th>
+                  <th>Code Barre</th>
+                  <th>Code Dépot Emmet</th>
+                  <th>Taille</th>
+                  <th>Couleur</th>
+                  <th>Emmeteur</th>
+                  <th>Récepteur</th>
+                  <th>Qté à Transferer</th>
+                  <th>Code session</th>
+                  <th>Date création</th>
+                  <th>Créateur</th>
+                  <th>Statut</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let prop of props">
+                  <td>{{prop.ordre_trf}}</td>
+                  <td>{{prop.code_article_gen}}</td>
+                  <td>{{prop.code_article_dem}}</td>
+                  <td>{{prop.code_barre}}</td>
+                  <td>{{prop.code_depot_emet}}</td>
+                  <td>{{prop.lib_taille}}</td>
+                  <td>{{prop.lib_couleur}}</td>
+                  <td>{{prop.emet}}</td>
+                  <td>{{prop.recep}}</td>
+                  <td>{{prop.qte_trf}}</td>
+                  <td>{{prop.code_session}}</td>
+                  <td>{{prop.date}}</td>
+                  <td>{{prop.nom}}</td>
+                  <td>{{prop.statut}}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </mat-step>
+
+  <!-- Icon overrides. -->
+  <ng-template matStepperIcon="settings">
+    <mat-icon>settings</mat-icon>
+  </ng-template>
+  <ng-template matStepperIcon="article">
+    <mat-icon>inbox</mat-icon>
+  </ng-template>
+  <ng-template matStepperIcon="etab">
+    <mat-icon>business</mat-icon>
+  </ng-template>
+  <ng-template matStepperIcon="prop">
+    <mat-icon>ballot</mat-icon>
+  </ng-template>
+</mat-stepper>
+<!-- <div class="progress" *ngIf="!submitted">
   <div class="progress-bar" role="progressbar" style="width: 25%;" aria-valuenow="25" aria-valuemin="0"
     aria-valuemax="100"></div>
-</div>
-<div class="container mt-5" *ngIf="!submitted">
+</div> -->
+<!-- <div class="container mt-5" *ngIf="!submitted">
   <div class="row justify-content-center">
     <div class="col-md-6">
       <div class="card shadow">
@@ -34,21 +567,20 @@
           <br>
           <div class="d-flex justify-content-end">
             <button class="btn btn_custom" type="button" (click)="Ajouter()">Suivant</button>
-            <!-- The empty span below is for spacing -->
             <span></span>
           </div>
         </div>
       </div>
     </div>
   </div>
-</div>
-<div class="progress" *ngIf="submitted">
+</div> -->
+<!-- <div class="progress" *ngIf="submitted">
   <div class="progress-bar" role="progressbar"
     [ngStyle]="{'width': articleA  ? '50%': ( etabA  ? '75%' : ( created  ? '100%' : '0%'))  }" aria-valuenow="25"
     aria-valuemin="0" aria-valuemax="100"></div>
-</div>
+</div> -->
 <div [ngStyle]="{ 'display': submitted ? 'block' : 'none'}">
-  <ul class="nav nav-tabs" >
+  <!-- <ul class="nav nav-tabs" >
     <li class="nav-item" style="cursor: pointer;">
       <a class="nav-link " [ngClass]="articleA ? 'active' : ''"
         [ngStyle]="{'pointerEvents': articleA || etabA ? '' : 'none'}" aria-current="page"
@@ -61,8 +593,8 @@
     <li class="nav-item" style="cursor: pointer;">
       <a class="nav-link" [ngClass]="created ? 'active' : ''">Proposition</a>
     </li>
-  </ul>
-  <div [ngStyle]="{ 'display': articleA ? 'block' : 'none'} ">
+  </ul> -->
+  <!-- <div [ngStyle]="{ 'display': articleA ? 'block' : 'none'} ">
     <br>
     <div *ngIf="crit!='articles_dem'">
     <div class="card shadow">
@@ -193,7 +725,7 @@
     </div>
   </div>
   <br>
-  <!-- scroll bar  -->
+ 
 <div class="card" *ngIf="selected_articles.length > 0" >
   <div class="card-header py-1 headerColorBg d-flex justify-content-between align-items-center" style="color: white; font-weight: 600;">
     <div>Selected Articles</div>
@@ -319,7 +851,7 @@
       </div>
     </div>
     <br>
-    <!-- scroll bar -->
+    
     <div class="card" *ngIf="selected_articles.length > 0" >
     <div class="card-header py-1 headerColorBg d-flex justify-content-between align-items-center" style="color: white; font-weight: 600;">
       <div>Selected Articles</div>
@@ -352,8 +884,8 @@
     </div>
     </div>
 
-</div> 
-  <div [ngStyle]="{ 'display': etabA ? 'block' : 'none'} ">
+</div>  -->
+  <!-- <div [ngStyle]="{ 'display': etabA ? 'block' : 'none'} ">
     <br>
     <div class="card">
       <div class="card-header">
@@ -440,8 +972,8 @@
         </div>
       </div>
     </div>
-  </div>
-  <div [ngStyle]="{ 'display': dataLoading ? 'block' : 'none'} ">
+  </div> -->
+  <!-- <div [ngStyle]="{ 'display': dataLoading ? 'block' : 'none'} ">
     <table class="table table-responsive">
       <thead>
         <tr>
@@ -528,6 +1060,6 @@
         </div>
       </div>
     </div>
-  </div>
+  </div> -->
 
 </div>

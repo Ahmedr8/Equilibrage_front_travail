@@ -2,6 +2,7 @@
 
 @import "~bootstrap/dist/css/bootstrap.min.css";
 @import '~bootstrap-icons/font/bootstrap-icons.css';
+@import "~@angular/material/prebuilt-themes/indigo-pink.css";
 
 .zoum {
     zoom: 90%;

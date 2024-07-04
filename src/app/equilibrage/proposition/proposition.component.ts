@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit ,ViewEncapsulation} from '@angular/core';
 import { Article } from 'src/app/BaseData/models/Article.model';
 import { Etablissement } from 'src/app/BaseData/models/Etablissement.model';
 import { ArticleService } from 'src/app/BaseData/services/article.services';
@@ -10,11 +10,19 @@ import { DetailDetailSessionService } from '../services/detail_session.services'
 import { PropositionService } from '../services/proposition.services';
 import { propAffiche } from '../models/proposition.model';
 import { filter } from 'rxjs';
+import {STEPPER_GLOBAL_OPTIONS} from '@angular/cdk/stepper';
+import { StepperSelectionEvent } from '@angular/cdk/stepper';
 declare var $ : any
 @Component({
   selector: 'app-proposition',
   templateUrl: './proposition.component.html',
-  styleUrls: ['./proposition.component.css','../equilibrage.component.css']
+  styleUrls: ['./proposition.component.css','../equilibrage.component.css'],
+  providers: [
+    {
+      provide: STEPPER_GLOBAL_OPTIONS,
+      useValue: {displayDefaultIndicatorType: false},
+    },
+  ],
 })
 export class PropositionComponent implements OnInit {
   articles: Article[]=[];
@@ -80,6 +88,15 @@ ngOnInit() {
   this.retrieveEtabs();
   this.retrieveArticlesGen();
 }
+
+onStepSelectionChange(event: StepperSelectionEvent) {
+  if (event.selectedIndex === 1) {
+    this.articleShow(true);
+  }else if(event.selectedIndex == 2){
+    this.articleShow(false);
+  }
+}
+
 retrieveArticles(): void {
     this.articleService.getArticles(this.page_number.toString())
       .subscribe({
