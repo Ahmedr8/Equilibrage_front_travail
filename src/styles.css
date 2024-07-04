@@ -4,6 +4,9 @@
 @import '~bootstrap-icons/font/bootstrap-icons.css';
 @import "~@angular/material/prebuilt-themes/indigo-pink.css";
 
+body {
+    background-color: #F5F5F5 !important;
+  }
 .zoum {
     zoom: 90%;
 }
