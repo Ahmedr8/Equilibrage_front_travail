@@ -2,8 +2,8 @@
   <p style="color: rgb(82, 82, 222);"><b style="color: black;">Equilibrage/</b> Création d'une Session</p>
 </div>
 <hr>
-  <mat-stepper linear  (selectionChange)="onStepSelectionChange($event)">
-    <mat-step label="configuration" state="settings" [editable]="false">
+  <mat-stepper linear  (selectionChange)="onStepSelectionChange($event)" #stepper>
+    <mat-step label="configuration" state="settings" [editable]="false" [completed]="submitted">
       <div class="container mt-5" *ngIf="!submitted">
         <div class="row justify-content-center">
           <div class="col-md-6">
@@ -31,7 +31,7 @@
                 </div>
                 <br>
                 <div class="d-flex justify-content-end">
-                  <button class="btn btn_custom" type="button" (click)="Ajouter()"  matStepperNext>Suivant</button>
+                  <button class="btn btn_custom" type="button" (click)="Ajouter(stepper)" >Suivant</button>
                   <!-- The empty span below is for spacing -->
                   <span></span>
                 </div>
@@ -247,8 +247,8 @@
           </div>
           <br>
           <div class="d-flex justify-content-between">
-            <button class="btn btn_custom" type="button" disabled>Previous</button>
-            <button class="btn btn_custom" type="button" (click)="articleShow(false)">Next</button>
+            <button class="btn btn_custom" type="button" disabled matStepperPrevious>Previous</button>
+            <button class="btn btn_custom" type="button" (click)="articleShow(false)" matStepperNext>Next</button>
           </div>
           <br>
         <div class="card">
@@ -338,7 +338,7 @@
       <div>
       </div>
     </mat-step>
-    <mat-step label="Choix des Etablissements" state="etab" [editable]="etabA">
+    <mat-step label="Choix des Etablissements" state="etab" [editable]="etabA" [completed]="propgen">
       <div [ngStyle]="{ 'display': etabA ? 'block' : 'none'} ">
         <br>
         <div class="card">
@@ -373,7 +373,7 @@
         <br>
         <div class="d-flex justify-content-between">
           <button class="btn btn_custom" type="button" (click)="articleShow(true)"  matStepperPrevious>Previous</button>
-          <button class="btn btn_custom" type="button" (click)="createProp()"  matStepperNext>Next</button>
+          <button class="btn btn_custom" type="button" (click)="createProp(stepper)" >Next</button>
         </div>
         <br>
         <div class="card">
@@ -430,7 +430,7 @@
       <div>
       </div>
     </mat-step>
-    <mat-step label="Propositions" state="prop" >
+    <mat-step label="Propositions" state="prop" [completed]="created">
       <div [ngStyle]="{ 'display': dataLoading ? 'block' : 'none'} ">
         <table class="table table-responsive">
           <thead>
@@ -535,6 +535,9 @@
       <mat-icon>ballot</mat-icon>
     </ng-template>
   </mat-stepper>
+
+
+
 <!-- <div class="progress" *ngIf="!submitted">
   <div class="progress-bar" role="progressbar" style="width: 25%;" aria-valuenow="25" aria-valuemin="0"
     aria-valuemax="100"></div>

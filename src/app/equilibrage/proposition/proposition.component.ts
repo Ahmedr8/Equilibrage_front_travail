@@ -1,4 +1,4 @@
-import { Component, OnInit ,ViewEncapsulation} from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit ,ViewEncapsulation} from '@angular/core';
 import { Article } from 'src/app/BaseData/models/Article.model';
 import { Etablissement } from 'src/app/BaseData/models/Etablissement.model';
 import { ArticleService } from 'src/app/BaseData/services/article.services';
@@ -12,6 +12,7 @@ import { propAffiche } from '../models/proposition.model';
 import { filter } from 'rxjs';
 import {STEPPER_GLOBAL_OPTIONS} from '@angular/cdk/stepper';
 import { StepperSelectionEvent } from '@angular/cdk/stepper';
+import { MatStepper } from '@angular/material/stepper';
 declare var $ : any
 @Component({
   selector: 'app-proposition',
@@ -69,7 +70,7 @@ export class PropositionComponent implements OnInit {
   articleGenList:any;
   submitted = false;
   created=false;
-  articleA=true;
+  articleA=false;
   etabA=false;
   dataLoading=false;
   totalColumns:number=4;
@@ -82,7 +83,8 @@ export class PropositionComponent implements OnInit {
     'selectAll',
     'selectNone'
 ]
-  constructor(private articleService: ArticleService,private etabService: EtablissementService,private sessionService:SessionService,private datePipe: DatePipe,private detailDetailSessionService: DetailDetailSessionService,private propositionService:PropositionService) { }
+propgen:boolean=false
+  constructor(private cdr: ChangeDetectorRef,private articleService: ArticleService,private etabService: EtablissementService,private sessionService:SessionService,private datePipe: DatePipe,private detailDetailSessionService: DetailDetailSessionService,private propositionService:PropositionService) { }
 ngOnInit() {
   this.retrieveArticles();
   this.retrieveEtabs();
@@ -664,13 +666,13 @@ deselectListener =() => {
     this.articleA=v;
     this.etabA= !(v);
   }
-  Ajouter():void{
+  Ajouter(stepper: MatStepper):void{
     const data = {
       code_session: null,
       libelle: this.lib,
       critere: this.crit,
       date: this.datePipe.transform(new Date(), 'yyyy-MM-dd'),
-      id_user: 2
+      id_user: 2,
 
     };
     this.sessionService.createSession(data)
@@ -683,12 +685,22 @@ deselectListener =() => {
         ,
         complete: () => {
           this.refreshList_etabs()
+          if(this.submitted){
+            console.log(this.submitted)
+            this.cdr.detectChanges(); 
+            stepper.next();
+          }
         }
       });
   }
-  createProp():void{
+  createProp(stepper: MatStepper):void{
     console.log('loading')
-        this.dataLoading = true;
+    this.propgen=true
+    if(this.propgen){
+      this.cdr.detectChanges(); 
+      stepper.next()
+    }
+        this.dataLoading = true; 
         this.articleA=false;
         this.etabA=false;
     var id_articles

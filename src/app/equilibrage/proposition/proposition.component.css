@@ -48,4 +48,16 @@
     border-radius: 10px;
    }
 
+::ng-deep .mat-horizontal-stepper-header .mat-step-icon {
+  font-size: 2rem; /* Increase the size of the icons */
+  width: 40px;     /* Adjust the width */
+  height: 40px;    /* Adjust the height */
+  line-height: 48px; /* Center the icon vertically */
+}
+
+::ng-deep .mat-horizontal-stepper-header .mat-step-icon .mat-icon {
+  font-size: x-large;
+  height: auto;
+  width: auto;
+}
   
