@@ -28,6 +28,11 @@ declare var $ : any
 export class PropositionComponent implements OnInit {
   articles: Article[]=[];
   articles_gen: Article[]=[];
+  start_date:any=''
+  end_date:any=''
+  recepteur_number:number=0
+  startDateError = false;
+  endDateError = false;
   cag:any='';
   cag_filter:any='';
   cad:any='';
@@ -36,6 +41,7 @@ export class PropositionComponent implements OnInit {
   m:any='';
   c:any='';
   sc:any='';
+  code_couleur:any='';
   fp:any='';
   date_injection:any='';
   cb_filter:any='';
@@ -43,6 +49,7 @@ export class PropositionComponent implements OnInit {
   m_filter:any='';
   c_filter:any='';
   sc_filter:any='';
+  code_couleur_filter:any='';
   desig_filter:any='';
   fp_filter:any='';
   date_injection_filter:any='';
@@ -496,7 +503,7 @@ deselectListener =() => {
       code_fournisseur: this.cf,
       fam1: this.m,
       fam2: this.c,
-      fam3:this.sc,
+      code_couleur:this.code_couleur,
       date_injection:this.date_injection,
       fournisseur_principale:this.fp
     };
@@ -517,7 +524,7 @@ deselectListener =() => {
       ,
        complete : () => {
           this.refreshList_articles()
-          if ((this.cag!='')|| (this.cb!='')||(this.cf!='')||(this.m!='')|| (this.c!='')||(this.sc!='') || (this.fp!='')||(this.date_injection!='')){
+          if ((this.cag!='')|| (this.cb!='')||(this.cf!='')||(this.m!='')|| (this.c!='')||(this.sc!='') || (this.fp!='')||(this.date_injection!='')||(this.code_couleur!='')){
             this.filter_clicked=true
             this.sc_filter=this.sc
             this.m_filter=this.m
@@ -527,6 +534,7 @@ deselectListener =() => {
             this.cf_filter=this.cf
             this.fp_filter=this.fp
             this.date_injection_filter=this.date_injection
+            this.code_couleur_filter=this.code_couleur
           }else
           {this.filter_clicked=false}
       }
@@ -578,7 +586,7 @@ deselectListener =() => {
       code_fournisseur: this.cf,
       fam1: this.m,
       fam2: this.c,
-      fam3:this.sc,
+      code_couleur:this.code_couleur,
       date_injection:this.date_injection,
       fournisseur_principale:this.fp
     };
@@ -590,7 +598,7 @@ deselectListener =() => {
       error: (e) => console.error(e)
       , complete: ()=> {
         this.refreshList_articles()
-        if ((this.cag!='')|| (this.cb!='')||(this.cf!='')||(this.m!='')|| (this.c!='')||(this.sc!='') || (this.fp!='')||(this.date_injection!='')){
+        if ((this.cag!='')|| (this.cb!='')||(this.cf!='')||(this.m!='')|| (this.c!='')||(this.sc!='') || (this.fp!='')||(this.date_injection!='')||(this.code_couleur!='')){
           this.filter_clicked=true
           this.sc_filter=this.sc
           this.m_filter=this.m
@@ -600,6 +608,7 @@ deselectListener =() => {
           this.cf_filter=this.cf
           this.fp_filter=this.fp
           this.date_injection_filter=this.date_injection
+          this.code_couleur_filter=this.code_couleur
         }else
         {this.filter_clicked=false}
       }
@@ -666,16 +675,78 @@ deselectListener =() => {
     this.articleA=v;
     this.etabA= !(v);
   }
+
+  validateDates() {
+    const today = new Date();
+    const startDate = this.start_date ? new Date(this.start_date) : null;
+    const endDate = this.end_date ? new Date(this.end_date) : null;
+    this.startDateError = false;
+    this.endDateError = false;
+    if(!startDate || !endDate){
+      this.startDateError = true;
+    }
+
+    if (startDate && endDate) {
+      if (startDate > endDate) {
+        this.startDateError = true;
+        this.endDateError = true;
+      }
+    }
+
+    if (endDate) {
+      if (endDate > today) {
+        this.endDateError = true;
+      }
+    }
+  }
   Ajouter(stepper: MatStepper):void{
-    const data = {
+    let data= {
       code_session: null,
       libelle: this.lib,
       critere: this.crit,
       date: this.datePipe.transform(new Date(), 'yyyy-MM-dd'),
       id_user: 2,
+      end_date:this.datePipe.transform(this.end_date, 'yyyy-MM-dd'),
+      start_date:this.datePipe.transform(this.start_date, 'yyyy-MM-dd'),
+      recepteur_number:this.recepteur_number,
 
     };
-    this.sessionService.createSession(data)
+    if(this.crit=="exist"){
+      this.validateDates()
+      if(this.endDateError==false && this.startDateError==false){
+        data= {
+          code_session: null,
+          libelle: this.lib,
+          critere: this.crit,
+          date: this.datePipe.transform(new Date(), 'yyyy-MM-dd'),
+          id_user: 2,
+          end_date:this.datePipe.transform(this.end_date, 'yyyy-MM-dd'),
+          start_date:this.datePipe.transform(this.start_date, 'yyyy-MM-dd'),
+          recepteur_number:this.recepteur_number,
+    
+        };
+        console.log(data)
+        this.sessionService.createSession(data)
+        .subscribe({
+          next: (res) => {
+            this.id_session=res.code_session;
+            this.submitted = true;
+          },
+          error: (e) => console.error(e)
+          ,
+          complete: () => {
+            this.refreshList_etabs()
+            if(this.submitted){
+              console.log(this.submitted)
+              this.cdr.detectChanges(); 
+              stepper.next();
+            }
+          }
+        });
+         
+      }
+    }else{
+      this.sessionService.createSession(data)
       .subscribe({
         next: (res) => {
           this.id_session=res.code_session;
@@ -692,6 +763,7 @@ deselectListener =() => {
           }
         }
       });
+    }
   }
   createProp(stepper: MatStepper):void{
     console.log('loading')
@@ -727,7 +799,10 @@ deselectListener =() => {
         etabs: id_etabs,
         prios : prio_etabs,
         critere: critere,
-        stock_min:this.stock_min_value
+        stock_min:this.stock_min_value,
+        end_date:this.datePipe.transform(this.end_date, 'yyyy-MM-dd'),
+        start_date:this.datePipe.transform(this.start_date, 'yyyy-MM-dd'),
+        recepteur_number:this.recepteur_number,
       }
       this.detailDetailSessionService.createDetailSession(datatosend,this.id_session)
       .subscribe({
@@ -793,7 +868,12 @@ deselectListener =() => {
       this.fp=''
     }else if(filter==this.date_injection){
       this.date_injection=''
+    }else if(filter==this.code_couleur){
+      this.code_couleur=''
     }
+    this.page_number=1
+    this.end_of_data=false;
+    this.no_previous=true;
     this.Filtrer()
     this.Filtrer_articles_gen()
   }

@@ -49,7 +49,14 @@
                     <li>
                         <a href="#submenu3" data-bs-toggle="collapse" class="nav-link px-0 align-middle">
                             <i class="bi bi-database-fill-gear"></i> <span
-                                class="ms-1 d-none d-sm-inline">Synchronisation</span> </a>
+                                class="ms-1 d-none d-sm-inline">Synchronisation</span> 
+                        </a>
+                        <ul class="collapse nav flex-column ms-1" id="submenu3" data-bs-parent="#menu">
+                            <li class="w-100">
+                                <a routerLink="/base_data/sync_data" routerLinkActive="active" class="nav-link px-0">
+                                    <span class="d-none d-sm-inline ms-2">Paramètres</span> </a>
+                            </li>
+                        </ul>
 
                     </li>
                     <li>

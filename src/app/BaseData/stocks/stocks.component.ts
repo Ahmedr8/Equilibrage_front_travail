@@ -2,6 +2,9 @@ import { AfterViewInit, Component, ElementRef, OnDestroy, OnInit, ViewChild } fr
 import { Stock } from '../models/Stock.model';
 import { StockService } from '../services/stock.services';
 import { DataTableDirective } from 'angular-datatables';
+import * as bootstrap from 'bootstrap';
+import { ParamSynchroService } from '../services/paramsynchro.services';
+import { ParamSynchro } from '../models/paramsynchro.model';
 declare var $ : any
 
 @Component({
@@ -37,8 +40,11 @@ export class StocksComponent implements OnInit {
   id_to_delete: string='';
   page_number:number=1;
   dataLoading:boolean=true
+  params: ParamSynchro[] = [];
+  csv_path='stocks'
+  spec_api='stocks'
 
-  constructor(private StockService: StockService) { }
+  constructor(private StockService: StockService,private paramService: ParamSynchroService) { }
 
   ngOnInit(): void {
     this.retrieveStocks();
@@ -286,5 +292,48 @@ export class StocksComponent implements OnInit {
     this.end_of_data=false;
     this.no_previous=true;
     this.Filtrer()
+  }
+
+  openModal(ch:string): void {
+    if (ch=='stocks'){
+      this.spec_api='stocks'
+      this.csv_path='stocks'
+    }else{
+      this.spec_api='ventes'
+      this.csv_path='ventes'
+    }
+    this.loadParams();
+    const modalElement = document.getElementById('paramModal');
+    if (modalElement) {
+      const bootstrapModal = new bootstrap.Modal(modalElement);
+      bootstrapModal.show();
+    }
+  }
+
+  syncData(): void {
+    // The new object that includes the additional api_spec attribute
+    this.params[0].path=this.params[0].path+this.csv_path
+    let requestData = {
+      ...this.params[0], // Include all existing attributes of syncparams
+      api_spec: this.spec_api // Add the additional attribute
+    };
+  
+    // Make the API call with the updated object
+    this.paramService.syncData(requestData).subscribe({
+      next: (response) => {
+        console.log('Synchronization successful:', response);
+        alert('Synchronisation réussie.');
+      },
+      error: (error) => {
+        console.error('Synchronization failed:', error);
+        alert('Échec de la synchronisation. Veuillez réessayer.');
+      }
+    });
+  }
+
+  loadParams(): void {
+    this.paramService.getParams().subscribe(data => {
+      this.params = data;
+    });
   }
 }

@@ -2,6 +2,9 @@ import { AfterViewInit, Component, ElementRef, OnDestroy, OnInit, ViewChild } fr
 import { Article } from '../models/Article.model';
 import { ArticleService } from '../services/article.services';
 import { DataTableDirective } from 'angular-datatables';
+import { ParamSynchroService } from '../services/paramsynchro.services';
+import { ParamSynchro } from '../models/paramsynchro.model';
+import * as bootstrap from 'bootstrap';
 declare var $ : any
 
 @Component({
@@ -43,9 +46,11 @@ export class ArticlesComponent implements OnInit {
   totalColumns:number=11;
   id_to_delete: string='';
   dataLoading:boolean=true
+   csv_path='articles'
+   params: ParamSynchro[] = [];
 
 
-  constructor(private articleService: ArticleService) { }
+  constructor(private articleService: ArticleService,private paramService: ParamSynchroService) { }
 
   ngOnInit(): void {
     this.retrieveArticles();
@@ -305,6 +310,41 @@ export class ArticlesComponent implements OnInit {
     this.Filtrer()
   }
 
+  openModal(): void {
+    this.loadParams();
+    const modalElement = document.getElementById('paramModal');
+    if (modalElement) {
+      const bootstrapModal = new bootstrap.Modal(modalElement);
+      bootstrapModal.show();
+    }
+  }
+
+  syncData(): void {
+    // The new object that includes the additional api_spec attribute
+    this.params[0].path=this.params[0].path+this.csv_path
+    let requestData = {
+      ...this.params[0], // Include all existing attributes of syncparams
+      api_spec: 'articles' // Add the additional attribute
+    };
+  
+    // Make the API call with the updated object
+    this.paramService.syncData(requestData).subscribe({
+      next: (response) => {
+        console.log('Synchronization successful:', response);
+        alert('Synchronisation réussie.');
+      },
+      error: (error) => {
+        console.error('Synchronization failed:', error);
+        alert('Échec de la synchronisation. Veuillez réessayer.');
+      }
+    });
+  }
+
+  loadParams(): void {
+    this.paramService.getParams().subscribe(data => {
+      this.params = data;
+    });
+  }
   }
  
 

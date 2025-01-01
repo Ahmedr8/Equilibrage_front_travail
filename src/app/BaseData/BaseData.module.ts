@@ -10,6 +10,7 @@ import { FormsModule }   from '@angular/forms';
 import { StocksComponent } from './stocks/stocks.component';
 import { DepotComponent } from './Depot/Depot.component';
 import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
+import { Sync_dataComponent } from './sync_data/sync_data.component';
 
 
 @NgModule({
@@ -21,6 +22,6 @@ import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
     DataTablesModule,
     NgxSkeletonLoaderModule
   ],
-  declarations: [BaseDataComponent,ArticlesComponent,EtablissementComponent,StocksComponent,DepotComponent]
+  declarations: [BaseDataComponent,ArticlesComponent,EtablissementComponent,StocksComponent,DepotComponent,Sync_dataComponent]
 })
 export class BaseDataModule { }

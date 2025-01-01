@@ -14,6 +14,7 @@ export class propAffiche{
         code_article_dem!: string;
         code_barre!: string;    
         code_depot_emet!:string; 
+        code_Etab_recep!:string; 
         lib_taille!: string;
         lib_couleur!: string;
         emet!: string;
@@ -23,5 +24,9 @@ export class propAffiche{
         date!: Date;
         nom!: string;
         statut!: string;
+        stock_recep_sera!: string;
+        stock_recep_sera_couleur!: string;
+        stock_emet_sera!: string;
+        stock_emet_sera_couleur!: string;
     
 }

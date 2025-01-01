@@ -170,6 +170,7 @@ export class SessionsComponent implements OnInit {
         { data: 'code_article_dem', title: 'Code DIM' },
         { data: 'code_barre', title: 'code barre' },
         { data: 'code_depot_emet', title: 'Code Dépot Emmet' },
+        { data: 'code_etab_recep', title: 'Code Etab Recep' },
         { data: 'lib_taille', title: ' taille' },
         { data: 'lib_couleur', title: ' couleur' },
         { data: 'emet', title: 'Emmeteur' },
@@ -178,7 +179,11 @@ export class SessionsComponent implements OnInit {
         { data: 'code_session', title: 'code session' },
         { data: 'date', title: 'date' },
         { data: 'nom', title: 'createur' },
-        { data: 'statut', title: 'statut' }
+        { data: 'statut', title: 'statut' },
+        { data: 'stock_emet_sera_couleur', title: 'Stock Emet Sera Couleur' },
+        { data: 'stock_emet_sera', title: 'Stock Emet Sera' },
+        { data: 'stock_recep_sera_couleur', title: 'Stock Recep Sera en Couleur' },
+        { data: 'stock_recep_sera', title: 'Stock Recep Sera' },
       ],
       select: {
         style: 'multi', // Style of the selection

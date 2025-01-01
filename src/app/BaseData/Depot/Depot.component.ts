@@ -2,6 +2,9 @@ import { AfterViewInit, Component, ElementRef, OnDestroy, OnInit, ViewChild } fr
 import { Depot } from '../models/Depot.model';
 import { DepotService } from '../services/depot.services';
 import { DataTableDirective } from 'angular-datatables';
+import { ParamSynchroService } from '../services/paramsynchro.services';
+import { ParamSynchro } from '../models/paramsynchro.model';
+import * as bootstrap from 'bootstrap';
 declare var $ : any
 @Component({
   selector: 'app-Depot',
@@ -29,8 +32,10 @@ export class DepotComponent implements OnInit {
   totalColumns:number=5;
   id_to_delete: string='';
   dataLoading:boolean=true
+  params: ParamSynchro[] = [];
+  csv_path='depots'
 
-  constructor(private DepotService: DepotService) { }
+  constructor(private DepotService: DepotService,private paramService: ParamSynchroService) { }
 
   ngOnInit(): void {
     this.retrieveDepots();
@@ -256,5 +261,41 @@ export class DepotComponent implements OnInit {
     this.end_of_data=false;
     this.no_previous=true;
     this.Filtrer()
+  }
+
+  openModal(): void {
+    this.loadParams();
+    const modalElement = document.getElementById('paramModal');
+    if (modalElement) {
+      const bootstrapModal = new bootstrap.Modal(modalElement);
+      bootstrapModal.show();
+    }
+  }
+
+  syncData(): void {
+    // The new object that includes the additional api_spec attribute
+    this.params[0].path=this.params[0].path+this.csv_path
+    let requestData = {
+      ...this.params[0], // Include all existing attributes of syncparams
+      api_spec: 'depots' // Add the additional attribute
+    };
+  
+    // Make the API call with the updated object
+    this.paramService.syncData(requestData).subscribe({
+      next: (response) => {
+        console.log('Synchronization successful:', response);
+        alert('Synchronisation réussie.');
+      },
+      error: (error) => {
+        console.error('Synchronization failed:', error);
+        alert('Échec de la synchronisation. Veuillez réessayer.');
+      }
+    });
+  }
+
+  loadParams(): void {
+    this.paramService.getParams().subscribe(data => {
+      this.params = data;
+    });
   }
 }

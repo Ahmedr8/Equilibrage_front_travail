@@ -62,8 +62,87 @@
 <div style="display: flow-root;">
   <button data-bs-toggle="modal" data-bs-target="#upload" type="button" style="float: right;"
     class="btn btn_custom "><span><i class="bi bi-arrow-bar-down"></i></span> Importer</button>
+    <button class="btn btn_custom" (click)="openModal()" style="float: right;">synchroniser</button>
+    
 </div>
 <br>
+  <!-- Modal sync-->
+  <div
+    class="modal fade"
+    id="paramModal"
+    tabindex="-1"
+    aria-labelledby="paramModalLabel"
+    aria-hidden="true"
+  >
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="paramModalLabel">Modifier les Paramètres</h5>
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="modal"
+            aria-label="Fermer"
+          ></button>
+        </div>
+        <div class="modal-body">
+          <table class="table table-bordered">
+            <thead>
+              <tr>
+                <th>Espace de Travail</th>
+                <th>Nom d'utilisateur</th>
+                <th>Mot de passe</th>
+                <th>Environnement</th>
+                <th>Nom du Conteneur</th>
+                <th>Chemin</th>
+                <th>Chemin csv</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let param of params">
+                <td>{{ param.workspace }}</td>
+                <td>
+                  <input [(ngModel)]="param.username" class="form-control" />
+                </td>
+                <td>
+                  <input [(ngModel)]="param.password" class="form-control" />
+                </td>
+                <td>
+                  <input [(ngModel)]="param.environment" class="form-control" />
+                </td>
+                <td>
+                  <input [(ngModel)]="param.container_name" class="form-control" />
+                </td>
+                <td>
+                  <input [(ngModel)]="param.path" class="form-control" />
+                </td>
+                <td>
+                  <input [(ngModel)]="csv_path" class="form-control" />
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="modal-footer">
+          <button
+            type="button"
+            class="btn btn-secondary"
+            data-bs-dismiss="modal"
+          >
+            Fermer
+          </button>
+          <button
+            type="button"
+            class="btn btn-primary"
+            (click)="syncData()"
+          >
+            Synchroniser
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
 <!-- Vertically centered scrollable modal -->
 <!-- Modal -->
 <div class="modal fade" id="upload" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" data-bs-backdrop="static">

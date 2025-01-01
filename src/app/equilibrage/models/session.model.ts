@@ -4,6 +4,8 @@ export class Session{
     date!:string|null;
     id_user!:number ;
     critere!:string | null ;
-
+    end_date!:string | null ;
+    start_date!:string | null ;
+    recepteur_number!:number | null ;
 
 }

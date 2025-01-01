@@ -1,0 +1,165 @@
+<div class="container mt-4">
+  <h2 class="mb-4">Gérer les Paramètres</h2>
+  <table class="table table-bordered">
+    <thead>
+      <tr>
+        <th>Espace de Travail</th>
+        <th>Nom d'utilisateur</th>
+        <th>Mot de passe</th>
+        <th>Environnement</th>
+        <th>Nom du Conteneur</th>
+        <th>Chemin</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let param of params; let i = index">
+        <td>{{ param.workspace }}</td>
+        <td>
+          <input
+            *ngIf="editingIndex === i"
+            [(ngModel)]="param.username"
+            class="form-control"
+          />
+          <span *ngIf="editingIndex !== i">{{ param.username }}</span>
+        </td>
+        <td>
+          <input
+            *ngIf="editingIndex === i"
+            [(ngModel)]="param.password"
+            class="form-control"
+          />
+          <span *ngIf="editingIndex !== i">{{ param.password }}</span>
+        </td>
+        <td>
+          <input
+            *ngIf="editingIndex === i"
+            [(ngModel)]="param.environment"
+            class="form-control"
+          />
+          <span *ngIf="editingIndex !== i">{{ param.environment }}</span>
+        </td>
+        <td>
+          <input
+            *ngIf="editingIndex === i"
+            [(ngModel)]="param.container_name"
+            class="form-control"
+          />
+          <span *ngIf="editingIndex !== i">{{ param.container_name }}</span>
+        </td>
+        <td>
+          <input
+            *ngIf="editingIndex === i"
+            [(ngModel)]="param.path"
+            class="form-control"
+          />
+          <span *ngIf="editingIndex !== i">{{ param.path }}</span>
+        </td>
+        <td>
+          <button
+            *ngIf="editingIndex === i"
+            class="btn btn-success btn-sm"
+            (click)="saveChanges(i)"
+          >
+            Sauvegarder
+          </button>
+          <button
+            *ngIf="editingIndex === i"
+            class="btn btn-danger btn-sm"
+            (click)="cancelEdit()"
+          >
+            Annuler
+          </button>
+          <button
+            *ngIf="editingIndex !== i"
+            class="btn btn-primary btn-sm"
+            (click)="enableEdit(i)"
+          >
+            Modifier
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- to copy -->
+<!-- <div class="container mt-4">
+  <button class="btn btn-primary" (click)="openModal()">synchroniser</button>
+  
+  <div
+    class="modal fade"
+    id="paramModal"
+    tabindex="-1"
+    aria-labelledby="paramModalLabel"
+    aria-hidden="true"
+  >
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="paramModalLabel">Modifier les Paramètres</h5>
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="modal"
+            aria-label="Fermer"
+          ></button>
+        </div>
+        <div class="modal-body">
+          <table class="table table-bordered">
+            <thead>
+              <tr>
+                <th>Espace de Travail</th>
+                <th>Nom d'utilisateur</th>
+                <th>Mot de passe</th>
+                <th>Environnement</th>
+                <th>Nom du Conteneur</th>
+                <th>Chemin</th>
+                <th>Chemin csv</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let param of params">
+                <td>{{ param.workspace }}</td>
+                <td>
+                  <input [(ngModel)]="param.username" class="form-control" />
+                </td>
+                <td>
+                  <input [(ngModel)]="param.password" class="form-control" />
+                </td>
+                <td>
+                  <input [(ngModel)]="param.environment" class="form-control" />
+                </td>
+                <td>
+                  <input [(ngModel)]="param.container_name" class="form-control" />
+                </td>
+                <td>
+                  <input [(ngModel)]="param.path" class="form-control" />
+                </td>
+                <td>
+                  <input [(ngModel)]="csv_path" class="form-control" />
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="modal-footer">
+          <button
+            type="button"
+            class="btn btn-secondary"
+            data-bs-dismiss="modal"
+          >
+            Fermer
+          </button>
+          <button
+            type="button"
+            class="btn btn-primary"
+            (click)="syncData()"
+          >
+            Synchroniser
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div> -->

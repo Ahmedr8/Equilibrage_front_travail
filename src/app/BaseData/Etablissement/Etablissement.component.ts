@@ -2,6 +2,9 @@ import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { Etablissement } from '../models/Etablissement.model';
 import { EtablissementService } from '../services/etablissement.services';
 import { data } from 'jquery';
+import * as bootstrap from 'bootstrap';
+import { ParamSynchroService } from '../services/paramsynchro.services';
+import { ParamSynchro } from '../models/paramsynchro.model';
 
 @Component({
   selector: 'app-Etablissement',
@@ -27,7 +30,9 @@ export class EtablissementComponent implements OnInit {
   page_number:number=1;
   modif_data: Etablissement=this.etabs[0];
   dataLoading:boolean=true
-  constructor(private etabService: EtablissementService) { }
+  params: ParamSynchro[] = [];
+  csv_path='etabs'
+  constructor(private etabService: EtablissementService,private paramService: ParamSynchroService) { }
   @ViewChild('fileInput') fileInput!: ElementRef;
   @ViewChild('closeModal') closebutton!: ElementRef;
   ngOnInit() {
@@ -227,5 +232,41 @@ export class EtablissementComponent implements OnInit {
       this.end_of_data=false;
       this.no_previous=true;
       this.Filtrer()
+    }
+
+    openModal(): void {
+      this.loadParams();
+      const modalElement = document.getElementById('paramModal');
+      if (modalElement) {
+        const bootstrapModal = new bootstrap.Modal(modalElement);
+        bootstrapModal.show();
+      }
+    }
+  
+    syncData(): void {
+      // The new object that includes the additional api_spec attribute
+      this.params[0].path=this.params[0].path+this.csv_path
+      let requestData = {
+        ...this.params[0], // Include all existing attributes of syncparams
+        api_spec: 'etablissements' // Add the additional attribute
+      };
+    
+      // Make the API call with the updated object
+      this.paramService.syncData(requestData).subscribe({
+        next: (response) => {
+          console.log('Synchronization successful:', response);
+          alert('Synchronisation réussie.');
+        },
+        error: (error) => {
+          console.error('Synchronization failed:', error);
+          alert('Échec de la synchronisation. Veuillez réessayer.');
+        }
+      });
+    }
+  
+    loadParams(): void {
+      this.paramService.getParams().subscribe(data => {
+        this.params = data;
+      });
     }
 }
