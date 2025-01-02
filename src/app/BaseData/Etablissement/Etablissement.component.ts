@@ -32,6 +32,8 @@ export class EtablissementComponent implements OnInit {
   dataLoading:boolean=true
   params: ParamSynchro[] = [];
   csv_path='etabs'
+  private bootstrapModal: any;
+
   constructor(private etabService: EtablissementService,private paramService: ParamSynchroService) { }
   @ViewChild('fileInput') fileInput!: ElementRef;
   @ViewChild('closeModal') closebutton!: ElementRef;
@@ -235,15 +237,23 @@ export class EtablissementComponent implements OnInit {
     }
 
     openModal(): void {
-      this.loadParams();
-      const modalElement = document.getElementById('paramModal');
-      if (modalElement) {
-        const bootstrapModal = new bootstrap.Modal(modalElement);
-        bootstrapModal.show();
-      }
+    this.loadParams();
+    const modalElement = document.getElementById('paramModal');
+    if (modalElement) {
+      this.bootstrapModal = new bootstrap.Modal(modalElement);
+      this.bootstrapModal.show();
     }
+  }
+
+  closeModal(): void {
+    this.loading=false;
+    if (this.bootstrapModal) {
+      this.bootstrapModal.hide();
+    }
+  }
   
     syncData(): void {
+      this.loading=true;
       // The new object that includes the additional api_spec attribute
       this.params[0].path=this.params[0].path+this.csv_path
       let requestData = {
@@ -255,10 +265,12 @@ export class EtablissementComponent implements OnInit {
       this.paramService.syncData(requestData).subscribe({
         next: (response) => {
           console.log('Synchronization successful:', response);
+          this.closeModal()
           alert('Synchronisation réussie.');
         },
         error: (error) => {
           console.error('Synchronization failed:', error);
+          this.closeModal()
           alert('Échec de la synchronisation. Veuillez réessayer.');
         }
       });

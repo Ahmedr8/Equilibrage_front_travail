@@ -388,7 +388,7 @@ deselectListener =() => {
       {
         select: {
           style: 'multi', // Style of the selection
-        },
+        },order: [],
         buttons: [
           'selectAll',
           'selectNone',

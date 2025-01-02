@@ -26,7 +26,7 @@ export class SessionsComponent implements OnInit {
   table_props:any;
   end_of_data:boolean=false;
   no_previous:boolean=true;
-  totalColumns:number=6;
+  totalColumns:number=5;
   id_to_delete: string='';
   page_number:number=1;
   stock_min_value: number = 0;
@@ -105,7 +105,6 @@ export class SessionsComponent implements OnInit {
         { data: 'code_session', title: 'Code sessoin' },
         { data: 'libelle', title: 'Libellé' },
         { data: 'date', title: 'Date' },
-        { data: 'id_user', title: 'Id Utilisateur' },
         { data: 'critere', title: 'Critère' },
         {
           title: 'Actions',
@@ -178,7 +177,6 @@ export class SessionsComponent implements OnInit {
         { data: 'qte_trf', title: 'Qté à Transferer' },
         { data: 'code_session', title: 'code session' },
         { data: 'date', title: 'date' },
-        { data: 'nom', title: 'createur' },
         { data: 'statut', title: 'statut' },
         { data: 'stock_emet_sera_couleur', title: 'Stock Emet Sera Couleur' },
         { data: 'stock_emet_sera', title: 'Stock Emet Sera' },
@@ -219,6 +217,7 @@ export class SessionsComponent implements OnInit {
       }
         
     ],
+    order: [],
     dom: 'Bfrtip',
     createdRow: (row: any, data: any, dataIndex: any) => {
       if (data.emet == "SIEGE") {
