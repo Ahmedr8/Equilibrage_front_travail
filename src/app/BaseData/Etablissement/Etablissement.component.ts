@@ -31,7 +31,7 @@ export class EtablissementComponent implements OnInit {
   modif_data: Etablissement=this.etabs[0];
   dataLoading:boolean=true
   params: ParamSynchro[] = [];
-  csv_path='etabs'
+  csv_path='Etablissements'
   private bootstrapModal: any;
 
   constructor(private etabService: EtablissementService,private paramService: ParamSynchroService) { }

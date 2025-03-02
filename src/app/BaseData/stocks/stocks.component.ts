@@ -41,7 +41,7 @@ export class StocksComponent implements OnInit {
   page_number:number=1;
   dataLoading:boolean=true
   params: ParamSynchro[] = [];
-  csv_path='stocks'
+  csv_path='Stock'
   spec_api='stocks'
   private bootstrapModal: any;
 
@@ -298,10 +298,10 @@ export class StocksComponent implements OnInit {
   openModal(ch:string): void {
     if (ch=='stocks'){
       this.spec_api='stocks'
-      this.csv_path='stocks'
+      this.csv_path='Stock'
     }else{
       this.spec_api='ventes'
-      this.csv_path='ventes'
+      this.csv_path='Ventes'
     }
     this.loadParams();
     const modalElement = document.getElementById('paramModal');

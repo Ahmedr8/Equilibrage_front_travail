@@ -4,6 +4,8 @@ libelle!: string;
 adresse1!:string;
 adresse2!:string;
 type!:string;
+
+secteur!:number;
 priorite!:number;
 
 

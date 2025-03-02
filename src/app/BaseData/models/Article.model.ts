@@ -12,5 +12,6 @@ export class Article {
     fam2!: string | null; //SOUS CATEGORIE
     fam3!: string | null;
     fam4!: string | null;
-    fam5!: string | null;
+    fam8!: string | null;
+    table_libre_9!: string | null;
   }

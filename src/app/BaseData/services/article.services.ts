@@ -28,6 +28,11 @@ export class ArticleService {
     return this.http.get<Article[]>(this.apiUrl+'articles/filtred/page='+page_number,{params:queryParams});
 }
 
+getArticlesMultipleParams_exist(f:any,page_number:string): Observable<Article[]> {
+  let queryParams = f;
+  return this.http.get<Article[]>(this.apiUrl+'articles/filtred_exist/page='+page_number,{params:queryParams});
+}
+
 getArticlesGenMultipleParams(f:any,page_number:string): Observable<Article[]> {
   let queryParams = f;
   return this.http.get<Article[]>(this.apiUrl+'articles/generique/filtred/page='+page_number,{params:queryParams});

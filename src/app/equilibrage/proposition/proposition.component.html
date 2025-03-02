@@ -91,58 +91,162 @@
       <div [ngStyle]="{ 'display': articleA ? 'block' : 'none'} ">
         <br>
         <div *ngIf="crit!='articles_dem'">
-        <div class="card shadow">
-          <div class="card-header py-1 headerColorBg" style=" color: white; font-weight: 600;">
-            Filtres
+          <div *ngIf="crit!='exist'">
+            <div class="card shadow">
+              <div class="card-header py-1 headerColorBg" style=" color: white; font-weight: 600;">
+                Filtres
+              </div>
+              <div class="card-body">
+                <div class="row">
+                  <div class="col-md-3">
+                    <label for="validationCustom01" class="form-label labelBold">Code Générique</label>
+                    <input type="text" class="form-control custom-placeholder" id="validationCustom01" placeholder="Code Générique"
+                      [(ngModel)]="cag">
+                  </div>
+                  <div class="col-md-3">
+                    <label for="validationCustom02" class="form-label labelBold">Code à barre</label>
+                    <input type="text" class="form-control custom-placeholder" id="validationCustom02" placeholder="Code à barre" [(ngModel)]="cb">
+                  </div>
+                  <div class="col-md-3">
+                    <label for="validationCustomUsername" class="form-label labelBold">Code fournisseur</label>
+                    <div class="input-group has-validation">
+                      <input type="text" class="form-control custom-placeholder" id="validationCustomUsername" aria-describedby="inputGroupPrepend"
+                        placeholder="Code fournissuer" [(ngModel)]="cf">
+                    </div>
+                  </div>
+                  <div class="col-md-3">
+                    <label for="validationCustom03" class="form-label labelBold">Fournisseur Principale</label>
+                    <input type="text" class="form-control custom-placeholder" id="validationCustom03" placeholder="Fournisseur Principale" [(ngModel)]="fp">
+                  </div>
+                </div>
+                <div class="row" style="margin-top: 1%;">
+                  <div class="col-md-3">
+                    <label for="validationCustom03" class="form-label labelBold">Collection</label>
+                    <input type="text" class="form-control custom-placeholder" id="validationCustom03" placeholder="Collection" [(ngModel)]="m">
+                  </div>
+                  <div class="col-md-3">
+                    <label for="validationCustom04" class="form-label labelBold">Famille</label>
+                    <input type="text" name="" id="" placeholder="Famille" class="form-control custom-placeholder" [(ngModel)]="c">
+                  </div>
+                  <div class="col-md-3">
+                    <label for="validationCustom04" class="form-label labelBold">code couleur</label>
+                    <input type="text" name="" id="" placeholder="code couleur" class="form-control custom-placeholder" [(ngModel)]="code_couleur">
+                  </div>
+                  <div class="col-md-3">
+                    <label for="validationCustom02" class="form-label labelBold">Date Injection</label>
+                    <input type="date" class="form-control custom-placeholder" id="validationCustom02" placeholder="Date Injection" [(ngModel)]="date_injection">
+                  </div>
+                </div>
+                <br>
+              </div>
+              <div class="modal-footer">
+                <button class="btn btn_custom" type="button" (click)="Filtrer_click()" style="margin-right: 2%; margin-bottom: 1%; font-weight: bold;"><span><i
+                  class="bi bi-funnel-fill"></i></span>Filtrer</button>
+              </div>
+            </div>
           </div>
-          <div class="card-body">
-            <div class="row">
-              <div class="col-md-3">
-                <label for="validationCustom01" class="form-label labelBold">Code Générique</label>
-                <input type="text" class="form-control custom-placeholder" id="validationCustom01" placeholder="Code Générique"
-                  [(ngModel)]="cag">
+          <div *ngIf="crit=='exist'">
+            <div class="card shadow">
+              <div class="card-header py-1 headerColorBg" style="color: white; font-weight: 600;">
+                Filtres
               </div>
-              <div class="col-md-3">
-                <label for="validationCustom02" class="form-label labelBold">Code à barre</label>
-                <input type="text" class="form-control custom-placeholder" id="validationCustom02" placeholder="Code à barre" [(ngModel)]="cb">
-              </div>
-              <div class="col-md-3">
-                <label for="validationCustomUsername" class="form-label labelBold">Code fournisseur</label>
-                <div class="input-group has-validation">
-                  <input type="text" class="form-control custom-placeholder" id="validationCustomUsername" aria-describedby="inputGroupPrepend"
-                    placeholder="Code fournissuer" [(ngModel)]="cf">
+              <div class="card-body">
+                <div class="row">
+                  <div class="col-md-4">
+                    <label for="grandFamille" class="form-label labelBold">Grand Famille</label><br>
+                    <mat-form-field appearance="outline" class="custom-mat-select" id="grandFamille">
+                      <mat-label>Select Options</mat-label>
+                      <mat-select multiple [(ngModel)]="selectedGrandFamilles" disableRipple panelClass="custom-panel">
+                        <mat-option *ngFor="let option of grandFamilleOptions" [value]="option.value">
+                          {{option.value}}   {{option.label}}
+                        </mat-option>
+                      </mat-select>
+                    </mat-form-field>
+                    <!-- <select class="form-select custom-placeholder" id="grandFamille" 
+                            [(ngModel)]="selectedGrandFamilles" multiple>
+                      <option *ngFor="let option of grandFamilleOptions" [value]="option.value">
+                        {{option.value}}   {{option.label}}
+                      </option>
+                    </select> -->
+                  </div>
+                  <div class="col-md-4">
+                    <label for="famille" class="form-label labelBold">Famille</label><br>
+                    <mat-form-field appearance="outline" class="custom-mat-select">
+                      <mat-label>Select Options</mat-label>
+                      <mat-select multiple [(ngModel)]="selectedFamilles" disableRipple panelClass="custom-panel">
+                        <mat-option *ngFor="let option of familleOptions" [value]="option.value">
+                          {{option.value}}   {{option.label}}
+                        </mat-option>
+                      </mat-select>
+                    </mat-form-field>                    
+                    <!-- <select class="form-select custom-placeholder" id="famille" 
+                            [(ngModel)]="selectedFamilles" multiple>
+                            <option value="" disabled selected>Select options</option>
+                      <option *ngFor="let option of familleOptions" [value]="option.value">
+                        {{option.value}}   {{option.label}}
+                      </option>
+                    </select> -->
+                  </div>
+                  <div class="col-md-4">
+                    <label for="besoin" class="form-label labelBold">Besoin</label><br>
+                    <mat-form-field appearance="outline" class="custom-mat-select">
+                      <mat-label>Select Options</mat-label>
+                      <mat-select multiple [(ngModel)]="selectedBesoins" disableRipple panelClass="custom-panel">
+                        <mat-option *ngFor="let option of besoinOptions" [value]="option.value">
+                          {{option.value}}   {{option.label}}
+                        </mat-option>
+                      </mat-select>
+                    </mat-form-field>
+                    <!-- <select class="form-select custom-placeholder" id="besoin" 
+                            [(ngModel)]="selectedBesoins" multiple>
+                      <option *ngFor="let option of besoinOptions" [value]="option.value">
+                        {{option.value}}   {{option.label}}
+                      </option>
+                    </select> -->
+                  </div>
+                </div>
+                <div class="row mt-3">
+                  <div class="col-md-4">
+                    <label for="couleur" class="form-label labelBold">Couleur</label><br>
+                    <mat-form-field appearance="outline" class="custom-mat-select">
+                      <mat-label>Select Options</mat-label>
+                      <mat-select multiple [(ngModel)]="selectedCouleurs" disableRipple panelClass="custom-panel">
+                        <mat-option *ngFor="let option of couleurOptions" [value]="option.value">
+                          {{option.value}}   {{option.label}}
+                        </mat-option>
+                      </mat-select>
+                    </mat-form-field>
+                    <!-- <select class="form-select custom-placeholder" id="couleur" 
+                            [(ngModel)]="selectedCouleurs" multiple>
+                      <option *ngFor="let option of couleurOptions" [value]="option.value">
+                        {{option.value}}   {{option.label}}
+                      </option>
+                    </select> -->
+                  </div>
+                  <div class="col-md-4">
+                    <label for="codeArticleGen" class="form-label labelBold">Code Article Générique</label>
+                    <mat-form-field appearance="outline" class="custom-mat-select">
+                      <mat-label>Code Article Générique</mat-label>
+                      <input matInput placeholder="Code Article Générique" [(ngModel)]="codeArticleGen">
+                    </mat-form-field>
+                  </div>
+                  <div class="col-md-4">
+                    <label for="solde" class="form-label labelBold">Solde</label>
+                    <mat-form-field appearance="outline" class="custom-mat-select">
+                      <mat-label>Solde</mat-label>
+                      <input matInput placeholder="Solde" [(ngModel)]="solde">
+                    </mat-form-field>
+                  </div>
                 </div>
               </div>
-              <div class="col-md-3">
-                <label for="validationCustom03" class="form-label labelBold">Fournisseur Principale</label>
-                <input type="text" class="form-control custom-placeholder" id="validationCustom03" placeholder="Fournisseur Principale" [(ngModel)]="fp">
+              <div class="modal-footer">
+                <button class="btn btn_custom" type="button" (click)="Filtrer_click()" 
+                        style="margin-right: 2%; margin-bottom: 1%; font-weight: bold;">
+                  <span><i class="bi bi-funnel-fill"></i></span>Filtrer
+                </button>
               </div>
             </div>
-            <div class="row" style="margin-top: 1%;">
-              <div class="col-md-3">
-                <label for="validationCustom03" class="form-label labelBold">Collection</label>
-                <input type="text" class="form-control custom-placeholder" id="validationCustom03" placeholder="Collection" [(ngModel)]="m">
-              </div>
-              <div class="col-md-3">
-                <label for="validationCustom04" class="form-label labelBold">Famille</label>
-                <input type="text" name="" id="" placeholder="Famille" class="form-control custom-placeholder" [(ngModel)]="c">
-              </div>
-              <div class="col-md-3">
-                <label for="validationCustom04" class="form-label labelBold">code couleur</label>
-                <input type="text" name="" id="" placeholder="code couleur" class="form-control custom-placeholder" [(ngModel)]="code_couleur">
-              </div>
-              <div class="col-md-3">
-                <label for="validationCustom02" class="form-label labelBold">Date Injection</label>
-                <input type="date" class="form-control custom-placeholder" id="validationCustom02" placeholder="Date Injection" [(ngModel)]="date_injection">
-              </div>
-            </div>
-            <br>
           </div>
-          <div class="modal-footer">
-            <button class="btn btn_custom" type="button" (click)="Filtrer_click()" style="margin-right: 2%; margin-bottom: 1%; font-weight: bold;"><span><i
-              class="bi bi-funnel-fill"></i></span>Filtrer</button>
-          </div>
-        </div>
         <br>
         <div class="d-flex justify-content-between">
           <button class="btn btn_custom" type="button" disabled  matStepperPrevious>Previous</button>
@@ -150,50 +254,90 @@
         </div>
         <br>
       <div class="card">
-        <div class="card-header" *ngIf="filter_clicked" >
-          <span class="filter-text" > <i class="bi bi-funnel-fill"></i> Filtre  </span>
-    
-          <div class="rounded-btn" *ngIf="cag_filter!=''">
-            <span class="item_filter">code article gen={{cag_filter}} </span>
-            <button type="button" class="btn-close" aria-label="Close" (click)="del_filter(cag)"></button>
+        <div *ngIf="crit=='exist'">
+          <div class="card mt-3" *ngIf="filter_clicked">
+            <div class="card-header">
+              <span class="filter-text"><i class="bi bi-funnel-fill"></i> Filtre </span>
+          
+              <div class="rounded-btn" *ngIf="grandFamille_filter.length > 0">
+                <span class="item_filter">Grand Famille = {{grandFamille_filter.join(', ')}} </span>
+                <button type="button" class="btn-close" aria-label="Close" (click)="del_filter('grandFamille')"></button>
+              </div>
+          
+              <div class="rounded-btn" *ngIf="famille_filter.length > 0">
+                <span class="item_filter">Famille = {{famille_filter.join(', ')}} </span>
+                <button type="button" class="btn-close" aria-label="Close" (click)="del_filter('famille')"></button>
+              </div>
+          
+              <div class="rounded-btn" *ngIf="besoin_filter.length > 0">
+                <span class="item_filter">Besoin = {{besoin_filter.join(', ')}} </span>
+                <button type="button" class="btn-close" aria-label="Close" (click)="del_filter('besoin')"></button>
+              </div>
+          
+              <div class="rounded-btn" *ngIf="couleur_filter.length > 0">
+                <span class="item_filter">Couleur = {{couleur_filter.join(', ')}} </span>
+                <button type="button" class="btn-close" aria-label="Close" (click)="del_filter('couleur')"></button>
+              </div>
+          
+              <div class="rounded-btn" *ngIf="codeArticleGen_filter">
+                <span class="item_filter">Code Article = {{codeArticleGen_filter}} </span>
+                <button type="button" class="btn-close" aria-label="Close" (click)="del_filter('codeArticleGen')"></button>
+              </div>
+          
+              <div class="rounded-btn" *ngIf="solde_filter">
+                <span class="item_filter">Solde = {{solde_filter}} </span>
+                <button type="button" class="btn-close" aria-label="Close" (click)="del_filter('solde')"></button>
+              </div>
+            </div>
           </div>
-    
-          <div class="rounded-btn" *ngIf="fp_filter!=''">
-            <span class="item_filter">Fournisseur Principale={{fp}} </span>
-            <button type="button" class="btn-close" aria-label="Close" (click)="del_filter(fp)"></button>
-          </div>
-    
-          <div class="rounded-btn" *ngIf="date_injection_filter!=''">
-            <span class="item_filter">Date Injection={{date_injection_filter}} </span>
-            <button type="button" class="btn-close" aria-label="Close" (click)="del_filter(date_injection)"></button>
+        </div>
+        <div *ngIf="crit!='exist'"> 
+          <div class="card-header" *ngIf="filter_clicked" >
+            <span class="filter-text" > <i class="bi bi-funnel-fill"></i> Filtre  </span>
+      
+            <div class="rounded-btn" *ngIf="cag_filter!=''">
+              <span class="item_filter">code article gen={{cag_filter}} </span>
+              <button type="button" class="btn-close" aria-label="Close" (click)="del_filter(cag)"></button>
+            </div>
+      
+            <div class="rounded-btn" *ngIf="fp_filter!=''">
+              <span class="item_filter">Fournisseur Principale={{fp}} </span>
+              <button type="button" class="btn-close" aria-label="Close" (click)="del_filter(fp)"></button>
+            </div>
+      
+            <div class="rounded-btn" *ngIf="date_injection_filter!=''">
+              <span class="item_filter">Date Injection={{date_injection_filter}} </span>
+              <button type="button" class="btn-close" aria-label="Close" (click)="del_filter(date_injection)"></button>
+            </div>
+        
+            <div class="rounded-btn" *ngIf="cb_filter!=''">
+            <span class="item_filter">code barre={{cb_filter}} </span>
+            <button type="button" class="btn-close" aria-label="Close" (click)="del_filter(cb)"></button>
+            </div>
+        
+            <div class="rounded-btn" *ngIf="cf_filter!=''">
+            <span class="item_filter">code fournisseur={{cf_filter}} </span>
+            <button type="button" class="btn-close" aria-label="Close" (click)="del_filter(cf)"></button>
           </div>
       
-          <div class="rounded-btn" *ngIf="cb_filter!=''">
-          <span class="item_filter">code barre={{cb_filter}} </span>
-          <button type="button" class="btn-close" aria-label="Close" (click)="del_filter(cb)"></button>
+          <div class="rounded-btn" *ngIf="m_filter!=''">
+            <span class="item_filter">Collection={{m_filter}} </span>
+            <button type="button" class="btn-close" aria-label="Close" (click)="del_filter(m)"></button>
+          </div>
+        
+          <div class="rounded-btn" *ngIf="c_filter!=''">
+            <span class="item_filter">Famille={{c_filter}} </span>
+            <button type="button" class="btn-close" aria-label="Close" (click)="del_filter(c)"></button>
           </div>
       
-          <div class="rounded-btn" *ngIf="cf_filter!=''">
-          <span class="item_filter">code fournisseur={{cf_filter}} </span>
-          <button type="button" class="btn-close" aria-label="Close" (click)="del_filter(cf)"></button>
-        </div>
-    
-        <div class="rounded-btn" *ngIf="m_filter!=''">
-          <span class="item_filter">Collection={{m_filter}} </span>
-          <button type="button" class="btn-close" aria-label="Close" (click)="del_filter(m)"></button>
-        </div>
+          <div class="rounded-btn" *ngIf="code_couleur_filter!=''">
+            <span class="item_filter">code couleur={{code_couleur_filter}} </span>
+            <button type="button" class="btn-close" aria-label="Close" (click)="del_filter(code_couleur)"></button>
+          </div>
       
-        <div class="rounded-btn" *ngIf="c_filter!=''">
-          <span class="item_filter">Famille={{c_filter}} </span>
-          <button type="button" class="btn-close" aria-label="Close" (click)="del_filter(c)"></button>
+          
         </div>
-    
-        <div class="rounded-btn" *ngIf="code_couleur_filter!=''">
-          <span class="item_filter">code couleur={{code_couleur_filter}} </span>
-          <button type="button" class="btn-close" aria-label="Close" (click)="del_filter(code_couleur)"></button>
-        </div>
-    
-        </div>
+      </div>
         <div class="card-body">
           <div class="table-responsive" >
             <table class="display" id="datatable1" width="100%" cellspacing="0">
@@ -329,7 +473,7 @@
                 </tbody>
                 <tfoot>
                   <tr>
-                    <td [attr.colspan]="totalColumns">
+                    <td [attr.colspan]="4">
                       {{selected_articles.length}} item selected
                       <div style="display: flex; align-items: center; justify-content: center; "><button class="btn switch_page"
                           (click)="previous_page_articles_gen()" [disabled]="no_previous">&laquo; Previous</button>
@@ -407,6 +551,13 @@
                     placeholder="Type" [(ngModel)]="type">
                 </div>
               </div>
+              <div class="col-md-3">
+                <label for="validationCustomUsername" class="form-label labelBold">secteur</label>
+                <div class="input-group has-validation">
+                  <input type="number" class="form-control custom-placeholder" id="validationCustomUsername" aria-describedby="inputGroupPrepend"
+                    placeholder="secteur" [(ngModel)]="secteur">
+                </div>
+              </div>
             </div>
           </div>
           <div class="modal-footer">
@@ -438,6 +589,11 @@
               <span class="item_filter">Type Etablissement={{type_filter}} </span>
               <button type="button" class="btn-close" aria-label="Close" (click)="del_filter2(type)"></button>
             </div>
+
+            <div class="rounded-btn" *ngIf="secteur!=''">
+              <span class="item_filter">secteur ={{secteur_filter}} </span>
+              <button type="button" class="btn-close" aria-label="Close" (click)="del_filter2(secteur)"></button>
+            </div>
     
           </div>
           <div class="card-body">
@@ -451,6 +607,7 @@
                     <th style="width:14%">Adresse1</th>
                     <th style="width:14%">Adresse2</th>
                     <th style="width:14%">Type</th>
+                    <th style="width:12%">secteur</th>
                     <th style="width:14%">Priorité</th>
                   </tr>
                 </thead>
@@ -462,6 +619,7 @@
                     <td>{{etab.adresse1}}</td>
                     <td>{{etab.adresse2}}</td>
                     <td>{{etab.type}}</td>
+                    <td>{{etab.secteur}}</td>
                     <td><input type="number" placeholder="{{etab.priorite}}" [(ngModel)]="etab.priorite"
                         (change)="onInputChange(etab)"></td>
                   </tr>
@@ -549,7 +707,7 @@
                     <td>{{prop.code_article_dem}}</td>
                     <td>{{prop.code_barre}}</td>
                     <td>{{prop.code_depot_emet}}</td>
-                    <td>{{prop.code_Etab_recep}}</td>
+                    <td>{{prop.code_etab_recep}}</td>
                     <td>{{prop.lib_taille}}</td>
                     <td>{{prop.lib_couleur}}</td>
                     <td>{{prop.emet}}</td>

@@ -13,7 +13,12 @@ import { filter } from 'rxjs';
 import {STEPPER_GLOBAL_OPTIONS} from '@angular/cdk/stepper';
 import { StepperSelectionEvent } from '@angular/cdk/stepper';
 import { MatStepper } from '@angular/material/stepper';
+import { FilterService } from '../services/filter.service';
 declare var $ : any
+interface FilterOption {
+  value: string;
+  label: string;
+}
 @Component({
   selector: 'app-proposition',
   templateUrl: './proposition.component.html',
@@ -26,6 +31,31 @@ declare var $ : any
   ],
 })
 export class PropositionComponent implements OnInit {
+    // Selected values for multi-select
+    selectedGrandFamilles: string[] = [];
+    selectedFamilles: string[] = [];
+    selectedBesoins: string[] = [];
+    selectedCouleurs: string[] = [];
+    
+    // Text input values
+    codeArticleGen: string = '';
+    solde: string = '';
+// Filter options arrays
+grandFamilleOptions: FilterOption[] = [];
+familleOptions: FilterOption[] = [];
+besoinOptions: FilterOption[] = [];
+couleurOptions: FilterOption[] = [];
+
+// Filter clicked status
+
+// Filter values for display
+grandFamille_filter: string[] = [];
+famille_filter: string[] = [];
+besoin_filter: string[] = [];
+couleur_filter: string[] = [];
+codeArticleGen_filter: string = '';
+solde_filter: string = '';
+
   articles: Article[]=[];
   articles_gen: Article[]=[];
   start_date:any=''
@@ -41,6 +71,7 @@ export class PropositionComponent implements OnInit {
   m:any='';
   c:any='';
   sc:any='';
+  secteur:any='';
   code_couleur:any='';
   fp:any='';
   date_injection:any='';
@@ -49,6 +80,7 @@ export class PropositionComponent implements OnInit {
   m_filter:any='';
   c_filter:any='';
   sc_filter:any='';
+  secteur_filter:any='';
   code_couleur_filter:any='';
   desig_filter:any='';
   fp_filter:any='';
@@ -80,7 +112,7 @@ export class PropositionComponent implements OnInit {
   articleA=false;
   etabA=false;
   dataLoading=false;
-  totalColumns:number=4;
+  totalColumns:number=8;
   end_of_data:boolean=false;
   no_previous:boolean=true;
   page_number:number=1;
@@ -91,11 +123,27 @@ export class PropositionComponent implements OnInit {
     'selectNone'
 ]
 propgen:boolean=false
-  constructor(private cdr: ChangeDetectorRef,private articleService: ArticleService,private etabService: EtablissementService,private sessionService:SessionService,private datePipe: DatePipe,private detailDetailSessionService: DetailDetailSessionService,private propositionService:PropositionService) { }
+  constructor(private filterService: FilterService,private cdr: ChangeDetectorRef,private articleService: ArticleService,private etabService: EtablissementService,private sessionService:SessionService,private datePipe: DatePipe,private detailDetailSessionService: DetailDetailSessionService,private propositionService:PropositionService) { }
 ngOnInit() {
   this.retrieveArticles();
   this.retrieveEtabs();
   this.retrieveArticlesGen();
+  this.loadFilterOptions();
+}
+
+loadFilterOptions() {
+  this.filterService.getGrandFamilleOptions().subscribe(
+    (data) => this.grandFamilleOptions = data
+  );
+  this.filterService.getFamilleOptions().subscribe(
+    (data) => this.familleOptions = data
+  );
+  this.filterService.getBesoinOptions().subscribe(
+    (data) => this.besoinOptions = data
+  );
+  this.filterService.getCouleurOptions().subscribe(
+    (data) => this.couleurOptions = data
+  );
 }
 
 onStepSelectionChange(event: StepperSelectionEvent) {
@@ -210,7 +258,11 @@ refreshList_articles(){
       { data:null, defaultContent: '' },
       { data: 'code_article_dem', title: 'Code DIM' },
       { data: 'code_barre', title: 'Code Barre' },
-      { data: 'libelle', title: 'Désignation' },
+      { data: 'code_couleur', title: 'Couleur' },
+      { data: 'table_libre_9', title: 'Solde' },
+      { data: 'fam1', title: 'Grand Famille' },
+      { data: 'fam2', title: 'Famille' },
+      { data: 'fam8', title: 'Besoin' },
     ],
     columnDefs: [
       {
@@ -325,7 +377,7 @@ deselectListener =() => {
       for (var i=0; i < tab1.length ;i++){
         if (!this.selected_etabs.includes(tab1[i][1])) {
         this.selected_etabs.push(tab1[i][1]);
-        this.selected_prio_etabs.push(this.etabs[i].priorite)
+        this.selected_prio_etabs.push(this.etabs.find(etab => etab.code_etab == tab1[i][1])?.priorite)
         }
       }
       for (var i=0; i < tab2.length ;i++){
@@ -425,7 +477,7 @@ deselectListener =() => {
       ],
       dom: 'Bfrtip',
       createdRow: (row: any, data: any, dataIndex: any) => {
-        if (data[7] == "SIEGE") {
+        if (data[7] == "SIE") {
           $(row).addClass('bg-danger text-white');
         }
       }
@@ -497,48 +549,99 @@ deselectListener =() => {
     }
   }
   Filtrer(pg?: any): void{
-    const data = {
-      code_barre: this.cb,
-      code_article_gen: this.cag,
-      code_fournisseur: this.cf,
-      fam1: this.m,
-      fam2: this.c,
-      code_couleur:this.code_couleur,
-      date_injection:this.date_injection,
-      fournisseur_principale:this.fp
-    };
-    this.articleService.getArticlesMultipleParams(data,this.page_number.toString())
-    .subscribe({
-      next: (data) => {
-        if (this.page_number==0){
-                 const combinedArticles = [...this.selected_articles, ...data];
-        this.selected_articles = Array.from(new Set(combinedArticles.map(article => JSON.stringify(article))))
-                                      .map(articleStr => JSON.parse(articleStr));
-          this.page_number=pg
+    if(this.crit!='exist'){
+      const data = {
+        code_barre: this.cb,
+        code_article_gen: this.cag,
+        code_fournisseur: this.cf,
+        fam1: this.m,
+        fam2: this.c,
+        code_couleur:this.code_couleur,
+        date_injection:this.date_injection,
+        fournisseur_principale:this.fp
+      };
+      this.articleService.getArticlesMultipleParams(data,this.page_number.toString())
+      .subscribe({
+        next: (data) => {
+          if (this.page_number==0){
+                   const combinedArticles = [...this.selected_articles, ...data];
+          this.selected_articles = Array.from(new Set(combinedArticles.map(article => JSON.stringify(article))))
+                                        .map(articleStr => JSON.parse(articleStr));
+            this.page_number=pg
+          }
+          else{
+            this.articles = data
+          }
+        },
+        error: (e) => console.error(e)
+        ,
+         complete : () => {
+            this.refreshList_articles()
+            if ((this.cag!='')|| (this.cb!='')||(this.cf!='')||(this.m!='')|| (this.c!='')||(this.sc!='') || (this.fp!='')||(this.date_injection!='')||(this.code_couleur!='')){
+              this.filter_clicked=true
+              this.sc_filter=this.sc
+              this.m_filter=this.m
+              this.c_filter=this.c
+              this.cb_filter=this.cb
+              this.cag_filter=this.cag
+              this.cf_filter=this.cf
+              this.fp_filter=this.fp
+              this.date_injection_filter=this.date_injection
+              this.code_couleur_filter=this.code_couleur
+            }else
+            {this.filter_clicked=false}
         }
-        else{
-          this.articles = data
+      });
+    }else{
+      const data = {
+        grand_famille: this.selectedGrandFamilles.join(','),  // Convert array to comma-separated string
+        famille: this.selectedFamilles.join(','),
+        besoin: this.selectedBesoins.join(','),
+        couleur: this.selectedCouleurs.join(','),
+        code_article_gen: this.codeArticleGen,
+        solde: this.solde
+      };
+      this.articleService.getArticlesMultipleParams_exist(data, this.page_number.toString())
+      .subscribe({
+        next: (response) => {
+          if (this.page_number==0){
+            const combinedArticles = [...this.selected_articles, ...response];
+            this.selected_articles = Array.from(new Set(combinedArticles.map(article => JSON.stringify(article))))
+                                 .map(articleStr => JSON.parse(articleStr));
+            this.page_number=pg
+          }
+          else{
+            this.articles = response
+          }
+        },
+        error: (e) => console.error(e),
+        complete: () => {
+          this.refreshList_articles();
+          
+          // Check if any filter is active
+          if (
+            this.selectedGrandFamilles.length > 0 || 
+            this.selectedFamilles.length > 0 || 
+            this.selectedBesoins.length > 0 || 
+            this.selectedCouleurs.length > 0 || 
+            this.codeArticleGen !== '' || 
+            this.solde !== ''
+          ) {
+            this.filter_clicked = true;
+            
+            // Update filter display values
+            this.grandFamille_filter = [...this.selectedGrandFamilles];
+            this.famille_filter = [...this.selectedFamilles];
+            this.besoin_filter = [...this.selectedBesoins];
+            this.couleur_filter = [...this.selectedCouleurs];
+            this.codeArticleGen_filter = this.codeArticleGen;
+            this.solde_filter = this.solde;
+          } else {
+            this.filter_clicked = false;
+          }
         }
-      },
-      error: (e) => console.error(e)
-      ,
-       complete : () => {
-          this.refreshList_articles()
-          if ((this.cag!='')|| (this.cb!='')||(this.cf!='')||(this.m!='')|| (this.c!='')||(this.sc!='') || (this.fp!='')||(this.date_injection!='')||(this.code_couleur!='')){
-            this.filter_clicked=true
-            this.sc_filter=this.sc
-            this.m_filter=this.m
-            this.c_filter=this.c
-            this.cb_filter=this.cb
-            this.cag_filter=this.cag
-            this.cf_filter=this.cf
-            this.fp_filter=this.fp
-            this.date_injection_filter=this.date_injection
-            this.code_couleur_filter=this.code_couleur
-          }else
-          {this.filter_clicked=false}
-      }
-    });
+      });
+    }
   }
   Filtrer_articles_gen(pg?: any): void{
     console.log('filtrer aeticle gen')
@@ -580,39 +683,83 @@ deselectListener =() => {
     this.page_number=1
     this.end_of_data=false;
     this.no_previous=true;
-    const data = {
-      code_barre: this.cb,
-      code_article_gen: this.cag,
-      code_fournisseur: this.cf,
-      fam1: this.m,
-      fam2: this.c,
-      code_couleur:this.code_couleur,
-      date_injection:this.date_injection,
-      fournisseur_principale:this.fp
-    };
-    this.articleService.getArticlesMultipleParams(data,this.page_number.toString())
-    .subscribe({
-      next: (data) => {
-        this.articles = data;
-      },
-      error: (e) => console.error(e)
-      , complete: ()=> {
-        this.refreshList_articles()
-        if ((this.cag!='')|| (this.cb!='')||(this.cf!='')||(this.m!='')|| (this.c!='')||(this.sc!='') || (this.fp!='')||(this.date_injection!='')||(this.code_couleur!='')){
-          this.filter_clicked=true
-          this.sc_filter=this.sc
-          this.m_filter=this.m
-          this.c_filter=this.c
-          this.cb_filter=this.cb
-          this.cag_filter=this.cag
-          this.cf_filter=this.cf
-          this.fp_filter=this.fp
-          this.date_injection_filter=this.date_injection
-          this.code_couleur_filter=this.code_couleur
-        }else
-        {this.filter_clicked=false}
-      }
-    });
+    if(this.crit!='exist'){
+      const data = {
+        code_barre: this.cb,
+        code_article_gen: this.cag,
+        code_fournisseur: this.cf,
+        fam1: this.m,
+        fam2: this.c,
+        code_couleur:this.code_couleur,
+        date_injection:this.date_injection,
+        fournisseur_principale:this.fp
+      };
+      this.articleService.getArticlesMultipleParams(data,this.page_number.toString())
+      .subscribe({
+        next: (data) => {
+          this.articles = data;
+        },
+        error: (e) => console.error(e)
+        , complete: ()=> {
+          this.refreshList_articles()
+          if ((this.cag!='')|| (this.cb!='')||(this.cf!='')||(this.m!='')|| (this.c!='')||(this.sc!='') || (this.fp!='')||(this.date_injection!='')||(this.code_couleur!='')){
+            this.filter_clicked=true
+            this.sc_filter=this.sc
+            this.m_filter=this.m
+            this.c_filter=this.c
+            this.cb_filter=this.cb
+            this.cag_filter=this.cag
+            this.cf_filter=this.cf
+            this.fp_filter=this.fp
+            this.date_injection_filter=this.date_injection
+            this.code_couleur_filter=this.code_couleur
+          }else
+          {this.filter_clicked=false}
+        }
+      });
+    }else{
+      const data = {
+        grand_famille: this.selectedGrandFamilles.join(','),  // Convert array to comma-separated string
+        famille: this.selectedFamilles.join(','),
+        besoin: this.selectedBesoins.join(','),
+        couleur: this.selectedCouleurs.join(','),
+        code_article_gen: this.codeArticleGen,
+        solde: this.solde
+      };
+  
+      this.articleService.getArticlesMultipleParams_exist(data, this.page_number.toString())
+        .subscribe({
+          next: (response) => {
+            this.articles = response;
+          },
+          error: (e) => console.error(e),
+          complete: () => {
+            this.refreshList_articles();
+            
+            // Check if any filter is active
+            if (
+              this.selectedGrandFamilles.length > 0 || 
+              this.selectedFamilles.length > 0 || 
+              this.selectedBesoins.length > 0 || 
+              this.selectedCouleurs.length > 0 || 
+              this.codeArticleGen !== '' || 
+              this.solde !== ''
+            ) {
+              this.filter_clicked = true;
+              
+              // Update filter display values
+              this.grandFamille_filter = [...this.selectedGrandFamilles];
+              this.famille_filter = [...this.selectedFamilles];
+              this.besoin_filter = [...this.selectedBesoins];
+              this.couleur_filter = [...this.selectedCouleurs];
+              this.codeArticleGen_filter = this.codeArticleGen;
+              this.solde_filter = this.solde;
+            } else {
+              this.filter_clicked = false;
+            }
+          }
+        });
+    }
   }
   Filtrer_click_articles_gen(): void{
     this.page_number=1
@@ -649,7 +796,8 @@ deselectListener =() => {
       code_etab: this.ce,
       adresse1: this.adr,
       type: this.type,
-      
+      secteur:this.secteur
+
     };
     this.etabService.getEtabssMultipleParams(data,'1000')
     .subscribe({
@@ -661,11 +809,12 @@ deselectListener =() => {
       ,
        complete : () => {
           this.refreshList_etabs()
-          if ((this.ce!='')|| (this.adr!='')||(this.type!='')){
+          if ((this.ce!='')|| (this.adr!='')||(this.type!='')||(this.secteur!='')){
             this.filter_clicked2=true
             this.ce_filter=this.ce
             this.adr_filter=this.adr
             this.type_filter=this.type
+            this.secteur_filter=this.secteur
           }else
           {this.filter_clicked2=false}
       }
@@ -849,6 +998,32 @@ deselectListener =() => {
   }
 
   del_filter(filter:any){
+    switch(filter) {
+      case 'grandFamille':
+        this.selectedGrandFamilles = [];
+        this.grandFamille_filter = [];
+        break;
+      case 'famille':
+        this.selectedFamilles = [];
+        this.famille_filter = [];
+        break;
+      case 'besoin':
+        this.selectedBesoins = [];
+        this.besoin_filter = [];
+        break;
+      case 'couleur':
+        this.selectedCouleurs = [];
+        this.couleur_filter = [];
+        break;
+      case 'codeArticleGen':
+        this.codeArticleGen = '';
+        this.codeArticleGen_filter = '';
+        break;
+      case 'solde':
+        this.solde = '';
+        this.solde_filter = '';
+        break;
+    }
     if (filter==this.sc){
       this.sc=''
     }else if (filter==this.cf){
@@ -885,6 +1060,8 @@ deselectListener =() => {
       this.type=''
     }else  if (filter==this.adr){
       this.adr=''
+    }else  if (filter==this.secteur){
+      this.secteur=''
     }
     this.Filtrer2()
   }

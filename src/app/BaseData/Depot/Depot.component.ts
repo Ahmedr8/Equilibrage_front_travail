@@ -33,7 +33,7 @@ export class DepotComponent implements OnInit {
   id_to_delete: string='';
   dataLoading:boolean=true
   params: ParamSynchro[] = [];
-  csv_path='depots'
+  csv_path='Depots'
   private bootstrapModal: any;
 
   constructor(private DepotService: DepotService,private paramService: ParamSynchroService) { }
