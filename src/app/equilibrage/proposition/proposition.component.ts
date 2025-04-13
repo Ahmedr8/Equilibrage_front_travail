@@ -14,6 +14,7 @@ import {STEPPER_GLOBAL_OPTIONS} from '@angular/cdk/stepper';
 import { StepperSelectionEvent } from '@angular/cdk/stepper';
 import { MatStepper } from '@angular/material/stepper';
 import { FilterService } from '../services/filter.service';
+import { formatDate } from '@angular/common';
 declare var $ : any
 interface FilterOption {
   value: string;
@@ -46,7 +47,15 @@ familleOptions: FilterOption[] = [];
 besoinOptions: FilterOption[] = [];
 couleurOptions: FilterOption[] = [];
 
-// Filter clicked status
+// Filter ferme et date 
+ferme: string = '';
+ferme_filter: string = '';
+dateDebut: any='';
+dateFin: any='';
+dateDebut_filter: any='';
+dateFin_filter: any='';
+startDateError_injection = false;
+endDateError_injection = false;
 
 // Filter values for display
 grandFamille_filter: string[] = [];
@@ -599,7 +608,10 @@ deselectListener =() => {
         besoin: this.selectedBesoins.join(','),
         couleur: this.selectedCouleurs.join(','),
         code_article_gen: this.codeArticleGen,
-        solde: this.solde
+        solde: this.solde,
+        ferme:this.ferme,
+        dateFin:  this.dateFin ? formatDate(this.dateFin, 'yyyy-MM-dd', 'en-US') : '',
+        dateDebut: this.dateDebut ? formatDate(this.dateDebut, 'yyyy-MM-dd', 'en-US') : ''
       };
       this.articleService.getArticlesMultipleParams_exist(data, this.page_number.toString())
       .subscribe({
@@ -625,7 +637,10 @@ deselectListener =() => {
             this.selectedBesoins.length > 0 || 
             this.selectedCouleurs.length > 0 || 
             this.codeArticleGen !== '' || 
-            this.solde !== ''
+            this.solde !== '' ||
+            this.ferme !== '' ||
+            this.dateDebut!== '' ||
+            this.dateFin !=='' 
           ) {
             this.filter_clicked = true;
             
@@ -636,6 +651,10 @@ deselectListener =() => {
             this.couleur_filter = [...this.selectedCouleurs];
             this.codeArticleGen_filter = this.codeArticleGen;
             this.solde_filter = this.solde;
+            this.ferme_filter = this.ferme;
+            this.dateDebut_filter = this.dateDebut ? formatDate(this.dateDebut, 'yyyy-MM-dd', 'en-US') : '';
+            this.dateFin_filter = this.dateFin ? formatDate(this.dateFin, 'yyyy-MM-dd', 'en-US') : '';
+            
           } else {
             this.filter_clicked = false;
           }
@@ -718,13 +737,19 @@ deselectListener =() => {
         }
       });
     }else{
+      if(              this.dateDebut!== '' || this.dateFin !=='' ){
+        this.validateDates_injection()
+      }
       const data = {
         grand_famille: this.selectedGrandFamilles.join(','),  // Convert array to comma-separated string
         famille: this.selectedFamilles.join(','),
         besoin: this.selectedBesoins.join(','),
         couleur: this.selectedCouleurs.join(','),
         code_article_gen: this.codeArticleGen,
-        solde: this.solde
+        solde: this.solde,
+        ferme:this.ferme,
+        dateFin:  this.dateFin ? formatDate(this.dateFin, 'yyyy-MM-dd', 'en-US') : '',
+        dateDebut: this.dateDebut ? formatDate(this.dateDebut, 'yyyy-MM-dd', 'en-US') : ''
       };
   
       this.articleService.getArticlesMultipleParams_exist(data, this.page_number.toString())
@@ -742,8 +767,16 @@ deselectListener =() => {
               this.selectedFamilles.length > 0 || 
               this.selectedBesoins.length > 0 || 
               this.selectedCouleurs.length > 0 || 
-              this.codeArticleGen !== '' || 
-              this.solde !== ''
+              this.codeArticleGen_filter !== '' || 
+              this.solde_filter !== '' ||
+              this.ferme_filter !== '' ||
+              this.dateDebut_filter!== '' ||
+              this.dateFin_filter !=='' ||
+              this.codeArticleGen!== '' || 
+              this.solde !== '' ||
+              this.ferme !== '' ||
+              this.dateDebut!== '' ||
+              this.dateFin !=='' 
             ) {
               this.filter_clicked = true;
               
@@ -754,6 +787,9 @@ deselectListener =() => {
               this.couleur_filter = [...this.selectedCouleurs];
               this.codeArticleGen_filter = this.codeArticleGen;
               this.solde_filter = this.solde;
+              this.ferme_filter = this.ferme;
+              this.dateDebut_filter = this.dateDebut ? formatDate(this.dateDebut, 'yyyy-MM-dd', 'en-US') : '';
+              this.dateFin_filter = this.dateFin ? formatDate(this.dateFin, 'yyyy-MM-dd', 'en-US') : '';
             } else {
               this.filter_clicked = false;
             }
@@ -823,6 +859,30 @@ deselectListener =() => {
   articleShow(v:boolean):void{
     this.articleA=v;
     this.etabA= !(v);
+  }
+
+  validateDates_injection() {
+    const today = new Date();
+    const startDate = this.dateDebut ? new Date(this.dateDebut) : null;
+    const endDate = this.dateFin ? new Date(this.dateFin) : null;
+    this.startDateError_injection = false;
+    this.endDateError_injection = false;
+    if(!startDate || !endDate){
+      this.startDateError = true;
+    }
+
+    if (startDate && endDate) {
+      if (startDate > endDate) {
+        this.startDateError_injection = true;
+        this.endDateError_injection = true;
+      }
+    }
+
+    if (endDate) {
+      if (endDate > today) {
+        this.endDateError_injection = true;
+      }
+    }
   }
 
   validateDates() {
@@ -1023,6 +1083,18 @@ deselectListener =() => {
         this.solde = '';
         this.solde_filter = '';
         break;
+      case 'ferme':
+              this.ferme = '';
+              this.ferme_filter = '';
+              break;
+      case 'dateFin':
+              this.dateFin = '';
+              this.dateFin_filter = '';
+              break;
+      case 'dateDebut':
+              this.dateDebut = '';
+              this.dateDebut_filter = '';
+              break;
     }
     if (filter==this.sc){
       this.sc=''

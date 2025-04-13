@@ -6,6 +6,13 @@ import { environment } from './environments/environment';
 
 if (environment.production) {
   enableProdMode();
+  if (environment.production) {
+    enableProdMode();
+    if (window) {
+      window.console.log = () => {}; // Disable console logs in production
+      //window.console.error = () => {}; // Optionally disable errors too
+    }
+  }
 }
 
 platformBrowserDynamic().bootstrapModule(AppModule)

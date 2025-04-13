@@ -209,7 +209,7 @@
                   <div class="col-md-4">
                     <label for="couleur" class="form-label labelBold">Couleur</label><br>
                     <mat-form-field appearance="outline" class="custom-mat-select">
-                      <mat-label>Select Options</mat-label>
+                      <mat-label>Couleur</mat-label>
                       <mat-select multiple [(ngModel)]="selectedCouleurs" disableRipple panelClass="custom-panel">
                         <mat-option *ngFor="let option of couleurOptions" [value]="option.value">
                           {{option.value}}   {{option.label}}
@@ -236,6 +236,46 @@
                       <mat-label>Solde</mat-label>
                       <input matInput placeholder="Solde" [(ngModel)]="solde">
                     </mat-form-field>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-4">
+                    <label for="ferme" class="form-label labelBold">article fermé</label><br>
+                    <mat-form-field appearance="outline" class="custom-mat-select">
+                      <mat-label>article fermé</mat-label>
+                      <mat-select  [(ngModel)]="ferme" disableRipple panelClass="custom-panel">
+                        <mat-option value="_">
+                          Non
+                        </mat-option>
+                        <mat-option value="x">
+                          Oui
+                        </mat-option>
+                      </mat-select>
+                    </mat-form-field>
+                  </div>
+                  <div class="col-md-4">
+                    <label for="dateDebut" class="form-label labelBold">Date de début</label>
+                      <mat-form-field appearance="outline">
+                        <mat-label>Date de début</mat-label>
+                        <input matInput [matDatepicker]="pickerDebut" [(ngModel)]="dateDebut">
+                        <mat-datepicker-toggle matIconSuffix [for]="pickerDebut"></mat-datepicker-toggle>
+                        <mat-datepicker #pickerDebut></mat-datepicker>
+                      </mat-form-field>
+                      <small class="text-danger" *ngIf="startDateError_injection">
+                        La date de début doit être inférieure à la date de fin.
+                      </small>
+                  </div>
+                  <div class="col-md-4">
+                    <label for="dateFin" class="form-label labelBold">Date de fin</label>
+                      <mat-form-field appearance="outline">
+                        <mat-label>Date de fin</mat-label>
+                        <input matInput [matDatepicker]="pickerFin" [(ngModel)]="dateFin">
+                        <mat-datepicker-toggle matIconSuffix [for]="pickerFin"></mat-datepicker-toggle>
+                        <mat-datepicker #pickerFin></mat-datepicker>
+                      </mat-form-field>
+                      <small class="text-danger" *ngIf="endDateError_injection">
+                        La date de fin doit être postérieure à la date de début et ne pas dépasser aujourd'hui.
+                      </small>
                   </div>
                 </div>
               </div>
@@ -287,6 +327,18 @@
               <div class="rounded-btn" *ngIf="solde_filter">
                 <span class="item_filter">Solde = {{solde_filter}} </span>
                 <button type="button" class="btn-close" aria-label="Close" (click)="del_filter('solde')"></button>
+              </div>
+              <div class="rounded-btn" *ngIf="ferme_filter">
+                <span class="item_filter">article fermé = {{ferme_filter}} </span>
+                <button type="button" class="btn-close" aria-label="Close" (click)="del_filter('ferme')"></button>
+              </div>
+              <div class="rounded-btn" *ngIf="dateDebut_filter">
+                <span class="item_filter">date Debut = {{dateDebut_filter}} </span>
+                <button type="button" class="btn-close" aria-label="Close" (click)="del_filter('dateDebut')"></button>
+              </div>
+              <div class="rounded-btn" *ngIf="dateFin_filter">
+                <span class="item_filter">date Fin = {{dateFin_filter}} </span>
+                <button type="button" class="btn-close" aria-label="Close" (click)="del_filter('dateFin')"></button>
               </div>
             </div>
           </div>
