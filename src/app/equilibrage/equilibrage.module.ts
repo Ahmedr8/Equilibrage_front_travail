@@ -16,6 +16,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
+import { EtabMultiSelectorComponent } from './proposition/etabsLevelComponents/etab-multi-selector/etab-multi-selector.component';
 
 
 @NgModule({
@@ -37,6 +38,6 @@ import { MatNativeDateModule } from '@angular/material/core';
     MatDatepickerModule,
     MatNativeDateModule
   ],
-  declarations: [EquilibrageComponent,SessionsComponent,PropositionComponent]
+  declarations: [EquilibrageComponent,SessionsComponent,PropositionComponent, EtabMultiSelectorComponent]
 })
 export class EquilibrageModule { }

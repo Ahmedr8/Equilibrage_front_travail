@@ -1,0 +1,79 @@
+<div class="row">
+  <!-- Émetteurs Table -->
+  <div class="col-md-6">
+    <label class="form-label labelBold mb-2">Émetteurs</label>
+    <div class="table-responsive">
+      <table class="table table-bordered table-sm">
+        <thead>
+          <tr>
+            <th>
+              <input type="checkbox"
+                [checked]="areAllEmetteursSelected()"
+                (change)="toggleAllEmetteurs($event)">
+            </th>
+            <th>Code</th>
+            <th>Libellé</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let etab of etabs">
+            <td>
+              <input type="checkbox"
+                [checked]="isEmetteurSelected(etab)"
+                [disabled]="isRecepteurSelected(etab)"
+                (change)="toggleEmetteur(etab)">
+            </td>
+            <td>{{ etab.code_etab }}</td>
+            <td>{{ etab.libelle }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Récepteurs Table -->
+  <div class="col-md-6">
+    <label class="form-label labelBold mb-2">Récepteurs</label>
+    <div class="table-responsive">
+      <table class="table table-bordered table-sm">
+        <thead>
+          <tr>
+            <th>
+              <input type="checkbox"
+                [checked]="areAllRecepteursSelected()"
+                (change)="toggleAllRecepteurs($event)">
+            </th>
+            <th>Code</th>
+            <th>Libellé</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let etab of etabs">
+            <td>
+              <input type="checkbox"
+                [checked]="isRecepteurSelected(etab)"
+                [disabled]="isEmetteurSelected(etab)"
+                (change)="toggleRecepteur(etab)">
+            </td>
+            <td>{{ etab.code_etab }}</td>
+            <td>{{ etab.libelle }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- Quantité input (as before) -->
+<div class="row mt-3">
+  <div class="col-md-4">
+    <label for="qte" class="fw-bold">Quantité à transférer</label>
+    <input
+      type="number"
+      class="form-control"
+      id="qte"
+      name="qte"
+      [(ngModel)]="qte"
+      (input)="onQteChange()">
+  </div>
+</div>

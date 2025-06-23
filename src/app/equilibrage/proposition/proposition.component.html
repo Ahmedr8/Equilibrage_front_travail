@@ -28,6 +28,7 @@
                     <option value="seul_emet">par Emmeteur</option>
                     <option value="articles_dem">par Articles dimensionné</option>
                     <option value="exist">Exist</option>
+                    <option value="test">test</option>
                   </select>
                 </div>
                 <br>
@@ -648,37 +649,55 @@
             </div>
     
           </div>
-          <div class="card-body">
-            <div class="table-responsive">
-              <table class="display" id="datatable2" width="100%" cellspacing="0">
-                <thead>
-                  <tr>
-                    <th style="width:3%"></th>
-                    <th style="width:14%">Code Etablissement </th>
-                    <th style="width:14%">Libellé</th>
-                    <th style="width:14%">Adresse1</th>
-                    <th style="width:14%">Adresse2</th>
-                    <th style="width:14%">Type</th>
-                    <th style="width:12%">secteur</th>
-                    <th style="width:14%">Priorité</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr *ngFor="let etab of etabs">
-                    <td></td>
-                    <td>{{etab.code_etab}}</td>
-                    <td>{{etab.libelle}}</td>
-                    <td>{{etab.adresse1}}</td>
-                    <td>{{etab.adresse2}}</td>
-                    <td>{{etab.type}}</td>
-                    <td>{{etab.secteur}}</td>
-                    <td><input type="number" placeholder="{{etab.priorite}}" [(ngModel)]="etab.priorite"
-                        (change)="onInputChange(etab)"></td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
+<!-- ...existing filters and buttons... -->
+
+<!-- Show the multi-selector ONLY if crit is 'test' -->
+<div   class="p-3"  *ngIf="crit === 'test' ; else normalTable">
+  <app-etab-multi-selector
+    [etabs]="etabs"
+    (emetteursChange)="onEmetteursChange($event)"
+    (recepteursChange)="onRecepteursChange($event)"
+    (qteChange)="onQteChange($event)">
+  </app-etab-multi-selector>
+</div>
+
+<!-- Normal table display if crit is not 'test' -->
+<ng-template #normalTable>
+  <div class="card-body">
+    <div class="table-responsive">
+      <table class="display" id="datatable2" width="100%" cellspacing="0">
+        <thead>
+          <tr>
+            <th style="width:3%"></th>
+            <th style="width:14%">Code Etablissement </th>
+            <th style="width:14%">Libellé</th>
+            <th style="width:14%">Adresse1</th>
+            <th style="width:14%">Adresse2</th>
+            <th style="width:14%">Type</th>
+            <th style="width:12%">secteur</th>
+            <th style="width:14%">Priorité</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let etab of etabs">
+            <td></td>
+            <td>{{etab.code_etab}}</td>
+            <td>{{etab.libelle}}</td>
+            <td>{{etab.adresse1}}</td>
+            <td>{{etab.adresse2}}</td>
+            <td>{{etab.type}}</td>
+            <td>{{etab.secteur}}</td>
+            <td>
+              <input type="number" placeholder="{{etab.priorite}}" [(ngModel)]="etab.priorite"
+                (change)="onInputChange(etab)">
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</ng-template>
+
         </div>
       </div>
       <div>

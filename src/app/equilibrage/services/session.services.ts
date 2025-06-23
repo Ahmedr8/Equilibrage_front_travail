@@ -14,6 +14,23 @@ export class SessionService {
 
   constructor(private http: HttpClient) {}
 
+    optimiseTransfert(
+    articles: any[],
+    emetteurs: any[],
+    recepteurs: any[],
+    quantite: number,
+    id_session : string
+  ): Observable<any> {
+    const body = {
+      articles: articles,
+      emetteurs: emetteurs,
+      recepteurs: recepteurs,
+      quantite: quantite,
+      code_session : id_session
+    };
+    return this.http.post<any>(`${this.apiUrl}sessions/transfert-optimise/`, body);
+  }
+
   getSessions(page_number:string): Observable<Session[]> {
     return this.http.get<Session[]>(this.apiUrl+'sessions/page='+page_number);
   }

@@ -15,6 +15,8 @@ import { StepperSelectionEvent } from '@angular/cdk/stepper';
 import { MatStepper } from '@angular/material/stepper';
 import { FilterService } from '../services/filter.service';
 import { formatDate } from '@angular/common';
+import * as XLSX from 'xlsx';
+import { saveAs } from 'file-saver';
 declare var $ : any
 interface FilterOption {
   value: string;
@@ -974,6 +976,19 @@ deselectListener =() => {
       });
     }
   }
+
+  exportTransfertsToExcel(data: any[], filename = 'transferts.xlsx') {
+  // 1. Convert JSON to worksheet
+  const ws: XLSX.WorkSheet = XLSX.utils.json_to_sheet(data);
+
+  // 2. Create a workbook
+  const wb: XLSX.WorkBook = XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(wb, ws, 'Transferts');
+
+  // 3. Generate excel file and download
+  const wbout = XLSX.write(wb, { bookType: 'xlsx', type: 'array' });
+  saveAs(new Blob([wbout], { type: 'application/octet-stream' }), filename);
+}
   createProp(stepper: MatStepper):void{
     console.log('loading')
     this.propgen=true
@@ -998,12 +1013,41 @@ deselectListener =() => {
     const prio_etabs=this.selected_prio_etabs;    
     const critere=this.crit  
     const aux=localStorage.getItem('stock_min')
+
+
     if (aux !=null) {
       this.stock_min_value=+aux
     }
     else
-    {this.stock_min_value=1}    
-      const datatosend={
+    {this.stock_min_value=1}
+    
+    if(this.crit == "test") {
+      this.sessionService.optimiseTransfert(
+        this.selected_articles,
+        this.emetteurs,
+        this.recepteurs,
+        this.qte,
+        this.id_session
+      ).subscribe({
+        next: res => {
+          // Handle result
+          console.log(res.transferts);
+              this.exportTransfertsToExcel(res.propositions || res.transferts, 'propositions.xlsx');
+
+        },
+        error: err => {
+          // Handle error
+          console.error(err);
+        },
+       complete : () => {
+        this.dataLoading = false;
+        this.retrieveprops();
+        this.created = true;
+      }
+      });
+
+    }else {
+            const datatosend={
         articles:id_articles,
         etabs: id_etabs,
         prios : prio_etabs,
@@ -1026,6 +1070,8 @@ deselectListener =() => {
         this.created = true;
       }
       });
+    }
+
 
   }
  
@@ -1151,5 +1197,20 @@ deselectListener =() => {
     console.log("deselect all")
     this.selected_articles=[]
   }
+
+
+  emetteurs: any[] = [];
+recepteurs: any[] = [];
+qte :number = 0;
+onEmetteursChange(selected: any[]) {
+  this.emetteurs = selected;
+}
+onRecepteursChange(selected: any[]) {
+  this.recepteurs = selected;
+}
+onQteChange(qte:number){
+this.qte = qte;
+}
+
 }
 
