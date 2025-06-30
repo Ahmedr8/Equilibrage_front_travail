@@ -28,7 +28,7 @@
                     <option value="seul_emet">par Emmeteur</option>
                     <option value="articles_dem">par Articles dimensionné</option>
                     <option value="exist">Exist</option>
-                    <option value="test">test</option>
+                    <option value="test">Emetteurs Récepteurs</option>
                   </select>
                 </div>
                 <br>
@@ -108,34 +108,136 @@
                     <label for="validationCustom02" class="form-label labelBold">Code à barre</label>
                     <input type="text" class="form-control custom-placeholder" id="validationCustom02" placeholder="Code à barre" [(ngModel)]="cb">
                   </div>
-                  <div class="col-md-3">
-                    <label for="validationCustomUsername" class="form-label labelBold">Code fournisseur</label>
-                    <div class="input-group has-validation">
-                      <input type="text" class="form-control custom-placeholder" id="validationCustomUsername" aria-describedby="inputGroupPrepend"
-                        placeholder="Code fournissuer" [(ngModel)]="cf">
-                    </div>
-                  </div>
-                  <div class="col-md-3">
+
+           <div class="col-md-3">
                     <label for="validationCustom03" class="form-label labelBold">Fournisseur Principale</label>
                     <input type="text" class="form-control custom-placeholder" id="validationCustom03" placeholder="Fournisseur Principale" [(ngModel)]="fp">
                   </div>
+
+                            <div class="col-md-3">
+                       <mat-form-field appearance="fill" style="width: 100%">
+                  <mat-label>Code Fournisseur</mat-label>
+                  <mat-select [(ngModel)]="cf">
+                    <mat-option>
+                      <input matInput
+                            type="text"
+                            placeholder="Recherche..."
+                            [(ngModel)]="searchProvider"
+                            (ngModelChange)="onProviderSearchChange()"
+                            (click)="$event.stopPropagation()"
+                            autocomplete="off">
+                    </mat-option>
+                    <mat-option *ngFor="let option of filteredprovidersOptions" [value]="option.value">
+                       {{option.label}}
+                    </mat-option>
+                  </mat-select>
+                  <!-- Clear button (shows only if 'c' is not empty) -->
+                  <button mat-icon-button matSuffix *ngIf="cf" (click)="resetProviderFilter()" aria-label="Clear selection">
+                    <mat-icon>close</mat-icon>
+                  </button>
+                </mat-form-field>
+                  </div>
+       
                 </div>
                 <div class="row" style="margin-top: 1%;">
-                  <div class="col-md-3">
-                    <label for="validationCustom03" class="form-label labelBold">Collection</label>
-                    <input type="text" class="form-control custom-placeholder" id="validationCustom03" placeholder="Collection" [(ngModel)]="m">
-                  </div>
-                  <div class="col-md-3">
-                    <label for="validationCustom04" class="form-label labelBold">Famille</label>
-                    <input type="text" name="" id="" placeholder="Famille" class="form-control custom-placeholder" [(ngModel)]="c">
-                  </div>
-                  <div class="col-md-3">
-                    <label for="validationCustom04" class="form-label labelBold">code couleur</label>
-                    <input type="text" name="" id="" placeholder="code couleur" class="form-control custom-placeholder" [(ngModel)]="code_couleur">
-                  </div>
+               
+              <div class="col-md-3">
+                <mat-form-field appearance="fill" style="width: 100%">
+                  <mat-label>Famille</mat-label>
+                  <mat-select [(ngModel)]="c">
+                    <mat-option>
+                      <input matInput
+                            type="text"
+                            placeholder="Recherche..."
+                            [(ngModel)]="familleSearch"
+                            (ngModelChange)="onFamilleSearchChange()"
+                            (click)="$event.stopPropagation()"
+                            autocomplete="off">
+                    </mat-option>
+                    <mat-option *ngFor="let option of filteredFamilleOptions" [value]="option.value">
+                      {{option.value}} {{option.label}}
+                    </mat-option>
+                  </mat-select>
+                  <!-- Clear button (shows only if 'c' is not empty) -->
+                  <button mat-icon-button matSuffix *ngIf="c" (click)="resetFamilleFilter()" aria-label="Clear selection">
+                    <mat-icon>close</mat-icon>
+                  </button>
+                </mat-form-field>
+              </div>
+
+
+              <div class="col-md-3">
+                <mat-form-field appearance="fill" style="width: 100%">
+                  <mat-label>Sous Famille</mat-label>
+                  <mat-select [(ngModel)]="filter_sous_fam">
+                    <mat-option>
+                      <input matInput type="text" placeholder="Recherche..."
+                        [(ngModel)]="sousFamilleSearch"
+                        (ngModelChange)="onSousFamilleSearchChange()"
+                        (click)="$event.stopPropagation()" autocomplete="off">
+                    </mat-option>
+                    <mat-option *ngFor="let option of filteredSousFamilleOptions" [value]="option.value">
+                      {{option.value}} {{option.label}}
+                    </mat-option>
+                  </mat-select>
+                  <button mat-icon-button matSuffix *ngIf="filter_sous_fam" (click)="resetSousFamilleFilter()" aria-label="Clear">
+                    <mat-icon>close</mat-icon>
+                  </button>
+                </mat-form-field>
+              </div>
+
+
+            <div class="col-md-3">
+              <mat-form-field appearance="fill" style="width: 100%">
+                <mat-label>Groupe</mat-label>
+                <mat-select [(ngModel)]="filter_groupe">
+                  <mat-option>
+                    <input matInput type="text" placeholder="Recherche..."
+                      [(ngModel)]="groupeSearch"
+                      (ngModelChange)="onGroupeSearchChange()"
+                      (click)="$event.stopPropagation()" autocomplete="off">
+                  </mat-option>
+                  <mat-option *ngFor="let option of filteredGroupOptions" [value]="option.value">
+                    {{option.value}} {{option.label}}
+                  </mat-option>
+                </mat-select>
+                <button mat-icon-button matSuffix *ngIf="filter_groupe" (click)="resetGroupeFilter()" aria-label="Clear">
+                  <mat-icon>close</mat-icon>
+                </button>
+              </mat-form-field>
+              </div>
+
+
+          <div class="col-md-3">
+            <mat-form-field appearance="fill" style="width: 100%">
+              <mat-label>Materiel</mat-label>
+              <mat-select [(ngModel)]="filter_material">
+                <mat-option>
+                  <input matInput type="text" placeholder="Recherche..."
+                    [(ngModel)]="materielSearch"
+                    (ngModelChange)="onMaterielSearchChange()"
+                    (click)="$event.stopPropagation()" autocomplete="off">
+                </mat-option>
+                <mat-option *ngFor="let option of filteredMaterialsOptions" [value]="option.value">
+                  {{option.value}} {{option.label}}
+                </mat-option>
+              </mat-select>
+              <button mat-icon-button matSuffix *ngIf="filter_material" (click)="resetMaterielFilter()" aria-label="Clear">
+                <mat-icon>close</mat-icon>
+              </button>
+            </mat-form-field>
+          </div>
+
+
+
+
                   <div class="col-md-3">
                     <label for="validationCustom02" class="form-label labelBold">Date Injection</label>
                     <input type="date" class="form-control custom-placeholder" id="validationCustom02" placeholder="Date Injection" [(ngModel)]="date_injection">
+                  </div>
+                     <div class="col-md-3">
+                    <label for="validationCustom03" class="form-label labelBold">Collection</label>
+                    <input type="text" class="form-control custom-placeholder" id="validationCustom03" placeholder="Collection" [(ngModel)]="m">
                   </div>
                 </div>
                 <br>

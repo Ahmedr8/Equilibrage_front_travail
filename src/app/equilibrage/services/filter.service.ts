@@ -29,4 +29,21 @@ export class FilterService {
   getCouleurOptions(): Observable<FilterOption[]> {
     return this.http.get<FilterOption[]>(this.apiUrl+'articles/api/couleur-options');
   }
+
+    getSousFamilleOptions(): Observable<FilterOption[]> {
+    return this.http.get<FilterOption[]>(this.apiUrl+'articles/api/sous-famille-options');
+  }
+     getMaterialsOptions(): Observable<FilterOption[]> {
+    return this.http.get<FilterOption[]>(this.apiUrl+'articles/api/materials-options');
+  }
+
+     getGroupOptions(): Observable<FilterOption[]> {
+    return this.http.get<FilterOption[]>(this.apiUrl+'articles/api/group-options');
+  }
+
+   getProvidersOptions(): Observable<FilterOption[]> {
+    return this.http.get<FilterOption[]>(this.apiUrl+'articles/api/providers-options');
+  }
+
+
 }

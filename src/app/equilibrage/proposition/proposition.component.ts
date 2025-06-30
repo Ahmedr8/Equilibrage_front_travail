@@ -46,8 +46,15 @@ export class PropositionComponent implements OnInit {
 // Filter options arrays
 grandFamilleOptions: FilterOption[] = [];
 familleOptions: FilterOption[] = [];
+sousFamilleOptions: FilterOption[] = [];
 besoinOptions: FilterOption[] = [];
 couleurOptions: FilterOption[] = [];
+groupOptions: FilterOption[] = [];
+materialsOptions: FilterOption[] = [];
+providersOptions: FilterOption[] = [];
+
+
+
 
 // Filter ferme et date 
 ferme: string = '';
@@ -91,6 +98,11 @@ solde_filter: string = '';
   m_filter:any='';
   c_filter:any='';
   sc_filter:any='';
+
+  filter_sous_fam:string ='';
+  filter_groupe:string ='';
+  filter_material:string ='';
+
   secteur_filter:any='';
   code_couleur_filter:any='';
   desig_filter:any='';
@@ -133,8 +145,29 @@ solde_filter: string = '';
     'selectAll',
     'selectNone'
 ]
+
+
+sousFamilleSearch = '';
+filteredSousFamilleOptions = this.sousFamilleOptions;
+
+searchProvider = ''
+filteredprovidersOptions = this.providersOptions;
+
+familleSearch = '';
+filteredFamilleOptions = this.familleOptions;
+
+// Groupe
+groupeSearch = '';
+filteredGroupOptions = this.groupOptions;
+
+// Materiel
+materielSearch = '';
+filteredMaterialsOptions = this.materialsOptions;
 propgen:boolean=false
-  constructor(private filterService: FilterService,private cdr: ChangeDetectorRef,private articleService: ArticleService,private etabService: EtablissementService,private sessionService:SessionService,private datePipe: DatePipe,private detailDetailSessionService: DetailDetailSessionService,private propositionService:PropositionService) { }
+  constructor(private filterService: FilterService
+    ,private cdr: ChangeDetectorRef,private articleService: ArticleService
+    ,private etabService: EtablissementService,private sessionService:SessionService
+    ,private datePipe: DatePipe,private detailDetailSessionService: DetailDetailSessionService,private propositionService:PropositionService) { }
 ngOnInit() {
   this.retrieveArticles();
   this.retrieveEtabs();
@@ -147,7 +180,10 @@ loadFilterOptions() {
     (data) => this.grandFamilleOptions = data
   );
   this.filterService.getFamilleOptions().subscribe(
-    (data) => this.familleOptions = data
+    (data) => {this.familleOptions = data
+        this.filteredFamilleOptions = this.familleOptions;
+
+    }
   );
   this.filterService.getBesoinOptions().subscribe(
     (data) => this.besoinOptions = data
@@ -155,6 +191,104 @@ loadFilterOptions() {
   this.filterService.getCouleurOptions().subscribe(
     (data) => this.couleurOptions = data
   );
+   this.filterService.getSousFamilleOptions().subscribe(
+    (data) => {
+      this.sousFamilleOptions = data
+        this.filteredSousFamilleOptions = this.sousFamilleOptions;
+
+    }
+  );
+    this.filterService.getGroupOptions().subscribe(
+    (data) =>{ this.groupOptions = data
+        this.filteredGroupOptions = this.groupOptions;
+
+    }
+  );
+    this.filterService.getMaterialsOptions().subscribe(
+    (data) => {this.materialsOptions = data
+        this.filteredMaterialsOptions = this.materialsOptions;
+
+    }
+  );
+
+     this.filterService.getProvidersOptions().subscribe(
+    (data) => {this.providersOptions = data
+        this.filteredprovidersOptions = this.providersOptions;
+
+    }
+  );
+}
+onSousFamilleSearchChange() {
+  const filterValue = this.sousFamilleSearch.toLowerCase();
+  this.filteredSousFamilleOptions = this.sousFamilleOptions.filter(option =>
+    option.value.toLowerCase().includes(filterValue) ||
+    option.label.toLowerCase().includes(filterValue)
+  );
+}
+
+resetSousFamilleFilter(){
+this.filter_sous_fam = ''
+this.sousFamilleSearch = ''
+}
+
+
+
+onFamilleSearchChange() {
+  const filterValue = this.familleSearch.toLowerCase();
+  this.filteredFamilleOptions = this.familleOptions.filter(option =>
+    option.value.toLowerCase().includes(filterValue) ||
+    option.label.toLowerCase().includes(filterValue)
+  );
+}
+
+resetFamilleFilter(){
+    this.c = ''
+    this.familleSearch = ''
+}
+
+
+onProviderSearchChange() {
+  const filterValue = this.searchProvider.toLowerCase();
+  this.filteredprovidersOptions = this.providersOptions.filter(option =>
+    option.value.toLowerCase().includes(filterValue) ||
+    option.label.toLowerCase().includes(filterValue)
+  );
+}
+
+resetProviderFilter(){
+    this.cf = ''
+    this.searchProvider = ''
+}
+
+
+
+
+
+onGroupeSearchChange() {
+  const filterValue = this.groupeSearch.toLowerCase();
+  this.filteredGroupOptions = this.groupOptions.filter(option =>
+    option.value.toLowerCase().includes(filterValue) ||
+    option.label.toLowerCase().includes(filterValue)
+  );
+}
+
+
+resetGroupeFilter(){
+  this.filter_groupe = ''
+  this.groupeSearch = ''
+}
+
+
+onMaterielSearchChange() {
+  const filterValue = this.materielSearch.toLowerCase();
+  this.filteredMaterialsOptions = this.materialsOptions.filter(option =>
+    option.value.toLowerCase().includes(filterValue) ||
+    option.label.toLowerCase().includes(filterValue)
+  );
+}
+resetMaterielFilter(){
+  this.filter_material = ''
+  this.materielSearch = ''
 }
 
 onStepSelectionChange(event: StepperSelectionEvent) {
@@ -569,7 +703,10 @@ deselectListener =() => {
         fam2: this.c,
         code_couleur:this.code_couleur,
         date_injection:this.date_injection,
-        fournisseur_principale:this.fp
+        fournisseur_principale:this.fp,
+        filter_material:this.filter_material,
+        filter_groupe:this.filter_groupe,
+        filter_sous_fam:this.filter_sous_fam,
       };
       this.articleService.getArticlesMultipleParams(data,this.page_number.toString())
       .subscribe({
@@ -713,7 +850,12 @@ deselectListener =() => {
         fam2: this.c,
         code_couleur:this.code_couleur,
         date_injection:this.date_injection,
-        fournisseur_principale:this.fp
+        fournisseur_principale:this.fp,
+        filter_material:this.filter_material,
+        filter_groupe:this.filter_groupe,
+        filter_sous_fam:this.filter_sous_fam,
+
+
       };
       this.articleService.getArticlesMultipleParams(data,this.page_number.toString())
       .subscribe({

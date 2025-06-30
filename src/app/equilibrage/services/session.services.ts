@@ -28,6 +28,8 @@ export class SessionService {
       quantite: quantite,
       code_session : id_session
     };
+
+    console.log(body);
     return this.http.post<any>(`${this.apiUrl}sessions/transfert-optimise/`, body);
   }
 
