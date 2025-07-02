@@ -267,11 +267,13 @@ refreshList_articles(){
       { data:null, defaultContent: '' },
       { data: 'code_article_dem', title: 'Code DIM' },
       { data: 'code_barre', title: 'Code Barre' },
+      { data: 'libelle', title: 'libelle' },
       { data: 'code_couleur', title: 'Couleur' },
-      { data: 'table_libre_9', title: 'Solde' },
-      { data: 'fam1', title: 'Grand Famille' },
+      { data: 'lib_couleur', title: 'lib couleur' },
+      { data: 'lib_taille', title: 'pointure' },
+      { data: 'code_fournisseur', title: 'fournisseur principale' },
+      { data: 'fam1', title: 'collection' },
       { data: 'fam2', title: 'Famille' },
-      { data: 'fam8', title: 'Besoin' },
     ],
     columnDefs: [
       {
@@ -457,12 +459,18 @@ deselectListener =() => {
             extend: 'excelHtml5',
             text: 'Export to Excel',
             className: 'btn btn-success',
+            exportOptions: {
+              columns: ':visible' // ✅ this line is required
+            },
             customize: this.customizeExcelExport
           },
           'colvis',
           {
             extend: 'print',
             text: 'Print',
+            exportOptions: {
+              columns: ':visible' // ✅ this line is required
+            },
             customize: function (win: any) {
                 // Fit content to page
                 $(win.document.body).css('zoom', '90%');
@@ -562,12 +570,12 @@ deselectListener =() => {
       const data = {
         code_barre: this.cb,
         code_article_gen: this.cag,
-        code_fournisseur: this.cf,
+        fam3: this.cf,
         fam1: this.m,
         fam2: this.c,
         code_couleur:this.code_couleur,
         date_injection:this.date_injection,
-        fournisseur_principale:this.fp
+        code_fournisseur:this.fp
       };
       this.articleService.getArticlesMultipleParams(data,this.page_number.toString())
       .subscribe({
@@ -706,12 +714,12 @@ deselectListener =() => {
       const data = {
         code_barre: this.cb,
         code_article_gen: this.cag,
-        code_fournisseur: this.cf,
+        fam3: this.cf,
         fam1: this.m,
         fam2: this.c,
         code_couleur:this.code_couleur,
         date_injection:this.date_injection,
-        fournisseur_principale:this.fp
+        code_fournisseur:this.fp
       };
       this.articleService.getArticlesMultipleParams(data,this.page_number.toString())
       .subscribe({

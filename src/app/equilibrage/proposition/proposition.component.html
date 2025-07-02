@@ -27,7 +27,7 @@
                     <option value="moy_ventes">Moyenne des ventes</option>
                     <option value="seul_emet">par Emmeteur</option>
                     <option value="articles_dem">par Articles dimensionné</option>
-                    <option value="exist">Exist</option>
+                    <!-- <option value="exist">Exist</option> -->
                   </select>
                 </div>
                 <br>
@@ -91,7 +91,7 @@
       <div [ngStyle]="{ 'display': articleA ? 'block' : 'none'} ">
         <br>
         <div *ngIf="crit!='articles_dem'">
-          <div *ngIf="crit!='exist'">
+          <!-- <div *ngIf="crit!='exist'">
             <div class="card shadow">
               <div class="card-header py-1 headerColorBg" style=" color: white; font-weight: 600;">
                 Filtres
@@ -108,10 +108,10 @@
                     <input type="text" class="form-control custom-placeholder" id="validationCustom02" placeholder="Code à barre" [(ngModel)]="cb">
                   </div>
                   <div class="col-md-3">
-                    <label for="validationCustomUsername" class="form-label labelBold">Code fournisseur</label>
+                    <label for="validationCustomUsername" class="form-label labelBold">Sous Famille</label>
                     <div class="input-group has-validation">
                       <input type="text" class="form-control custom-placeholder" id="validationCustomUsername" aria-describedby="inputGroupPrepend"
-                        placeholder="Code fournissuer" [(ngModel)]="cf">
+                        placeholder="Sous Famille" [(ngModel)]="cf">
                     </div>
                   </div>
                   <div class="col-md-3">
@@ -144,8 +144,8 @@
                   class="bi bi-funnel-fill"></i></span>Filtrer</button>
               </div>
             </div>
-          </div>
-          <div *ngIf="crit=='exist'">
+          </div> -->
+          <div >
             <div class="card shadow">
               <div class="card-header py-1 headerColorBg" style="color: white; font-weight: 600;">
                 Filtres
@@ -368,7 +368,7 @@
             </div>
         
             <div class="rounded-btn" *ngIf="cf_filter!=''">
-            <span class="item_filter">code fournisseur={{cf_filter}} </span>
+            <span class="item_filter">sous famille={{cf_filter}} </span>
             <button type="button" class="btn-close" aria-label="Close" (click)="del_filter(cf)"></button>
           </div>
       
@@ -691,6 +691,7 @@
             <tr>
               <th>Ordre transfert</th>
               <th>Code Gén</th>
+              <th>libelle</th>
               <th>Code DIM</th>
               <th>Code Barre</th>
               <th>Code Dépot Emmet</th>
@@ -734,6 +735,7 @@
                   <tr>
                     <th>Ordre transfert</th>
                     <th>Code Gén</th>
+                    <th>Libellé</th>
                     <th>Code DIM</th>
                     <th>Code Barre</th>
                     <th>Code Dépot Emmet</th>
@@ -756,6 +758,7 @@
                   <tr *ngFor="let prop of props">
                     <td>{{prop.ordre_trf}}</td>
                     <td>{{prop.code_article_gen}}</td>
+                    <td>{{prop.article_lib}}</td>
                     <td>{{prop.code_article_dem}}</td>
                     <td>{{prop.code_barre}}</td>
                     <td>{{prop.code_depot_emet}}</td>

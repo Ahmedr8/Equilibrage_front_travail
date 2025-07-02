@@ -166,6 +166,7 @@ export class SessionsComponent implements OnInit {
       columns: [
         { data: 'ordre_trf', title: 'ordre de transfert' },
         { data: 'code_article_gen', title: 'Code Gén' },
+        { data: 'article_lib', title: 'Libelle' },
         { data: 'code_article_dem', title: 'Code DIM' },
         { data: 'code_barre', title: 'code barre' },
         { data: 'code_depot_emet', title: 'Code Dépot Emmet' },
@@ -193,12 +194,18 @@ export class SessionsComponent implements OnInit {
           extend: 'excelHtml5',
           text: 'Export to Excel',
           className: 'btn btn-success',
+          exportOptions: {
+            columns: ':visible' // ✅ this line is required
+          },
           customize: this.customizeExcelExport
         },
         'colvis',
         {
           extend: 'print',
           text: 'Print',
+          exportOptions: {
+            columns: ':visible' // ✅ this line is required
+          },
           customize: function (win: any) {
               // Fit content to page
               $(win.document.body).css('zoom', '90%');
