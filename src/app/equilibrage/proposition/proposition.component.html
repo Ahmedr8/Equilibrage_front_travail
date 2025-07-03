@@ -27,7 +27,7 @@
                     <option value="moy_ventes">Moyenne des ventes</option>
                     <option value="seul_emet">par Emmeteur</option>
                     <option value="articles_dem">par Articles dimensionné</option>
-                    <option value="exist">Exist</option>
+                    <!-- <option value="exist">Exist</option> -->
                     <option value="test">Emetteurs Récepteurs</option>
                   </select>
                 </div>
@@ -230,16 +230,84 @@
 
 
 
+                  <div class="col-md-3">
+                    <mat-form-field appearance="fill" style="width: 100%">
+                      <mat-label>collection</mat-label>
+                      <mat-select [(ngModel)]="filter_collection">
+                        <mat-option>
+                          <input matInput type="text" placeholder="Recherche..."
+                            [(ngModel)]="collectionSearch"
+                            (ngModelChange)="onCollectionSearchChange()"
+                            (click)="$event.stopPropagation()" autocomplete="off">
+                        </mat-option>
+                        <mat-option *ngFor="let option of filteredCollectionsOptions" [value]="option.value">
+                          {{option.value}} {{option.label}}
+                        </mat-option>
+                      </mat-select>
+                      <button mat-icon-button matSuffix *ngIf="filter_collection" (click)="resetCollectionFilter()" aria-label="Clear">
+                        <mat-icon>close</mat-icon>
+                      </button>
+                    </mat-form-field>
+                  </div>
+                  <div class="col-md-3">
+                    <mat-form-field appearance="fill" style="width: 100%">
+                      <mat-label>Section</mat-label>
+                      <mat-select [(ngModel)]="filter_section">
+                        <mat-option>
+                          <input matInput type="text" placeholder="Recherche..." [(ngModel)]="sectionSearch"
+                                (ngModelChange)="onSectionSearchChange()" (click)="$event.stopPropagation()" autocomplete="off">
+                        </mat-option>
+                        <mat-option *ngFor="let option of filteredSectionsOptions" [value]="option.value">
+                          {{option.value}} {{option.label}}
+                        </mat-option>
+                      </mat-select>
+                      <button mat-icon-button matSuffix *ngIf="filter_section" (click)="resetSectionFilter()" aria-label="Clear">
+                        <mat-icon>close</mat-icon>
+                      </button>
+                    </mat-form-field>
+                  </div>
+                  <div class="col-md-3">
+                    <mat-form-field appearance="fill" style="width: 100%">
+                      <mat-label>Marque</mat-label>
+                      <mat-select [(ngModel)]="filter_marque">
+                        <mat-option>
+                          <input matInput type="text" placeholder="Recherche..." [(ngModel)]="marqueSearch"
+                                (ngModelChange)="onMarqueSearchChange()" (click)="$event.stopPropagation()" autocomplete="off">
+                        </mat-option>
+                        <mat-option *ngFor="let option of filteredMarquesOptions" [value]="option.value">
+                          {{option.value}} {{option.label}}
+                        </mat-option>
+                      </mat-select>
+                      <button mat-icon-button matSuffix *ngIf="filter_marque" (click)="resetMarqueFilter()" aria-label="Clear">
+                        <mat-icon>close</mat-icon>
+                      </button>
+                    </mat-form-field>
+                  </div>
+                  <div class="col-md-3">
+                    <mat-form-field appearance="fill" style="width: 100%">
+                      <mat-label>Thème</mat-label>
+                      <mat-select [(ngModel)]="filter_theme">
+                        <mat-option>
+                          <input matInput type="text" placeholder="Recherche..." [(ngModel)]="themeSearch"
+                                (ngModelChange)="onThemeSearchChange()" (click)="$event.stopPropagation()" autocomplete="off">
+                        </mat-option>
+                        <mat-option *ngFor="let option of filteredThemesOptions" [value]="option.value">
+                          {{option.value}} {{option.label}}
+                        </mat-option>
+                      </mat-select>
+                      <button mat-icon-button matSuffix *ngIf="filter_theme" (click)="resetThemeFilter()" aria-label="Clear">
+                        <mat-icon>close</mat-icon>
+                      </button>
+                    </mat-form-field>
+                  </div>
+                 
 
                   <div class="col-md-3">
                     <label for="validationCustom02" class="form-label labelBold">Date Injection</label>
                     <input type="date" class="form-control custom-placeholder" id="validationCustom02" placeholder="Date Injection" [(ngModel)]="date_injection">
                   </div>
-                     <div class="col-md-3">
-                    <label for="validationCustom03" class="form-label labelBold">Collection</label>
-                    <input type="text" class="form-control custom-placeholder" id="validationCustom03" placeholder="Collection" [(ngModel)]="m">
-                  </div>
                 </div>
+
                 <br>
               </div>
               <div class="modal-footer">
@@ -856,6 +924,7 @@
                     <th>Ordre transfert</th>
                     <th>Code Gén</th>
                     <th>Code DIM</th>
+                    <th>Libellé</th>
                     <th>Code Barre</th>
                     <th>Code Dépot Emmet</th>
                     <th>Code Eatb Récepteur</th>
@@ -878,6 +947,7 @@
                     <td>{{prop.ordre_trf}}</td>
                     <td>{{prop.code_article_gen}}</td>
                     <td>{{prop.code_article_dem}}</td>
+                    <td>{{prop.libelle}}</td>
                     <td>{{prop.code_barre}}</td>
                     <td>{{prop.code_depot_emet}}</td>
                     <td>{{prop.code_etab_recep}}</td>

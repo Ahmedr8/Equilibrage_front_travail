@@ -28,5 +28,6 @@ export class propAffiche{
         stock_recep_sera_couleur!: string;
         stock_emet_sera!: string;
         stock_emet_sera_couleur!: string;
+        libelle!:string;
     
 }

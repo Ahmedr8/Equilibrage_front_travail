@@ -167,6 +167,7 @@ export class SessionsComponent implements OnInit {
         { data: 'ordre_trf', title: 'ordre de transfert' },
         { data: 'code_article_gen', title: 'Code Gén' },
         { data: 'code_article_dem', title: 'Code DIM' },
+        { data: 'libelle', title: 'Libellé' },
         { data: 'code_barre', title: 'code barre' },
         { data: 'code_depot_emet', title: 'Code Dépot Emmet' },
         { data: 'code_etab_recep', title: 'Code Etab Recep' },

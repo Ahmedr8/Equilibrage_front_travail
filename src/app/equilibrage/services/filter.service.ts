@@ -44,6 +44,21 @@ export class FilterService {
    getProvidersOptions(): Observable<FilterOption[]> {
     return this.http.get<FilterOption[]>(this.apiUrl+'articles/api/providers-options');
   }
+     getCollectionOptions(): Observable<FilterOption[]> {
+    return this.http.get<FilterOption[]>(this.apiUrl+'articles/api/collection-options');
+  }
+  getSectionOptions(): Observable<FilterOption[]> {
+  return this.http.get<FilterOption[]>(this.apiUrl + 'articles/api/section-options');
+}
+
+getMarqueOptions(): Observable<FilterOption[]> {
+  return this.http.get<FilterOption[]>(this.apiUrl + 'articles/api/marque-options');
+}
+
+getThemeOptions(): Observable<FilterOption[]> {
+  return this.http.get<FilterOption[]>(this.apiUrl + 'articles/api/theme-options');
+}
+
 
 
 }

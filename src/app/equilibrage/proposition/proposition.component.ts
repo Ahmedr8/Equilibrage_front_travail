@@ -52,6 +52,7 @@ couleurOptions: FilterOption[] = [];
 groupOptions: FilterOption[] = [];
 materialsOptions: FilterOption[] = [];
 providersOptions: FilterOption[] = [];
+collectionOptions: FilterOption[] = [];
 
 
 
@@ -160,6 +161,28 @@ filteredFamilleOptions = this.familleOptions;
 groupeSearch = '';
 filteredGroupOptions = this.groupOptions;
 
+// collection
+filter_collection=''
+collectionSearch = '';
+filteredCollectionsOptions = this.collectionOptions;
+
+// Déclarations
+filter_section = '';
+filter_marque = '';
+filter_theme = '';
+
+sectionSearch = '';
+marqueSearch = '';
+themeSearch = '';
+
+sectionOptions: FilterOption[] = [];
+marqueOptions: FilterOption[] = [];
+themeOptions: FilterOption[] = [];
+
+filteredSectionsOptions = this.sectionOptions;
+filteredMarquesOptions = this.marqueOptions;
+filteredThemesOptions = this.themeOptions;
+
 // Materiel
 materielSearch = '';
 filteredMaterialsOptions = this.materialsOptions;
@@ -217,6 +240,34 @@ loadFilterOptions() {
 
     }
   );
+     this.filterService.getCollectionOptions().subscribe(
+    (data) => {
+      this.collectionOptions = data
+        this.filteredCollectionsOptions = this.collectionOptions;
+
+    }
+  );
+  // Services
+this.filterService.getSectionOptions().subscribe(
+  (data) => {
+    this.sectionOptions = data;
+    this.filteredSectionsOptions = this.sectionOptions;
+  }
+);
+
+this.filterService.getMarqueOptions().subscribe(
+  (data) => {
+    this.marqueOptions = data;
+    this.filteredMarquesOptions = this.marqueOptions;
+  }
+);
+
+this.filterService.getThemeOptions().subscribe(
+  (data) => {
+    this.themeOptions = data;
+    this.filteredThemesOptions = this.themeOptions;
+  }
+);
 }
 onSousFamilleSearchChange() {
   const filterValue = this.sousFamilleSearch.toLowerCase();
@@ -244,6 +295,61 @@ onFamilleSearchChange() {
 resetFamilleFilter(){
     this.c = ''
     this.familleSearch = ''
+}
+
+//collection
+onCollectionSearchChange() {
+  const filterValue = this.collectionSearch.toLowerCase();
+  this.filteredCollectionsOptions = this.collectionOptions.filter(option =>
+    option.value.toLowerCase().includes(filterValue) ||
+    option.label.toLowerCase().includes(filterValue)
+  );
+}
+
+resetCollectionFilter(){
+this.filter_collection = ''
+this.collectionSearch = ''
+}
+
+// Méthodes de recherche
+onSectionSearchChange() {
+  const filterValue = this.sectionSearch.toLowerCase();
+  this.filteredSectionsOptions = this.sectionOptions.filter(option =>
+    option.value.toLowerCase().includes(filterValue) ||
+    option.label.toLowerCase().includes(filterValue)
+  );
+}
+
+onMarqueSearchChange() {
+  const filterValue = this.marqueSearch.toLowerCase();
+  this.filteredMarquesOptions = this.marqueOptions.filter(option =>
+    option.value.toLowerCase().includes(filterValue) ||
+    option.label.toLowerCase().includes(filterValue)
+  );
+}
+
+onThemeSearchChange() {
+  const filterValue = this.themeSearch.toLowerCase();
+  this.filteredThemesOptions = this.themeOptions.filter(option =>
+    option.value.toLowerCase().includes(filterValue) ||
+    option.label.toLowerCase().includes(filterValue)
+  );
+}
+
+// Reset
+resetSectionFilter() {
+  this.filter_section = '';
+  this.sectionSearch = '';
+}
+
+resetMarqueFilter() {
+  this.filter_marque = '';
+  this.marqueSearch = '';
+}
+
+resetThemeFilter() {
+  this.filter_theme = '';
+  this.themeSearch = '';
 }
 
 
@@ -707,6 +813,11 @@ deselectListener =() => {
         filter_material:this.filter_material,
         filter_groupe:this.filter_groupe,
         filter_sous_fam:this.filter_sous_fam,
+        filter_collection:this.filter_collection,
+        filter_section: this.filter_section,
+        filter_marque: this.filter_marque,
+        filter_theme: this.filter_theme,
+
       };
       this.articleService.getArticlesMultipleParams(data,this.page_number.toString())
       .subscribe({
@@ -854,6 +965,10 @@ deselectListener =() => {
         filter_material:this.filter_material,
         filter_groupe:this.filter_groupe,
         filter_sous_fam:this.filter_sous_fam,
+        filter_collection:this.filter_collection,
+        filter_section: this.filter_section,
+        filter_marque: this.filter_marque,
+        filter_theme: this.filter_theme,
 
 
       };
