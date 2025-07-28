@@ -80,8 +80,11 @@ solde_filter: string = '';
   start_date:any=''
   end_date:any=''
   recepteur_number:number=0
+  qte_a_trf:number=1
+  qte_max_trf:number=1
   startDateError = false;
   endDateError = false;
+  qte_a_trf_error= false;
   cag:any='';
   cag_filter:any='';
   cad:any='';
@@ -99,6 +102,13 @@ solde_filter: string = '';
   m_filter:any='';
   c_filter:any='';
   sc_filter:any='';
+  filter_material_filter:any=''
+  filter_groupe_filter:any=''
+  filter_sous_fam_filter:any=''
+  filter_collection_filter:any=''
+  filter_section_filter:any=''
+  filter_marque_filter:any=''
+  filter_theme_filter:any=''
 
   filter_sous_fam:string ='';
   filter_groupe:string ='';
@@ -836,7 +846,7 @@ deselectListener =() => {
         ,
          complete : () => {
             this.refreshList_articles()
-            if ((this.cag!='')|| (this.cb!='')||(this.cf!='')||(this.m!='')|| (this.c!='')||(this.sc!='') || (this.fp!='')||(this.date_injection!='')||(this.code_couleur!='')){
+            if ((this.cag!='')|| (this.cb!='')||(this.cf!='')||(this.m!='')|| (this.c!='')||(this.sc!='') || (this.fp!='')||(this.date_injection!='')||(this.code_couleur!='')||(this.filter_theme!='')||(this.filter_marque!='')||(this.filter_section!='')||(this.filter_collection!='')||(this.filter_sous_fam!='')||(this.filter_groupe!='')||(this.filter_material!='')){
               this.filter_clicked=true
               this.sc_filter=this.sc
               this.m_filter=this.m
@@ -847,6 +857,13 @@ deselectListener =() => {
               this.fp_filter=this.fp
               this.date_injection_filter=this.date_injection
               this.code_couleur_filter=this.code_couleur
+              this.filter_material_filter=this.filter_material
+              this.filter_groupe_filter=this.filter_groupe
+              this.filter_sous_fam_filter=this.filter_sous_fam
+              this.filter_collection_filter=this.filter_collection
+              this.filter_section_filter=this.filter_section
+              this.filter_marque_filter=this.filter_marque
+              this.filter_theme_filter=this.filter_theme
             }else
             {this.filter_clicked=false}
         }
@@ -915,10 +932,20 @@ deselectListener =() => {
   Filtrer_articles_gen(pg?: any): void{
     console.log('filtrer aeticle gen')
     const data = {
-      code_article_gen: this.cag,
-      code_fournisseur: this.cf,
-      fam1: this.m,
-      libelle:this.desig
+       code_article_gen: this.cag,
+        code_fournisseur: this.cf,
+        fam1: this.m,
+        fam2: this.c,
+        code_couleur:this.code_couleur,
+        date_injection:this.date_injection,
+        fournisseur_principale:this.fp,
+        filter_material:this.filter_material,
+        filter_groupe:this.filter_groupe,
+        filter_sous_fam:this.filter_sous_fam,
+        filter_collection:this.filter_collection,
+        filter_section: this.filter_section,
+        filter_marque: this.filter_marque,
+        filter_theme: this.filter_theme,
     };
     this.articleService.getArticlesGenMultipleParams(data,this.page_number.toString())
     .subscribe({
@@ -937,12 +964,24 @@ deselectListener =() => {
       ,
        complete : () => {
           this.refreshList_articles_gen()
-          if ((this.cag!='')|| (this.desig!='')||(this.cf!='')||(this.m!='')){
+          if ((this.cag!='')|| (this.cb!='')||(this.cf!='')||(this.m!='')|| (this.c!='')||(this.sc!='') || (this.fp!='')||(this.date_injection!='')||(this.code_couleur!='')||(this.filter_theme!='')||(this.filter_marque!='')||(this.filter_section!='')||(this.filter_collection!='')||(this.filter_sous_fam!='')||(this.filter_groupe!='')||(this.filter_material!='')){
             this.filter_clicked=true
+            this.sc_filter=this.sc
             this.m_filter=this.m
-            this.desig_filter=this.desig
+            this.c_filter=this.c
+            this.cb_filter=this.cb
             this.cag_filter=this.cag
             this.cf_filter=this.cf
+            this.fp_filter=this.fp
+            this.date_injection_filter=this.date_injection
+            this.code_couleur_filter=this.code_couleur
+            this.filter_material_filter=this.filter_material
+              this.filter_groupe_filter=this.filter_groupe
+              this.filter_sous_fam_filter=this.filter_sous_fam
+              this.filter_collection_filter=this.filter_collection
+              this.filter_section_filter=this.filter_section
+              this.filter_marque_filter=this.filter_marque
+              this.filter_theme_filter=this.filter_theme
           }else
           {this.filter_clicked=false}
       }
@@ -980,7 +1019,7 @@ deselectListener =() => {
         error: (e) => console.error(e)
         , complete: ()=> {
           this.refreshList_articles()
-          if ((this.cag!='')|| (this.cb!='')||(this.cf!='')||(this.m!='')|| (this.c!='')||(this.sc!='') || (this.fp!='')||(this.date_injection!='')||(this.code_couleur!='')){
+          if ((this.cag!='')|| (this.cb!='')||(this.cf!='')||(this.m!='')|| (this.c!='')||(this.sc!='') || (this.fp!='')||(this.date_injection!='')||(this.code_couleur!='')||(this.filter_theme!='')||(this.filter_marque!='')||(this.filter_section!='')||(this.filter_collection!='')||(this.filter_sous_fam!='')||(this.filter_groupe!='')||(this.filter_material!='')){
             this.filter_clicked=true
             this.sc_filter=this.sc
             this.m_filter=this.m
@@ -991,6 +1030,13 @@ deselectListener =() => {
             this.fp_filter=this.fp
             this.date_injection_filter=this.date_injection
             this.code_couleur_filter=this.code_couleur
+            this.filter_material_filter=this.filter_material
+              this.filter_groupe_filter=this.filter_groupe
+              this.filter_sous_fam_filter=this.filter_sous_fam
+              this.filter_collection_filter=this.filter_collection
+              this.filter_section_filter=this.filter_section
+              this.filter_marque_filter=this.filter_marque
+              this.filter_theme_filter=this.filter_theme
           }else
           {this.filter_clicked=false}
         }
@@ -1061,11 +1107,20 @@ deselectListener =() => {
     this.end_of_data=false;
     this.no_previous=true;
     const data = {
-      code_barre: this.cb,
-      code_article_gen: this.cag,
-      code_fournisseur: this.cf,
-      fam1: this.m,
-      libelle: this.desig
+        code_article_gen: this.cag,
+        code_fournisseur: this.cf,
+        fam1: this.m,
+        fam2: this.c,
+        code_couleur:this.code_couleur,
+        date_injection:this.date_injection,
+        fournisseur_principale:this.fp,
+        filter_material:this.filter_material,
+        filter_groupe:this.filter_groupe,
+        filter_sous_fam:this.filter_sous_fam,
+        filter_collection:this.filter_collection,
+        filter_section: this.filter_section,
+        filter_marque: this.filter_marque,
+        filter_theme: this.filter_theme,
     };
     this.articleService.getArticlesGenMultipleParams(data,this.page_number.toString())
     .subscribe({
@@ -1075,12 +1130,24 @@ deselectListener =() => {
       error: (e) => console.error(e)
       , complete: ()=> {
         this.refreshList_articles_gen()
-        if ((this.cag!='')|| (this.desig!='')||(this.cf!='')||(this.m!='')){
-          this.filter_clicked=true
-          this.m_filter=this.m
-          this.desig_filter=this.desig
-          this.cag_filter=this.cag
-          this.cf_filter=this.cf
+        if ((this.cag!='')|| (this.cb!='')||(this.cf!='')||(this.m!='')|| (this.c!='')||(this.sc!='') || (this.fp!='')||(this.date_injection!='')||(this.code_couleur!='')||(this.filter_theme!='')||(this.filter_marque!='')||(this.filter_section!='')||(this.filter_collection!='')||(this.filter_sous_fam!='')||(this.filter_groupe!='')||(this.filter_material!='')){
+            this.filter_clicked=true
+            this.sc_filter=this.sc
+            this.m_filter=this.m
+            this.c_filter=this.c
+            this.cb_filter=this.cb
+            this.cag_filter=this.cag
+            this.cf_filter=this.cf
+            this.fp_filter=this.fp
+            this.date_injection_filter=this.date_injection
+            this.code_couleur_filter=this.code_couleur
+            this.filter_material_filter=this.filter_material
+              this.filter_groupe_filter=this.filter_groupe
+              this.filter_sous_fam_filter=this.filter_sous_fam
+              this.filter_collection_filter=this.filter_collection
+              this.filter_section_filter=this.filter_section
+              this.filter_marque_filter=this.filter_marque
+              this.filter_theme_filter=this.filter_theme
         }else
         {this.filter_clicked=false}
       }
@@ -1167,6 +1234,14 @@ deselectListener =() => {
       }
     }
   }
+
+  validate_qte_a_trf (){
+    this.qte_a_trf_error=false
+    if(this.qte_a_trf>this.qte_max_trf){
+      this.qte_a_trf_error = true;
+    }
+  }
+
   Ajouter(stepper: MatStepper):void{
     let data= {
       code_session: null,
@@ -1177,6 +1252,8 @@ deselectListener =() => {
       end_date:this.datePipe.transform(this.end_date, 'yyyy-MM-dd'),
       start_date:this.datePipe.transform(this.start_date, 'yyyy-MM-dd'),
       recepteur_number:this.recepteur_number,
+      qte_a_trf:this.qte_a_trf,
+      qte_max_trf:this.qte_max_trf,
 
     };
     if(this.crit=="exist"){
@@ -1191,6 +1268,44 @@ deselectListener =() => {
           end_date:this.datePipe.transform(this.end_date, 'yyyy-MM-dd'),
           start_date:this.datePipe.transform(this.start_date, 'yyyy-MM-dd'),
           recepteur_number:this.recepteur_number,
+          qte_a_trf:this.qte_a_trf,
+          qte_max_trf:this.qte_max_trf,
+    
+        };
+        console.log(data)
+        this.sessionService.createSession(data)
+        .subscribe({
+          next: (res) => {
+            this.id_session=res.code_session;
+            this.submitted = true;
+          },
+          error: (e) => console.error(e)
+          ,
+          complete: () => {
+            this.refreshList_etabs()
+            if(this.submitted){
+              console.log(this.submitted)
+              this.cdr.detectChanges(); 
+              stepper.next();
+            }
+          }
+        });
+         
+      }}
+    else if(this.crit=="moy_ventes"){
+      this.validate_qte_a_trf()
+      if(this.qte_a_trf_error==false){
+        data= {
+          code_session: null,
+          libelle: this.lib,
+          critere: this.crit,
+          date: this.datePipe.transform(new Date(), 'yyyy-MM-dd'),
+          id_user: 2,
+          end_date:this.datePipe.transform(this.end_date, 'yyyy-MM-dd'),
+          start_date:this.datePipe.transform(this.start_date, 'yyyy-MM-dd'),
+          recepteur_number:this.recepteur_number,
+          qte_a_trf:this.qte_a_trf,
+          qte_max_trf:this.qte_max_trf,
     
         };
         console.log(data)
@@ -1313,6 +1428,8 @@ deselectListener =() => {
         end_date:this.datePipe.transform(this.end_date, 'yyyy-MM-dd'),
         start_date:this.datePipe.transform(this.start_date, 'yyyy-MM-dd'),
         recepteur_number:this.recepteur_number,
+        qte_a_trf:this.qte_a_trf,
+        qte_max_trf:this.qte_max_trf,
       }
       this.detailDetailSessionService.createDetailSession(datatosend,this.id_session)
       .subscribe({
@@ -1420,7 +1537,27 @@ deselectListener =() => {
       this.date_injection=''
     }else if(filter==this.code_couleur){
       this.code_couleur=''
-    }
+    }else if(filter==this.filter_theme){
+  this.filter_theme = '';
+}
+else if(filter==this.filter_marque){
+  this.filter_marque = '';
+}
+else if(filter==this.filter_section){
+  this.filter_section = '';
+}
+else if(filter==this.filter_collection){
+  this.filter_collection = '';
+}
+else if(filter==this.filter_sous_fam){
+  this.filter_sous_fam = '';
+}
+else if(filter==this.filter_groupe){
+  this.filter_groupe = '';
+}
+else if(filter==this.filter_material){
+  this.filter_material = '';
+}
     this.page_number=1
     this.end_of_data=false;
     this.no_previous=true;
@@ -1456,7 +1593,7 @@ deselectListener =() => {
   }
 
 
-  emetteurs: any[] = [];
+emetteurs: any[] = [];
 recepteurs: any[] = [];
 qte :number = 0;
 onEmetteursChange(selected: any[]) {

@@ -83,7 +83,34 @@
             </div>
           </div>
         </div>
-        
+        <div class="card custom-card  m-3" *ngIf="crit=='moy_ventes'">
+          <div class="card-header headerColorBg" style=" color: white; font-weight: 600;">
+            <h5 class="card-title">Paramètre</h5>
+          </div>
+          <div class="form-group row p-3">
+            <!-- qte a transfere -->
+            <div class="col-md-6 mb-3">
+              <div class="form-check">
+                <label class="form-check-label" for="nombreEtablissement">
+                  Quantité à transférer
+                </label>
+              </div>
+              <input type="number" class="form-control" placeholder="Entrer un nombre..." [(ngModel)]="qte_a_trf">
+              <small class="text-danger" *ngIf="qte_a_trf_error">
+                La Quantité à transférer ne doit pas dépasser la quantité maximale.
+              </small>
+            </div>
+            <!-- qte a transfere maximale -->
+            <div class="col-md-6 mb-3">
+              <div class="form-check">
+                <label class="form-check-label" for="nombreEtablissement">
+                  Quantité maximale
+                </label>
+              </div>
+              <input type="number" class="form-control" placeholder="Entrer un nombre..." [(ngModel)]="qte_max_trf">
+            </div>
+          </div>
+        </div>
       </div>
       <div>
       </div>
@@ -557,6 +584,42 @@
             <span class="item_filter">code couleur={{code_couleur_filter}} </span>
             <button type="button" class="btn-close" aria-label="Close" (click)="del_filter(code_couleur)"></button>
           </div>
+
+
+          <div class="rounded-btn" *ngIf="filter_theme_filter!=''">
+            <span class="item_filter">theme={{filter_theme_filter}} </span>
+            <button type="button" class="btn-close" aria-label="Close" (click)="del_filter(filter_theme)"></button>
+          </div>
+
+          <div class="rounded-btn" *ngIf="filter_marque_filter!=''">
+            <span class="item_filter">marque={{filter_marque_filter}} </span>
+            <button type="button" class="btn-close" aria-label="Close" (click)="del_filter(filter_marque)"></button>
+          </div>
+
+          <div class="rounded-btn" *ngIf="filter_section_filter!=''">
+            <span class="item_filter">section={{filter_section_filter}} </span>
+            <button type="button" class="btn-close" aria-label="Close" (click)="del_filter(filter_section)"></button>
+          </div>
+
+          <div class="rounded-btn" *ngIf="filter_collection_filter!=''">
+            <span class="item_filter">collection={{filter_collection_filter}} </span>
+            <button type="button" class="btn-close" aria-label="Close" (click)="del_filter(filter_collection)"></button>
+          </div>
+
+          <div class="rounded-btn" *ngIf="filter_sous_fam_filter!=''">
+            <span class="item_filter">sous famille={{filter_sous_fam_filter}} </span>
+            <button type="button" class="btn-close" aria-label="Close" (click)="del_filter(filter_sous_fam)"></button>
+          </div>
+
+          <div class="rounded-btn" *ngIf="filter_groupe_filter!=''">
+            <span class="item_filter">groupe={{filter_groupe_filter}} </span>
+            <button type="button" class="btn-close" aria-label="Close" (click)="del_filter(filter_groupe)"></button>
+          </div>
+
+          <div class="rounded-btn" *ngIf="filter_material_filter!=''">
+            <span class="item_filter">material={{filter_material_filter}} </span>
+            <button type="button" class="btn-close" aria-label="Close" (click)="del_filter(filter_material)"></button>
+          </div>
       
           
         </div>
@@ -624,7 +687,7 @@
             <div class="card-header py-1 headerColorBg" style=" color: white; font-weight: 600;">
               Filtres
             </div>
-            <div class="card-body">
+            <!-- <div class="card-body">
               <div class="row">
                 <div class="col-md-3">
                   <label for="validationCustom01" class="form-label labelBold">Code Générique</label>
@@ -650,7 +713,216 @@
                 </div>
               </div>
               <br>
+            </div> -->
+            <div class="card-body">
+            <div class="row">
+                  <div class="col-md-3">
+                    <label for="validationCustom01" class="form-label labelBold">Code Générique</label>
+                    <input type="text" class="form-control custom-placeholder" id="validationCustom01" placeholder="Code Générique"
+                      [(ngModel)]="cag">
+                  </div>
+
+                  <div class="col-md-3">
+                    <label for="validationCustom03" class="form-label labelBold">Fournisseur Principale</label>
+                    <input type="text" class="form-control custom-placeholder" id="validationCustom03" placeholder="Fournisseur Principale" [(ngModel)]="fp">
+                  </div>
+
+                  <div class="col-md-3">
+                       <mat-form-field appearance="fill" style="width: 100%">
+                  <mat-label>Code Fournisseur</mat-label>
+                  <mat-select [(ngModel)]="cf">
+                    <mat-option>
+                      <input matInput
+                            type="text"
+                            placeholder="Recherche..."
+                            [(ngModel)]="searchProvider"
+                            (ngModelChange)="onProviderSearchChange()"
+                            (click)="$event.stopPropagation()"
+                            autocomplete="off">
+                    </mat-option>
+                    <mat-option *ngFor="let option of filteredprovidersOptions" [value]="option.value">
+                       {{option.label}}
+                    </mat-option>
+                  </mat-select>
+                  <!-- Clear button (shows only if 'c' is not empty) -->
+                  <button mat-icon-button matSuffix *ngIf="cf" (click)="resetProviderFilter()" aria-label="Clear selection">
+                    <mat-icon>close</mat-icon>
+                  </button>
+                </mat-form-field>
+                  </div>
+       
             </div>
+            <div class="row" style="margin-top: 1%;">
+               
+              <div class="col-md-3">
+                <mat-form-field appearance="fill" style="width: 100%">
+                  <mat-label>Famille</mat-label>
+                  <mat-select [(ngModel)]="c">
+                    <mat-option>
+                      <input matInput
+                            type="text"
+                            placeholder="Recherche..."
+                            [(ngModel)]="familleSearch"
+                            (ngModelChange)="onFamilleSearchChange()"
+                            (click)="$event.stopPropagation()"
+                            autocomplete="off">
+                    </mat-option>
+                    <mat-option *ngFor="let option of filteredFamilleOptions" [value]="option.value">
+                      {{option.value}} {{option.label}}
+                    </mat-option>
+                  </mat-select>
+                  <!-- Clear button (shows only if 'c' is not empty) -->
+                  <button mat-icon-button matSuffix *ngIf="c" (click)="resetFamilleFilter()" aria-label="Clear selection">
+                    <mat-icon>close</mat-icon>
+                  </button>
+                </mat-form-field>
+              </div>
+
+
+              <div class="col-md-3">
+                <mat-form-field appearance="fill" style="width: 100%">
+                  <mat-label>Sous Famille</mat-label>
+                  <mat-select [(ngModel)]="filter_sous_fam">
+                    <mat-option>
+                      <input matInput type="text" placeholder="Recherche..."
+                        [(ngModel)]="sousFamilleSearch"
+                        (ngModelChange)="onSousFamilleSearchChange()"
+                        (click)="$event.stopPropagation()" autocomplete="off">
+                    </mat-option>
+                    <mat-option *ngFor="let option of filteredSousFamilleOptions" [value]="option.value">
+                      {{option.value}} {{option.label}}
+                    </mat-option>
+                  </mat-select>
+                  <button mat-icon-button matSuffix *ngIf="filter_sous_fam" (click)="resetSousFamilleFilter()" aria-label="Clear">
+                    <mat-icon>close</mat-icon>
+                  </button>
+                </mat-form-field>
+              </div>
+
+
+              <div class="col-md-3">
+              <mat-form-field appearance="fill" style="width: 100%">
+                <mat-label>Groupe</mat-label>
+                <mat-select [(ngModel)]="filter_groupe">
+                  <mat-option>
+                    <input matInput type="text" placeholder="Recherche..."
+                      [(ngModel)]="groupeSearch"
+                      (ngModelChange)="onGroupeSearchChange()"
+                      (click)="$event.stopPropagation()" autocomplete="off">
+                  </mat-option>
+                  <mat-option *ngFor="let option of filteredGroupOptions" [value]="option.value">
+                    {{option.value}} {{option.label}}
+                  </mat-option>
+                </mat-select>
+                <button mat-icon-button matSuffix *ngIf="filter_groupe" (click)="resetGroupeFilter()" aria-label="Clear">
+                  <mat-icon>close</mat-icon>
+                </button>
+              </mat-form-field>
+              </div>
+
+
+              <div class="col-md-3">
+            <mat-form-field appearance="fill" style="width: 100%">
+              <mat-label>Materiel</mat-label>
+              <mat-select [(ngModel)]="filter_material">
+                <mat-option>
+                  <input matInput type="text" placeholder="Recherche..."
+                    [(ngModel)]="materielSearch"
+                    (ngModelChange)="onMaterielSearchChange()"
+                    (click)="$event.stopPropagation()" autocomplete="off">
+                </mat-option>
+                <mat-option *ngFor="let option of filteredMaterialsOptions" [value]="option.value">
+                  {{option.value}} {{option.label}}
+                </mat-option>
+              </mat-select>
+              <button mat-icon-button matSuffix *ngIf="filter_material" (click)="resetMaterielFilter()" aria-label="Clear">
+                <mat-icon>close</mat-icon>
+              </button>
+            </mat-form-field>
+              </div>
+
+
+
+                  <div class="col-md-3">
+                    <mat-form-field appearance="fill" style="width: 100%">
+                      <mat-label>collection</mat-label>
+                      <mat-select [(ngModel)]="filter_collection">
+                        <mat-option>
+                          <input matInput type="text" placeholder="Recherche..."
+                            [(ngModel)]="collectionSearch"
+                            (ngModelChange)="onCollectionSearchChange()"
+                            (click)="$event.stopPropagation()" autocomplete="off">
+                        </mat-option>
+                        <mat-option *ngFor="let option of filteredCollectionsOptions" [value]="option.value">
+                          {{option.value}} {{option.label}}
+                        </mat-option>
+                      </mat-select>
+                      <button mat-icon-button matSuffix *ngIf="filter_collection" (click)="resetCollectionFilter()" aria-label="Clear">
+                        <mat-icon>close</mat-icon>
+                      </button>
+                    </mat-form-field>
+                  </div>
+                  <div class="col-md-3">
+                    <mat-form-field appearance="fill" style="width: 100%">
+                      <mat-label>Section</mat-label>
+                      <mat-select [(ngModel)]="filter_section">
+                        <mat-option>
+                          <input matInput type="text" placeholder="Recherche..." [(ngModel)]="sectionSearch"
+                                (ngModelChange)="onSectionSearchChange()" (click)="$event.stopPropagation()" autocomplete="off">
+                        </mat-option>
+                        <mat-option *ngFor="let option of filteredSectionsOptions" [value]="option.value">
+                          {{option.value}} {{option.label}}
+                        </mat-option>
+                      </mat-select>
+                      <button mat-icon-button matSuffix *ngIf="filter_section" (click)="resetSectionFilter()" aria-label="Clear">
+                        <mat-icon>close</mat-icon>
+                      </button>
+                    </mat-form-field>
+                  </div>
+                  <div class="col-md-3">
+                    <mat-form-field appearance="fill" style="width: 100%">
+                      <mat-label>Marque</mat-label>
+                      <mat-select [(ngModel)]="filter_marque">
+                        <mat-option>
+                          <input matInput type="text" placeholder="Recherche..." [(ngModel)]="marqueSearch"
+                                (ngModelChange)="onMarqueSearchChange()" (click)="$event.stopPropagation()" autocomplete="off">
+                        </mat-option>
+                        <mat-option *ngFor="let option of filteredMarquesOptions" [value]="option.value">
+                          {{option.value}} {{option.label}}
+                        </mat-option>
+                      </mat-select>
+                      <button mat-icon-button matSuffix *ngIf="filter_marque" (click)="resetMarqueFilter()" aria-label="Clear">
+                        <mat-icon>close</mat-icon>
+                      </button>
+                    </mat-form-field>
+                  </div>
+                  <div class="col-md-3">
+                    <mat-form-field appearance="fill" style="width: 100%">
+                      <mat-label>Thème</mat-label>
+                      <mat-select [(ngModel)]="filter_theme">
+                        <mat-option>
+                          <input matInput type="text" placeholder="Recherche..." [(ngModel)]="themeSearch"
+                                (ngModelChange)="onThemeSearchChange()" (click)="$event.stopPropagation()" autocomplete="off">
+                        </mat-option>
+                        <mat-option *ngFor="let option of filteredThemesOptions" [value]="option.value">
+                          {{option.value}} {{option.label}}
+                        </mat-option>
+                      </mat-select>
+                      <button mat-icon-button matSuffix *ngIf="filter_theme" (click)="resetThemeFilter()" aria-label="Clear">
+                        <mat-icon>close</mat-icon>
+                      </button>
+                    </mat-form-field>
+                  </div>
+                 
+
+                  <div class="col-md-3">
+                    <label for="validationCustom02" class="form-label labelBold">Date Injection</label>
+                    <input type="date" class="form-control custom-placeholder" id="validationCustom02" placeholder="Date Injection" [(ngModel)]="date_injection">
+                  </div>
+                </div>
+
+                <br>
+              </div>
             <div class="modal-footer">
               <button class="btn btn_custom" type="button" (click)="Filtrer_click_articles_gen()" style="margin-right: 2%; margin-bottom: 1%; font-weight: bold;"><span><i
                 class="bi bi-funnel-fill"></i></span>Filtrer</button>
@@ -663,7 +935,7 @@
           </div>
           <br>
         <div class="card">
-          <div class="card-header" *ngIf="filter_clicked" >
+          <!-- <div class="card-header" *ngIf="filter_clicked" >
             <span class="filter-text" > <i class="bi bi-funnel-fill"></i> Filtre  </span>
             
             <div class="rounded-btn" *ngIf="cag_filter!=''">
@@ -686,7 +958,88 @@
             <button type="button" class="btn-close" aria-label="Close" (click)="del_filter(m)"></button>
           </div>
       
+          </div> -->
+          <div class="card-header" *ngIf="filter_clicked" >
+            <span class="filter-text" > <i class="bi bi-funnel-fill"></i> Filtre  </span>
+      
+            <div class="rounded-btn" *ngIf="cag_filter!=''">
+              <span class="item_filter">code article gen={{cag_filter}} </span>
+              <button type="button" class="btn-close" aria-label="Close" (click)="del_filter(cag)"></button>
+            </div>
+      
+            <div class="rounded-btn" *ngIf="fp_filter!=''">
+              <span class="item_filter">Fournisseur Principale={{fp}} </span>
+              <button type="button" class="btn-close" aria-label="Close" (click)="del_filter(fp)"></button>
+            </div>
+      
+            <div class="rounded-btn" *ngIf="date_injection_filter!=''">
+              <span class="item_filter">Date Injection={{date_injection_filter}} </span>
+              <button type="button" class="btn-close" aria-label="Close" (click)="del_filter(date_injection)"></button>
+            </div>
+        
+            <div class="rounded-btn" *ngIf="cb_filter!=''">
+            <span class="item_filter">code barre={{cb_filter}} </span>
+            <button type="button" class="btn-close" aria-label="Close" (click)="del_filter(cb)"></button>
+            </div>
+        
+            <div class="rounded-btn" *ngIf="cf_filter!=''">
+            <span class="item_filter">code fournisseur={{cf_filter}} </span>
+            <button type="button" class="btn-close" aria-label="Close" (click)="del_filter(cf)"></button>
           </div>
+      
+          <div class="rounded-btn" *ngIf="m_filter!=''">
+            <span class="item_filter">Collection={{m_filter}} </span>
+            <button type="button" class="btn-close" aria-label="Close" (click)="del_filter(m)"></button>
+          </div>
+        
+          <div class="rounded-btn" *ngIf="c_filter!=''">
+            <span class="item_filter">Famille={{c_filter}} </span>
+            <button type="button" class="btn-close" aria-label="Close" (click)="del_filter(c)"></button>
+          </div>
+      
+          <div class="rounded-btn" *ngIf="code_couleur_filter!=''">
+            <span class="item_filter">code couleur={{code_couleur_filter}} </span>
+            <button type="button" class="btn-close" aria-label="Close" (click)="del_filter(code_couleur)"></button>
+          </div>
+
+
+          <div class="rounded-btn" *ngIf="filter_theme_filter!=''">
+            <span class="item_filter">theme={{filter_theme_filter}} </span>
+            <button type="button" class="btn-close" aria-label="Close" (click)="del_filter(filter_theme)"></button>
+          </div>
+
+          <div class="rounded-btn" *ngIf="filter_marque_filter!=''">
+            <span class="item_filter">marque={{filter_marque_filter}} </span>
+            <button type="button" class="btn-close" aria-label="Close" (click)="del_filter(filter_marque)"></button>
+          </div>
+
+          <div class="rounded-btn" *ngIf="filter_section_filter!=''">
+            <span class="item_filter">section={{filter_section_filter}} </span>
+            <button type="button" class="btn-close" aria-label="Close" (click)="del_filter(filter_section)"></button>
+          </div>
+
+          <div class="rounded-btn" *ngIf="filter_collection_filter!=''">
+            <span class="item_filter">collection={{filter_collection_filter}} </span>
+            <button type="button" class="btn-close" aria-label="Close" (click)="del_filter(filter_collection)"></button>
+          </div>
+
+          <div class="rounded-btn" *ngIf="filter_sous_fam_filter!=''">
+            <span class="item_filter">sous famille={{filter_sous_fam_filter}} </span>
+            <button type="button" class="btn-close" aria-label="Close" (click)="del_filter(filter_sous_fam)"></button>
+          </div>
+
+          <div class="rounded-btn" *ngIf="filter_groupe_filter!=''">
+            <span class="item_filter">groupe={{filter_groupe_filter}} </span>
+            <button type="button" class="btn-close" aria-label="Close" (click)="del_filter(filter_groupe)"></button>
+          </div>
+
+          <div class="rounded-btn" *ngIf="filter_material_filter!=''">
+            <span class="item_filter">material={{filter_material_filter}} </span>
+            <button type="button" class="btn-close" aria-label="Close" (click)="del_filter(filter_material)"></button>
+          </div>
+      
+          
+        </div>
           <div class="card-body">
             <div class="table-responsive" >
               <table class="display" id="datatable4" width="100%" cellspacing="0">
