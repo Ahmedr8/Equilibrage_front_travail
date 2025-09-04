@@ -34,6 +34,8 @@ interface FilterOption {
   ],
 })
 export class PropositionComponent implements OnInit {
+
+  critere: string = 'vider';
     // Selected values for multi-select
     selectedGrandFamilles: string[] = [];
     selectedFamilles: string[] = [];
@@ -54,6 +56,9 @@ materialsOptions: FilterOption[] = [];
 providersOptions: FilterOption[] = [];
 collectionOptions: FilterOption[] = [];
 
+
+//top_etabs_count for article dem critere 
+top_etabs_count:number=1
 
 
 
@@ -495,7 +500,7 @@ refreshList_articles_gen(){
     paging: false,        
     });
     $(document).ready(() => {
-      console.log(this.selected_articles)
+      //console.log(this.selected_articles)
     for(var j=0;j<this.articles_gen.length;j++){
       if (this.selected_articles.find(item => item.code_article_gen === this.articles_gen[j].code_article_gen)){
         this.articleGenList.rows(j).select();
@@ -1361,6 +1366,11 @@ deselectListener =() => {
   const wbout = XLSX.write(wb, { bookType: 'xlsx', type: 'array' });
   saveAs(new Blob([wbout], { type: 'application/octet-stream' }), filename);
 }
+
+onCritereChange(critere: string) {
+    this.critere = critere;
+  }
+
   createProp(stepper: MatStepper):void{
     console.log('loading')
     this.propgen=true
@@ -1399,7 +1409,8 @@ deselectListener =() => {
         this.emetteurs,
         this.recepteurs,
         this.qte,
-        this.id_session
+        this.id_session,
+        this.critere
       ).subscribe({
         next: res => {
           // Handle result
@@ -1430,6 +1441,7 @@ deselectListener =() => {
         recepteur_number:this.recepteur_number,
         qte_a_trf:this.qte_a_trf,
         qte_max_trf:this.qte_max_trf,
+        top_etabs_count:this.top_etabs_count,
       }
       this.detailDetailSessionService.createDetailSession(datatosend,this.id_session)
       .subscribe({

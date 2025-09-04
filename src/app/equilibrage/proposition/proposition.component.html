@@ -1147,6 +1147,23 @@
           <button class="btn btn_custom" type="button" (click)="createProp(stepper)" >Next</button>
         </div>
         <br>
+        <!-- etab-input.component.html -->
+
+<div class="card custom-card mb-3">
+  <div class="card-body col-md-4">
+    <p class="card-text">Veuillez saisir le nombre d'établissements récepteurs :</p>
+
+    <input 
+      type="number" 
+      class="form-control mb-3"
+      [(ngModel)]="top_etabs_count"
+      placeholder="Ex: 5"
+    />
+
+  </div>
+</div>
+
+
         <div class="card">
           <div class="card-header" *ngIf="filter_clicked2" >
             <span class="filter-text" > <i class="bi bi-funnel-fill"></i> Filtre  </span>
@@ -1176,6 +1193,37 @@
 
 <!-- Show the multi-selector ONLY if crit is 'test' -->
 <div   class="p-3"  *ngIf="crit === 'test' ; else normalTable">
+  <div class="row mb-3">
+  <div class="col-md-6">
+    <label class="form-label labelBold mb-2">Critère de transfert</label>
+    <div class="form-check">
+      <input 
+        class="form-check-input" 
+        type="radio" 
+        name="critere" 
+        id="critereVider" 
+        value="vider"
+        [(ngModel)]="critere"
+        (change)="onCritereChange('vider')">
+      <label class="form-check-label" for="critereVider">
+        <strong>Vider</strong> - Transférer tout le stock disponible vers les établissements à stock zéro
+      </label>
+    </div>
+    <div class="form-check mt-2">
+      <input 
+        class="form-check-input" 
+        type="radio" 
+        name="critere" 
+        id="critereSender" 
+        value="sender"
+        [(ngModel)]="critere"
+        (change)="onCritereChange('sender')">
+      <label class="form-check-label" for="critereSender">
+        <strong>Sender</strong> - Transférer vers les établissements à stock zéro avec ventes supérieures
+      </label>
+    </div>
+  </div>
+</div>
   <app-etab-multi-selector
     [etabs]="etabs"
     (emetteursChange)="onEmetteursChange($event)"

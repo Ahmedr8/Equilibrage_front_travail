@@ -15,18 +15,14 @@ export class SessionService {
   constructor(private http: HttpClient) {}
 
     optimiseTransfert(
-    articles: any[],
-    emetteurs: any[],
-    recepteurs: any[],
-    quantite: number,
-    id_session : string
-  ): Observable<any> {
+articles: any[], emetteurs: any[], recepteurs: any[], quantite: number, id_session: string, critere: string  ): Observable<any> {
     const body = {
       articles: articles,
       emetteurs: emetteurs,
       recepteurs: recepteurs,
       quantite: quantite,
-      code_session : id_session
+      code_session : id_session,
+      critere: critere
     };
 
     console.log(body);

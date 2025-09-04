@@ -9,6 +9,7 @@ export class EtabMultiSelectorComponent {
   @Input() etabs: any[] = [];
   @Input() initialEmetteurs: any[] = [];
   @Input() initialRecepteurs: any[] = [];
+  @Input() critere: string = 'vider';
   @Output() emetteursChange = new EventEmitter<any[]>();
   @Output() recepteursChange = new EventEmitter<any[]>();
   @Output() qteChange = new EventEmitter<number>();
