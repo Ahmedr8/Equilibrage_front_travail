@@ -2,692 +2,708 @@
   <p style="color: rgb(82, 82, 222);"><b style="color: black;">Equilibrage/</b> Création d'une Session</p>
 </div>
 <hr>
-  <mat-stepper linear  (selectionChange)="onStepSelectionChange($event)" #stepper>
-    <mat-step label="configuration" state="settings" [editable]="false" [completed]="submitted">
-      <div class="container mt-5" *ngIf="!submitted">
-        <div class="row justify-content-center">
-          <div class="col-md-6">
-            <div class="card shadow">
-              <div class="card-header headerColorBg" style=" color: white; font-weight: 600;">
-                Session
-              </div>
-              <div class="card-body">
-                <div class="form-group">
-                  <label for="validationCustom03" class="form-label labelBold">Libellé session</label>
-                  <input type="text" class="form-control" id="validationCustom03" placeholder="Nom session" [(ngModel)]="lib"
-                    required>
-                  <div class="invalid-feedback">
-                    Please provide a valid name.
-                  </div>
-                </div>
-                <div class="form-group" style="margin-top: 3%;">
-                  <label for="validationCustom04" class="form-label labelBold">Critère</label>
-                  <select class="form-select" aria-label="Default select example" [(ngModel)]="crit" required>
-                    <option value="stock_min" selected>Stock min</option>
-                    <option value="moy_ventes">Moyenne des ventes</option>
-                    <option value="seul_emet">par Emmeteur</option>
-                    <option value="articles_dem">par Articles dimensionné</option>
-                    <!-- <option value="exist">Exist</option> -->
-                    <option value="test">Emetteurs Récepteurs</option>
-                  </select>
-                </div>
-                <br>
-                <div class="d-flex justify-content-end">
-                  <button class="btn btn_custom" type="button" (click)="Ajouter(stepper)" >Suivant</button>
-                  <!-- The empty span below is for spacing -->
-                  <span></span>
+<mat-stepper linear (selectionChange)="onStepSelectionChange($event)" #stepper>
+  <mat-step label="configuration" state="settings" [editable]="false" [completed]="submitted">
+    <div class="container mt-5" *ngIf="!submitted">
+      <div class="row justify-content-center">
+        <div class="col-md-6">
+          <div class="card shadow">
+            <div class="card-header headerColorBg" style=" color: white; font-weight: 600;">
+              Session
+            </div>
+            <div class="card-body">
+              <div class="form-group">
+                <label for="validationCustom03" class="form-label labelBold">Libellé session</label>
+                <input type="text" class="form-control" id="validationCustom03" placeholder="Nom session"
+                  [(ngModel)]="lib" required>
+                <div class="invalid-feedback">
+                  Please provide a valid name.
                 </div>
               </div>
-            </div>
-          </div>
-        </div>
-        <div class="card custom-card  m-3" *ngIf="crit=='exist'">
-          <div class="card-header headerColorBg" style=" color: white; font-weight: 600;">
-            <h5 class="card-title">Paramètre</h5>
-          </div>
-          <div class="form-group row p-3">
-            <!-- Date de début des ventes -->
-            <div class="col-md-6 mb-3">
-              <div class="form-check">
-                <label class="form-check-label" for="date_debut">
-                  Date de début des ventes
-                </label>
+              <div class="form-group" style="margin-top: 3%;">
+                <label for="validationCustom04" class="form-label labelBold">Critère</label>
+                <select class="form-select" aria-label="Default select example" [(ngModel)]="crit" required>
+                  <option value="stock_min" selected>Stock min</option>
+                  <option value="moy_ventes">Moyenne des ventes</option>
+                  <option value="seul_emet">par Emmeteur</option>
+                  <option value="articles_dem">par Articles dimensionné</option>
+                  <!-- <option value="exist">Exist</option> -->
+                  <option value="test">Emetteurs Récepteurs</option>
+                </select>
               </div>
-              <input type="date" class="form-control" [(ngModel)]="start_date" >
-              <small class="text-danger" *ngIf="startDateError">
-                La date de début doit être inférieure à la date de fin.
-              </small>
-            </div>
-        
-            <!-- Date de fin des ventes -->
-            <div class="col-md-6 mb-3">
-              <div class="form-check">
-                <label class="form-check-label" for="date_fin">
-                  Date de fin des ventes
-                </label>
+              <br>
+              <div class="d-flex justify-content-end">
+                <button class="btn btn_custom" type="button" (click)="Ajouter(stepper)">Suivant</button>
+                <!-- The empty span below is for spacing -->
+                <span></span>
               </div>
-              <input type="date" class="form-control" [(ngModel)]="end_date" >
-              <small class="text-danger" *ngIf="endDateError">
-                La date de fin doit être postérieure à la date de début et ne pas dépasser aujourd'hui.
-              </small>
-            </div>
-            <div class="col-md-3"></div>
-            <!-- Nombre établissement récepteur -->
-            <div class="col-md-6 mb-3">
-              <div class="form-check">
-                <label class="form-check-label" for="nombreEtablissement">
-                  Nombre établissement récepteur
-                </label>
-              </div>
-              <input type="number" class="form-control" placeholder="Entrer un nombre..." [(ngModel)]="recepteur_number">
-            </div>
-          </div>
-        </div>
-        <div class="card custom-card  m-3" *ngIf="crit=='moy_ventes'">
-          <div class="card-header headerColorBg" style=" color: white; font-weight: 600;">
-            <h5 class="card-title">Paramètre</h5>
-          </div>
-          <div class="form-group row p-3">
-            <!-- qte a transfere -->
-            <div class="col-md-6 mb-3">
-              <div class="form-check">
-                <label class="form-check-label" for="nombreEtablissement">
-                  Quantité à transférer
-                </label>
-              </div>
-              <input type="number" class="form-control" placeholder="Entrer un nombre..." [(ngModel)]="qte_a_trf">
-              <small class="text-danger" *ngIf="qte_a_trf_error">
-                La Quantité à transférer ne doit pas dépasser la quantité maximale.
-              </small>
-            </div>
-            <!-- qte a transfere maximale -->
-            <div class="col-md-6 mb-3">
-              <div class="form-check">
-                <label class="form-check-label" for="nombreEtablissement">
-                  Quantité maximale
-                </label>
-              </div>
-              <input type="number" class="form-control" placeholder="Entrer un nombre..." [(ngModel)]="qte_max_trf">
             </div>
           </div>
         </div>
       </div>
-      <div>
-      </div>
-    </mat-step>
-    <mat-step label="Choix des Articles" state="article"  [editable]="articleA || etabA">
-      <div [ngStyle]="{ 'display': articleA ? 'block' : 'none'} ">
-        <br>
-        <div *ngIf="crit!='articles_dem'">
-          <div *ngIf="crit!='exist'">
-            <div class="card shadow">
-              <div class="card-header py-1 headerColorBg" style=" color: white; font-weight: 600;">
-                Filtres
-              </div>
-              <div class="card-body">
-                <div class="row">
-                  <div class="col-md-3">
-                    <label for="validationCustom01" class="form-label labelBold">Code Générique</label>
-                    <input type="text" class="form-control custom-placeholder" id="validationCustom01" placeholder="Code Générique"
-                      [(ngModel)]="cag">
-                  </div>
-                  <div class="col-md-3">
-                    <label for="validationCustom02" class="form-label labelBold">Code à barre</label>
-                    <input type="text" class="form-control custom-placeholder" id="validationCustom02" placeholder="Code à barre" [(ngModel)]="cb">
-                  </div>
-
-           <div class="col-md-3">
-                    <label for="validationCustom03" class="form-label labelBold">Fournisseur Principale</label>
-                    <input type="text" class="form-control custom-placeholder" id="validationCustom03" placeholder="Fournisseur Principale" [(ngModel)]="fp">
-                  </div>
-
-                            <div class="col-md-3">
-                       <mat-form-field appearance="fill" style="width: 100%">
-                  <mat-label>Code Fournisseur</mat-label>
-                  <mat-select [(ngModel)]="cf">
-                    <mat-option>
-                      <input matInput
-                            type="text"
-                            placeholder="Recherche..."
-                            [(ngModel)]="searchProvider"
-                            (ngModelChange)="onProviderSearchChange()"
-                            (click)="$event.stopPropagation()"
-                            autocomplete="off">
-                    </mat-option>
-                    <mat-option *ngFor="let option of filteredprovidersOptions" [value]="option.value">
-                       {{option.label}}
-                    </mat-option>
-                  </mat-select>
-                  <!-- Clear button (shows only if 'c' is not empty) -->
-                  <button mat-icon-button matSuffix *ngIf="cf" (click)="resetProviderFilter()" aria-label="Clear selection">
-                    <mat-icon>close</mat-icon>
-                  </button>
-                </mat-form-field>
-                  </div>
-       
-                </div>
-                <div class="row" style="margin-top: 1%;">
-               
-              <div class="col-md-3">
-                <mat-form-field appearance="fill" style="width: 100%">
-                  <mat-label>Famille</mat-label>
-                  <mat-select [(ngModel)]="c">
-                    <mat-option>
-                      <input matInput
-                            type="text"
-                            placeholder="Recherche..."
-                            [(ngModel)]="familleSearch"
-                            (ngModelChange)="onFamilleSearchChange()"
-                            (click)="$event.stopPropagation()"
-                            autocomplete="off">
-                    </mat-option>
-                    <mat-option *ngFor="let option of filteredFamilleOptions" [value]="option.value">
-                      {{option.value}} {{option.label}}
-                    </mat-option>
-                  </mat-select>
-                  <!-- Clear button (shows only if 'c' is not empty) -->
-                  <button mat-icon-button matSuffix *ngIf="c" (click)="resetFamilleFilter()" aria-label="Clear selection">
-                    <mat-icon>close</mat-icon>
-                  </button>
-                </mat-form-field>
-              </div>
-
-
-              <div class="col-md-3">
-                <mat-form-field appearance="fill" style="width: 100%">
-                  <mat-label>Sous Famille</mat-label>
-                  <mat-select [(ngModel)]="filter_sous_fam">
-                    <mat-option>
-                      <input matInput type="text" placeholder="Recherche..."
-                        [(ngModel)]="sousFamilleSearch"
-                        (ngModelChange)="onSousFamilleSearchChange()"
-                        (click)="$event.stopPropagation()" autocomplete="off">
-                    </mat-option>
-                    <mat-option *ngFor="let option of filteredSousFamilleOptions" [value]="option.value">
-                      {{option.value}} {{option.label}}
-                    </mat-option>
-                  </mat-select>
-                  <button mat-icon-button matSuffix *ngIf="filter_sous_fam" (click)="resetSousFamilleFilter()" aria-label="Clear">
-                    <mat-icon>close</mat-icon>
-                  </button>
-                </mat-form-field>
-              </div>
-
-
-            <div class="col-md-3">
-              <mat-form-field appearance="fill" style="width: 100%">
-                <mat-label>Groupe</mat-label>
-                <mat-select [(ngModel)]="filter_groupe">
-                  <mat-option>
-                    <input matInput type="text" placeholder="Recherche..."
-                      [(ngModel)]="groupeSearch"
-                      (ngModelChange)="onGroupeSearchChange()"
-                      (click)="$event.stopPropagation()" autocomplete="off">
-                  </mat-option>
-                  <mat-option *ngFor="let option of filteredGroupOptions" [value]="option.value">
-                    {{option.value}} {{option.label}}
-                  </mat-option>
-                </mat-select>
-                <button mat-icon-button matSuffix *ngIf="filter_groupe" (click)="resetGroupeFilter()" aria-label="Clear">
-                  <mat-icon>close</mat-icon>
-                </button>
-              </mat-form-field>
-              </div>
-
-
-          <div class="col-md-3">
-            <mat-form-field appearance="fill" style="width: 100%">
-              <mat-label>Materiel</mat-label>
-              <mat-select [(ngModel)]="filter_material">
-                <mat-option>
-                  <input matInput type="text" placeholder="Recherche..."
-                    [(ngModel)]="materielSearch"
-                    (ngModelChange)="onMaterielSearchChange()"
-                    (click)="$event.stopPropagation()" autocomplete="off">
-                </mat-option>
-                <mat-option *ngFor="let option of filteredMaterialsOptions" [value]="option.value">
-                  {{option.value}} {{option.label}}
-                </mat-option>
-              </mat-select>
-              <button mat-icon-button matSuffix *ngIf="filter_material" (click)="resetMaterielFilter()" aria-label="Clear">
-                <mat-icon>close</mat-icon>
-              </button>
-            </mat-form-field>
+      <div class="card custom-card  m-3" *ngIf="crit=='exist'">
+        <div class="card-header headerColorBg" style=" color: white; font-weight: 600;">
+          <h5 class="card-title">Paramètre</h5>
+        </div>
+        <div class="form-group row p-3">
+          <!-- Date de début des ventes -->
+          <div class="col-md-6 mb-3">
+            <div class="form-check">
+              <label class="form-check-label" for="date_debut">
+                Date de début des ventes
+              </label>
+            </div>
+            <input type="date" class="form-control" [(ngModel)]="start_date">
+            <small class="text-danger" *ngIf="startDateError">
+              La date de début doit être inférieure à la date de fin.
+            </small>
           </div>
 
-
-
-                  <div class="col-md-3">
-                    <mat-form-field appearance="fill" style="width: 100%">
-                      <mat-label>collection</mat-label>
-                      <mat-select [(ngModel)]="filter_collection">
-                        <mat-option>
-                          <input matInput type="text" placeholder="Recherche..."
-                            [(ngModel)]="collectionSearch"
-                            (ngModelChange)="onCollectionSearchChange()"
-                            (click)="$event.stopPropagation()" autocomplete="off">
-                        </mat-option>
-                        <mat-option *ngFor="let option of filteredCollectionsOptions" [value]="option.value">
-                          {{option.value}} {{option.label}}
-                        </mat-option>
-                      </mat-select>
-                      <button mat-icon-button matSuffix *ngIf="filter_collection" (click)="resetCollectionFilter()" aria-label="Clear">
-                        <mat-icon>close</mat-icon>
-                      </button>
-                    </mat-form-field>
-                  </div>
-                  <div class="col-md-3">
-                    <mat-form-field appearance="fill" style="width: 100%">
-                      <mat-label>Section</mat-label>
-                      <mat-select [(ngModel)]="filter_section">
-                        <mat-option>
-                          <input matInput type="text" placeholder="Recherche..." [(ngModel)]="sectionSearch"
-                                (ngModelChange)="onSectionSearchChange()" (click)="$event.stopPropagation()" autocomplete="off">
-                        </mat-option>
-                        <mat-option *ngFor="let option of filteredSectionsOptions" [value]="option.value">
-                          {{option.value}} {{option.label}}
-                        </mat-option>
-                      </mat-select>
-                      <button mat-icon-button matSuffix *ngIf="filter_section" (click)="resetSectionFilter()" aria-label="Clear">
-                        <mat-icon>close</mat-icon>
-                      </button>
-                    </mat-form-field>
-                  </div>
-                  <div class="col-md-3">
-                    <mat-form-field appearance="fill" style="width: 100%">
-                      <mat-label>Marque</mat-label>
-                      <mat-select [(ngModel)]="filter_marque">
-                        <mat-option>
-                          <input matInput type="text" placeholder="Recherche..." [(ngModel)]="marqueSearch"
-                                (ngModelChange)="onMarqueSearchChange()" (click)="$event.stopPropagation()" autocomplete="off">
-                        </mat-option>
-                        <mat-option *ngFor="let option of filteredMarquesOptions" [value]="option.value">
-                          {{option.value}} {{option.label}}
-                        </mat-option>
-                      </mat-select>
-                      <button mat-icon-button matSuffix *ngIf="filter_marque" (click)="resetMarqueFilter()" aria-label="Clear">
-                        <mat-icon>close</mat-icon>
-                      </button>
-                    </mat-form-field>
-                  </div>
-                  <div class="col-md-3">
-                    <mat-form-field appearance="fill" style="width: 100%">
-                      <mat-label>Thème</mat-label>
-                      <mat-select [(ngModel)]="filter_theme">
-                        <mat-option>
-                          <input matInput type="text" placeholder="Recherche..." [(ngModel)]="themeSearch"
-                                (ngModelChange)="onThemeSearchChange()" (click)="$event.stopPropagation()" autocomplete="off">
-                        </mat-option>
-                        <mat-option *ngFor="let option of filteredThemesOptions" [value]="option.value">
-                          {{option.value}} {{option.label}}
-                        </mat-option>
-                      </mat-select>
-                      <button mat-icon-button matSuffix *ngIf="filter_theme" (click)="resetThemeFilter()" aria-label="Clear">
-                        <mat-icon>close</mat-icon>
-                      </button>
-                    </mat-form-field>
-                  </div>
-                 
-
-                  <div class="col-md-3">
-                    <label for="validationCustom02" class="form-label labelBold">Date Injection</label>
-                    <input type="date" class="form-control custom-placeholder" id="validationCustom02" placeholder="Date Injection" [(ngModel)]="date_injection">
-                  </div>
+          <!-- Date de fin des ventes -->
+          <div class="col-md-6 mb-3">
+            <div class="form-check">
+              <label class="form-check-label" for="date_fin">
+                Date de fin des ventes
+              </label>
+            </div>
+            <input type="date" class="form-control" [(ngModel)]="end_date">
+            <small class="text-danger" *ngIf="endDateError">
+              La date de fin doit être postérieure à la date de début et ne pas dépasser aujourd'hui.
+            </small>
+          </div>
+          <div class="col-md-3"></div>
+          <!-- Nombre établissement récepteur -->
+          <div class="col-md-6 mb-3">
+            <div class="form-check">
+              <label class="form-check-label" for="nombreEtablissement">
+                Nombre établissement récepteur
+              </label>
+            </div>
+            <input type="number" class="form-control" placeholder="Entrer un nombre..." [(ngModel)]="recepteur_number">
+          </div>
+        </div>
+      </div>
+      <div class="card custom-card  m-3" *ngIf="crit=='moy_ventes'">
+        <div class="card-header headerColorBg" style=" color: white; font-weight: 600;">
+          <h5 class="card-title">Paramètre</h5>
+        </div>
+        <div class="form-group row p-3">
+          <!-- qte a transfere -->
+          <div class="col-md-6 mb-3">
+            <div class="form-check">
+              <label class="form-check-label" for="nombreEtablissement">
+                Quantité à transférer
+              </label>
+            </div>
+            <input type="number" class="form-control" placeholder="Entrer un nombre..." [(ngModel)]="qte_a_trf">
+            <small class="text-danger" *ngIf="qte_a_trf_error">
+              La Quantité à transférer ne doit pas dépasser la quantité maximale.
+            </small>
+          </div>
+          <!-- qte a transfere maximale -->
+          <div class="col-md-6 mb-3">
+            <div class="form-check">
+              <label class="form-check-label" for="nombreEtablissement">
+                Quantité maximale
+              </label>
+            </div>
+            <input type="number" class="form-control" placeholder="Entrer un nombre..." [(ngModel)]="qte_max_trf">
+          </div>
+        </div>
+      </div>
+    </div>
+    <div>
+    </div>
+  </mat-step>
+  <mat-step label="Choix des Articles" state="article" [editable]="articleA || etabA">
+    <div [ngStyle]="{ 'display': articleA ? 'block' : 'none'} ">
+      <br>
+      <div *ngIf="crit!='articles_dem'">
+        <div *ngIf="crit!='exist'">
+          <div class="card shadow">
+            <div class="card-header py-1 headerColorBg" style=" color: white; font-weight: 600;">
+              Filtres
+            </div>
+            <div class="card-body">
+              <div class="row">
+                <div class="col-md-3">
+                  <label for="validationCustom01" class="form-label labelBold">Code Générique</label>
+                  <input type="text" class="form-control custom-placeholder" id="validationCustom01"
+                    placeholder="Code Générique" [(ngModel)]="cag">
+                </div>
+                <div class="col-md-3">
+                  <label for="validationCustom02" class="form-label labelBold">Code à barre</label>
+                  <input type="text" class="form-control custom-placeholder" id="validationCustom02"
+                    placeholder="Code à barre" [(ngModel)]="cb">
                 </div>
 
-                <br>
+                <div class="col-md-3">
+                  <label for="validationCustom03" class="form-label labelBold">Fournisseur Principale</label>
+                  <input type="text" class="form-control custom-placeholder" id="validationCustom03"
+                    placeholder="Fournisseur Principale" [(ngModel)]="fp">
+                </div>
+
+                <div class="col-md-3">
+                  <mat-form-field appearance="fill" style="width: 100%">
+                    <mat-label>Code Fournisseur</mat-label>
+                    <mat-select [(ngModel)]="cf" multiple>
+                      <mat-option>
+                        <input matInput type="text" placeholder="Recherche..." [(ngModel)]="searchProvider"
+                          (ngModelChange)="onProviderSearchChange()" (click)="$event.stopPropagation()"
+                          autocomplete="off">
+                      </mat-option>
+                      <mat-option *ngFor="let option of filteredprovidersOptions" [value]="option.value">
+                        {{option.label}}
+                      </mat-option>
+                    </mat-select>
+                    <!-- Clear button (shows only if 'c' is not empty) -->
+                    <button mat-icon-button matSuffix *ngIf="cf.length > 0" (click)="resetProviderFilter()"
+                      aria-label="Clear selection">
+                      <mat-icon>close</mat-icon>
+                    </button>
+                  </mat-form-field>
+                </div>
+
               </div>
-              <div class="modal-footer">
-                <button class="btn btn_custom" type="button" (click)="Filtrer_click()" style="margin-right: 2%; margin-bottom: 1%; font-weight: bold;"><span><i
-                  class="bi bi-funnel-fill"></i></span>Filtrer</button>
+              <div class="row" style="margin-top: 1%;">
+
+                <div class="col-md-3">
+                  <mat-form-field appearance="fill" style="width: 100%">
+                    <mat-label>Famille</mat-label>
+                    <mat-select [(ngModel)]="c" multiple>
+                      <mat-option>
+                        <input matInput type="text" placeholder="Recherche..." [(ngModel)]="familleSearch"
+                          (ngModelChange)="onFamilleSearchChange()" (click)="$event.stopPropagation()"
+                          autocomplete="off">
+                      </mat-option>
+                      <mat-option *ngFor="let option of filteredFamilleOptions" [value]="option.value">
+                        {{option.value}} {{option.label}}
+                      </mat-option>
+                    </mat-select>
+                    <!-- Clear button (shows only if 'c' is not empty) -->
+                    <button mat-icon-button matSuffix *ngIf="c.length > 0" (click)="resetFamilleFilter()"
+                      aria-label="Clear selection">
+                      <mat-icon>close</mat-icon>
+                    </button>
+                  </mat-form-field>
+                </div>
+
+
+                <div class="col-md-3">
+                  <mat-form-field appearance="fill" style="width: 100%">
+                    <mat-label>Sous Famille</mat-label>
+                    <mat-select [(ngModel)]="filter_sous_fam" multiple>
+                      <mat-option>
+                        <input matInput type="text" placeholder="Recherche..." [(ngModel)]="sousFamilleSearch"
+                          (ngModelChange)="onSousFamilleSearchChange()" (click)="$event.stopPropagation()"
+                          autocomplete="off">
+                      </mat-option>
+                      <mat-option *ngFor="let option of filteredSousFamilleOptions" [value]="option.value">
+                        {{option.value}} {{option.label}}
+                      </mat-option>
+                    </mat-select>
+                    <button mat-icon-button matSuffix *ngIf="filter_sous_fam.length > 0"
+                      (click)="resetSousFamilleFilter()" aria-label="Clear">
+                      <mat-icon>close</mat-icon>
+                    </button>
+                  </mat-form-field>
+                </div>
+
+
+                <div class="col-md-3">
+                  <mat-form-field appearance="fill" style="width: 100%">
+                    <mat-label>Groupe</mat-label>
+                    <mat-select [(ngModel)]="filter_groupe" multiple>
+                      <mat-option>
+                        <input matInput type="text" placeholder="Recherche..." [(ngModel)]="groupeSearch"
+                          (ngModelChange)="onGroupeSearchChange()" (click)="$event.stopPropagation()"
+                          autocomplete="off">
+                      </mat-option>
+                      <mat-option *ngFor="let option of filteredGroupOptions" [value]="option.value">
+                        {{option.value}} {{option.label}}
+                      </mat-option>
+                    </mat-select>
+                    <button mat-icon-button matSuffix *ngIf="filter_groupe.length > 0" (click)="resetGroupeFilter()"
+                      aria-label="Clear">
+                      <mat-icon>close</mat-icon>
+                    </button>
+                  </mat-form-field>
+                </div>
+
+
+                <div class="col-md-3">
+                  <mat-form-field appearance="fill" style="width: 100%">
+                    <mat-label>Materiel</mat-label>
+                    <mat-select [(ngModel)]="filter_material" multiple>
+                      <mat-option>
+                        <input matInput type="text" placeholder="Recherche..." [(ngModel)]="materielSearch"
+                          (ngModelChange)="onMaterielSearchChange()" (click)="$event.stopPropagation()"
+                          autocomplete="off">
+                      </mat-option>
+                      <mat-option *ngFor="let option of filteredMaterialsOptions" [value]="option.value">
+                        {{option.value}} {{option.label}}
+                      </mat-option>
+                    </mat-select>
+                    <button mat-icon-button matSuffix *ngIf="filter_material.length > 0" (click)="resetMaterielFilter()"
+                      aria-label="Clear">
+                      <mat-icon>close</mat-icon>
+                    </button>
+                  </mat-form-field>
+                </div>
+
+
+
+                <div class="col-md-3">
+                  <mat-form-field appearance="fill" style="width: 100%">
+                    <mat-label>collection</mat-label>
+                    <mat-select [(ngModel)]="filter_collection" multiple>
+                      <mat-option>
+                        <input matInput type="text" placeholder="Recherche..." [(ngModel)]="collectionSearch"
+                          (ngModelChange)="onCollectionSearchChange()" (click)="$event.stopPropagation()"
+                          autocomplete="off">
+                      </mat-option>
+                      <mat-option *ngFor="let option of filteredCollectionsOptions" [value]="option.value">
+                        {{option.value}} {{option.label}}
+                      </mat-option>
+                    </mat-select>
+                    <button mat-icon-button matSuffix *ngIf="filter_collection.length > 0"
+                      (click)="resetCollectionFilter()" aria-label="Clear">
+                      <mat-icon>close</mat-icon>
+                    </button>
+                  </mat-form-field>
+                </div>
+                <div class="col-md-3">
+                  <mat-form-field appearance="fill" style="width: 100%">
+                    <mat-label>Section</mat-label>
+                    <mat-select [(ngModel)]="filter_section" multiple>
+                      <mat-option>
+                        <input matInput type="text" placeholder="Recherche..." [(ngModel)]="sectionSearch"
+                          (ngModelChange)="onSectionSearchChange()" (click)="$event.stopPropagation()"
+                          autocomplete="off">
+                      </mat-option>
+                      <mat-option *ngFor="let option of filteredSectionsOptions" [value]="option.value">
+                        {{option.value}} {{option.label}}
+                      </mat-option>
+                    </mat-select>
+                    <button mat-icon-button matSuffix *ngIf="filter_section.length > 0" (click)="resetSectionFilter()"
+                      aria-label="Clear">
+                      <mat-icon>close</mat-icon>
+                    </button>
+                  </mat-form-field>
+                </div>
+                <div class="col-md-3">
+                  <mat-form-field appearance="fill" style="width: 100%">
+                    <mat-label>Marque</mat-label>
+                    <mat-select [(ngModel)]="filter_marque" multiple>
+                      <mat-option>
+                        <input matInput type="text" placeholder="Recherche..." [(ngModel)]="marqueSearch"
+                          (ngModelChange)="onMarqueSearchChange()" (click)="$event.stopPropagation()"
+                          autocomplete="off">
+                      </mat-option>
+                      <mat-option *ngFor="let option of filteredMarquesOptions" [value]="option.value">
+                        {{option.value}} {{option.label}}
+                      </mat-option>
+                    </mat-select>
+                    <button mat-icon-button matSuffix *ngIf="filter_marque.length > 0" (click)="resetMarqueFilter()"
+                      aria-label="Clear">
+                      <mat-icon>close</mat-icon>
+                    </button>
+                  </mat-form-field>
+                </div>
+                <div class="col-md-3">
+                  <mat-form-field appearance="fill" style="width: 100%">
+                    <mat-label>Thème</mat-label>
+                    <mat-select [(ngModel)]="filter_theme" multiple>
+                      <mat-option>
+                        <input matInput type="text" placeholder="Recherche..." [(ngModel)]="themeSearch"
+                          (ngModelChange)="onThemeSearchChange()" (click)="$event.stopPropagation()" autocomplete="off">
+                      </mat-option>
+                      <mat-option *ngFor="let option of filteredThemesOptions" [value]="option.value">
+                        {{option.value}} {{option.label}}
+                      </mat-option>
+                    </mat-select>
+                    <button mat-icon-button matSuffix *ngIf="filter_theme.length > 0" (click)="resetThemeFilter()"
+                      aria-label="Clear">
+                      <mat-icon>close</mat-icon>
+                    </button>
+                  </mat-form-field>
+                </div>
+
+
+                <div class="col-md-3">
+                  <label for="validationCustom02" class="form-label labelBold">Date Injection</label>
+                  <input type="date" class="form-control custom-placeholder" id="validationCustom02"
+                    placeholder="Date Injection" [(ngModel)]="date_injection">
+                </div>
               </div>
+
+              <br>
+            </div>
+            <div class="modal-footer">
+              <button class="btn btn_custom" type="button" (click)="Filtrer_click()"
+                style="margin-right: 2%; margin-bottom: 1%; font-weight: bold;"><span><i
+                    class="bi bi-funnel-fill"></i></span>Filtrer</button>
             </div>
           </div>
-          <div *ngIf="crit=='exist'">
-            <div class="card shadow">
-              <div class="card-header py-1 headerColorBg" style="color: white; font-weight: 600;">
-                Filtres
-              </div>
-              <div class="card-body">
-                <div class="row">
-                  <div class="col-md-4">
-                    <label for="grandFamille" class="form-label labelBold">Grand Famille</label><br>
-                    <mat-form-field appearance="outline" class="custom-mat-select" id="grandFamille">
-                      <mat-label>Select Options</mat-label>
-                      <mat-select multiple [(ngModel)]="selectedGrandFamilles" disableRipple panelClass="custom-panel">
-                        <mat-option *ngFor="let option of grandFamilleOptions" [value]="option.value">
-                          {{option.value}}   {{option.label}}
-                        </mat-option>
-                      </mat-select>
-                    </mat-form-field>
-                    <!-- <select class="form-select custom-placeholder" id="grandFamille" 
+        </div>
+        <div *ngIf="crit=='exist'">
+          <div class="card shadow">
+            <div class="card-header py-1 headerColorBg" style="color: white; font-weight: 600;">
+              Filtres
+            </div>
+            <div class="card-body">
+              <div class="row">
+                <div class="col-md-4">
+                  <label for="grandFamille" class="form-label labelBold">Grand Famille</label><br>
+                  <mat-form-field appearance="outline" class="custom-mat-select" id="grandFamille">
+                    <mat-label>Select Options</mat-label>
+                    <mat-select multiple [(ngModel)]="selectedGrandFamilles" disableRipple panelClass="custom-panel">
+                      <mat-option *ngFor="let option of grandFamilleOptions" [value]="option.value">
+                        {{option.value}} {{option.label}}
+                      </mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                  <!-- <select class="form-select custom-placeholder" id="grandFamille" 
                             [(ngModel)]="selectedGrandFamilles" multiple>
                       <option *ngFor="let option of grandFamilleOptions" [value]="option.value">
                         {{option.value}}   {{option.label}}
                       </option>
                     </select> -->
-                  </div>
-                  <div class="col-md-4">
-                    <label for="famille" class="form-label labelBold">Famille</label><br>
-                    <mat-form-field appearance="outline" class="custom-mat-select">
-                      <mat-label>Select Options</mat-label>
-                      <mat-select multiple [(ngModel)]="selectedFamilles" disableRipple panelClass="custom-panel">
-                        <mat-option *ngFor="let option of familleOptions" [value]="option.value">
-                          {{option.value}}   {{option.label}}
-                        </mat-option>
-                      </mat-select>
-                    </mat-form-field>                    
-                    <!-- <select class="form-select custom-placeholder" id="famille" 
+                </div>
+                <div class="col-md-4">
+                  <label for="famille" class="form-label labelBold">Famille</label><br>
+                  <mat-form-field appearance="outline" class="custom-mat-select">
+                    <mat-label>Select Options</mat-label>
+                    <mat-select multiple [(ngModel)]="selectedFamilles" disableRipple panelClass="custom-panel">
+                      <mat-option *ngFor="let option of familleOptions" [value]="option.value">
+                        {{option.value}} {{option.label}}
+                      </mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                  <!-- <select class="form-select custom-placeholder" id="famille" 
                             [(ngModel)]="selectedFamilles" multiple>
                             <option value="" disabled selected>Select options</option>
                       <option *ngFor="let option of familleOptions" [value]="option.value">
                         {{option.value}}   {{option.label}}
                       </option>
                     </select> -->
-                  </div>
-                  <div class="col-md-4">
-                    <label for="besoin" class="form-label labelBold">Besoin</label><br>
-                    <mat-form-field appearance="outline" class="custom-mat-select">
-                      <mat-label>Select Options</mat-label>
-                      <mat-select multiple [(ngModel)]="selectedBesoins" disableRipple panelClass="custom-panel">
-                        <mat-option *ngFor="let option of besoinOptions" [value]="option.value">
-                          {{option.value}}   {{option.label}}
-                        </mat-option>
-                      </mat-select>
-                    </mat-form-field>
-                    <!-- <select class="form-select custom-placeholder" id="besoin" 
+                </div>
+                <div class="col-md-4">
+                  <label for="besoin" class="form-label labelBold">Besoin</label><br>
+                  <mat-form-field appearance="outline" class="custom-mat-select">
+                    <mat-label>Select Options</mat-label>
+                    <mat-select multiple [(ngModel)]="selectedBesoins" disableRipple panelClass="custom-panel">
+                      <mat-option *ngFor="let option of besoinOptions" [value]="option.value">
+                        {{option.value}} {{option.label}}
+                      </mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                  <!-- <select class="form-select custom-placeholder" id="besoin" 
                             [(ngModel)]="selectedBesoins" multiple>
                       <option *ngFor="let option of besoinOptions" [value]="option.value">
                         {{option.value}}   {{option.label}}
                       </option>
                     </select> -->
-                  </div>
                 </div>
-                <div class="row mt-3">
-                  <div class="col-md-4">
-                    <label for="couleur" class="form-label labelBold">Couleur</label><br>
-                    <mat-form-field appearance="outline" class="custom-mat-select">
-                      <mat-label>Couleur</mat-label>
-                      <mat-select multiple [(ngModel)]="selectedCouleurs" disableRipple panelClass="custom-panel">
-                        <mat-option *ngFor="let option of couleurOptions" [value]="option.value">
-                          {{option.value}}   {{option.label}}
-                        </mat-option>
-                      </mat-select>
-                    </mat-form-field>
-                    <!-- <select class="form-select custom-placeholder" id="couleur" 
+              </div>
+              <div class="row mt-3">
+                <div class="col-md-4">
+                  <label for="couleur" class="form-label labelBold">Couleur</label><br>
+                  <mat-form-field appearance="outline" class="custom-mat-select">
+                    <mat-label>Couleur</mat-label>
+                    <mat-select multiple [(ngModel)]="selectedCouleurs" disableRipple panelClass="custom-panel">
+                      <mat-option *ngFor="let option of couleurOptions" [value]="option.value">
+                        {{option.value}} {{option.label}}
+                      </mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                  <!-- <select class="form-select custom-placeholder" id="couleur" 
                             [(ngModel)]="selectedCouleurs" multiple>
                       <option *ngFor="let option of couleurOptions" [value]="option.value">
                         {{option.value}}   {{option.label}}
                       </option>
                     </select> -->
-                  </div>
-                  <div class="col-md-4">
-                    <label for="codeArticleGen" class="form-label labelBold">Code Article Générique</label>
-                    <mat-form-field appearance="outline" class="custom-mat-select">
-                      <mat-label>Code Article Générique</mat-label>
-                      <input matInput placeholder="Code Article Générique" [(ngModel)]="codeArticleGen">
-                    </mat-form-field>
-                  </div>
-                  <div class="col-md-4">
-                    <label for="solde" class="form-label labelBold">Solde</label>
-                    <mat-form-field appearance="outline" class="custom-mat-select">
-                      <mat-label>Solde</mat-label>
-                      <input matInput placeholder="Solde" [(ngModel)]="solde">
-                    </mat-form-field>
-                  </div>
                 </div>
-                <div class="row">
-                  <div class="col-md-4">
-                    <label for="ferme" class="form-label labelBold">article fermé</label><br>
-                    <mat-form-field appearance="outline" class="custom-mat-select">
-                      <mat-label>article fermé</mat-label>
-                      <mat-select  [(ngModel)]="ferme" disableRipple panelClass="custom-panel">
-                        <mat-option value="_">
-                          Non
-                        </mat-option>
-                        <mat-option value="x">
-                          Oui
-                        </mat-option>
-                      </mat-select>
-                    </mat-form-field>
-                  </div>
-                  <div class="col-md-4">
-                    <label for="dateDebut" class="form-label labelBold">Date de début</label>
-                      <mat-form-field appearance="outline">
-                        <mat-label>Date de début</mat-label>
-                        <input matInput [matDatepicker]="pickerDebut" [(ngModel)]="dateDebut">
-                        <mat-datepicker-toggle matIconSuffix [for]="pickerDebut"></mat-datepicker-toggle>
-                        <mat-datepicker #pickerDebut></mat-datepicker>
-                      </mat-form-field>
-                      <small class="text-danger" *ngIf="startDateError_injection">
-                        La date de début doit être inférieure à la date de fin.
-                      </small>
-                  </div>
-                  <div class="col-md-4">
-                    <label for="dateFin" class="form-label labelBold">Date de fin</label>
-                      <mat-form-field appearance="outline">
-                        <mat-label>Date de fin</mat-label>
-                        <input matInput [matDatepicker]="pickerFin" [(ngModel)]="dateFin">
-                        <mat-datepicker-toggle matIconSuffix [for]="pickerFin"></mat-datepicker-toggle>
-                        <mat-datepicker #pickerFin></mat-datepicker>
-                      </mat-form-field>
-                      <small class="text-danger" *ngIf="endDateError_injection">
-                        La date de fin doit être postérieure à la date de début et ne pas dépasser aujourd'hui.
-                      </small>
-                  </div>
+                <div class="col-md-4">
+                  <label for="codeArticleGen" class="form-label labelBold">Code Article Générique</label>
+                  <mat-form-field appearance="outline" class="custom-mat-select">
+                    <mat-label>Code Article Générique</mat-label>
+                    <input matInput placeholder="Code Article Générique" [(ngModel)]="codeArticleGen">
+                  </mat-form-field>
+                </div>
+                <div class="col-md-4">
+                  <label for="solde" class="form-label labelBold">Solde</label>
+                  <mat-form-field appearance="outline" class="custom-mat-select">
+                    <mat-label>Solde</mat-label>
+                    <input matInput placeholder="Solde" [(ngModel)]="solde">
+                  </mat-form-field>
                 </div>
               </div>
-              <div class="modal-footer">
-                <button class="btn btn_custom" type="button" (click)="Filtrer_click()" 
-                        style="margin-right: 2%; margin-bottom: 1%; font-weight: bold;">
-                  <span><i class="bi bi-funnel-fill"></i></span>Filtrer
-                </button>
+              <div class="row">
+                <div class="col-md-4">
+                  <label for="ferme" class="form-label labelBold">article fermé</label><br>
+                  <mat-form-field appearance="outline" class="custom-mat-select">
+                    <mat-label>article fermé</mat-label>
+                    <mat-select [(ngModel)]="ferme" disableRipple panelClass="custom-panel">
+                      <mat-option value="_">
+                        Non
+                      </mat-option>
+                      <mat-option value="x">
+                        Oui
+                      </mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </div>
+                <div class="col-md-4">
+                  <label for="dateDebut" class="form-label labelBold">Date de début</label>
+                  <mat-form-field appearance="outline">
+                    <mat-label>Date de début</mat-label>
+                    <input matInput [matDatepicker]="pickerDebut" [(ngModel)]="dateDebut">
+                    <mat-datepicker-toggle matIconSuffix [for]="pickerDebut"></mat-datepicker-toggle>
+                    <mat-datepicker #pickerDebut></mat-datepicker>
+                  </mat-form-field>
+                  <small class="text-danger" *ngIf="startDateError_injection">
+                    La date de début doit être inférieure à la date de fin.
+                  </small>
+                </div>
+                <div class="col-md-4">
+                  <label for="dateFin" class="form-label labelBold">Date de fin</label>
+                  <mat-form-field appearance="outline">
+                    <mat-label>Date de fin</mat-label>
+                    <input matInput [matDatepicker]="pickerFin" [(ngModel)]="dateFin">
+                    <mat-datepicker-toggle matIconSuffix [for]="pickerFin"></mat-datepicker-toggle>
+                    <mat-datepicker #pickerFin></mat-datepicker>
+                  </mat-form-field>
+                  <small class="text-danger" *ngIf="endDateError_injection">
+                    La date de fin doit être postérieure à la date de début et ne pas dépasser aujourd'hui.
+                  </small>
+                </div>
               </div>
             </div>
+            <div class="modal-footer">
+              <button class="btn btn_custom" type="button" (click)="Filtrer_click()"
+                style="margin-right: 2%; margin-bottom: 1%; font-weight: bold;">
+                <span><i class="bi bi-funnel-fill"></i></span>Filtrer
+              </button>
+            </div>
           </div>
+        </div>
         <br>
         <div class="d-flex justify-content-between">
-          <button class="btn btn_custom" type="button" disabled  matStepperPrevious>Previous</button>
-          <button class="btn btn_custom" type="button" (click)="articleShow(false)"  matStepperNext>Next</button>
+          <button class="btn btn_custom" type="button" disabled matStepperPrevious>Previous</button>
+          <button class="btn btn_custom" type="button" (click)="articleShow(false)" matStepperNext>Next</button>
         </div>
         <br>
-      <div class="card">
-        <div *ngIf="crit=='exist'">
-          <div class="card mt-3" *ngIf="filter_clicked">
-            <div class="card-header">
-              <span class="filter-text"><i class="bi bi-funnel-fill"></i> Filtre </span>
-          
-              <div class="rounded-btn" *ngIf="grandFamille_filter.length > 0">
-                <span class="item_filter">Grand Famille = {{grandFamille_filter.join(', ')}} </span>
-                <button type="button" class="btn-close" aria-label="Close" (click)="del_filter('grandFamille')"></button>
+        <div class="card">
+          <div *ngIf="crit=='exist'">
+            <div class="card mt-3" *ngIf="filter_clicked">
+              <div class="card-header">
+                <span class="filter-text"><i class="bi bi-funnel-fill"></i> Filtre </span>
+
+                <div class="rounded-btn" *ngIf="grandFamille_filter.length > 0">
+                  <span class="item_filter">Grand Famille = {{grandFamille_filter.join(', ')}} </span>
+                  <button type="button" class="btn-close" aria-label="Close"
+                    (click)="del_filter('grandFamille')"></button>
+                </div>
+
+                <div class="rounded-btn" *ngIf="famille_filter.length > 0">
+                  <span class="item_filter">Famille = {{famille_filter.join(', ')}} </span>
+                  <button type="button" class="btn-close" aria-label="Close" (click)="del_filter('famille')"></button>
+                </div>
+
+                <div class="rounded-btn" *ngIf="besoin_filter.length > 0">
+                  <span class="item_filter">Besoin = {{besoin_filter.join(', ')}} </span>
+                  <button type="button" class="btn-close" aria-label="Close" (click)="del_filter('besoin')"></button>
+                </div>
+
+                <div class="rounded-btn" *ngIf="couleur_filter.length > 0">
+                  <span class="item_filter">Couleur = {{couleur_filter.join(', ')}} </span>
+                  <button type="button" class="btn-close" aria-label="Close" (click)="del_filter('couleur')"></button>
+                </div>
+
+                <div class="rounded-btn" *ngIf="codeArticleGen_filter">
+                  <span class="item_filter">Code Article = {{codeArticleGen_filter}} </span>
+                  <button type="button" class="btn-close" aria-label="Close"
+                    (click)="del_filter('codeArticleGen')"></button>
+                </div>
+
+                <div class="rounded-btn" *ngIf="solde_filter">
+                  <span class="item_filter">Solde = {{solde_filter}} </span>
+                  <button type="button" class="btn-close" aria-label="Close" (click)="del_filter('solde')"></button>
+                </div>
+                <div class="rounded-btn" *ngIf="ferme_filter">
+                  <span class="item_filter">article fermé = {{ferme_filter}} </span>
+                  <button type="button" class="btn-close" aria-label="Close" (click)="del_filter('ferme')"></button>
+                </div>
+                <div class="rounded-btn" *ngIf="dateDebut_filter">
+                  <span class="item_filter">date Debut = {{dateDebut_filter}} </span>
+                  <button type="button" class="btn-close" aria-label="Close" (click)="del_filter('dateDebut')"></button>
+                </div>
+                <div class="rounded-btn" *ngIf="dateFin_filter">
+                  <span class="item_filter">date Fin = {{dateFin_filter}} </span>
+                  <button type="button" class="btn-close" aria-label="Close" (click)="del_filter('dateFin')"></button>
+                </div>
               </div>
-          
-              <div class="rounded-btn" *ngIf="famille_filter.length > 0">
-                <span class="item_filter">Famille = {{famille_filter.join(', ')}} </span>
-                <button type="button" class="btn-close" aria-label="Close" (click)="del_filter('famille')"></button>
+            </div>
+          </div>
+          <div *ngIf="crit!='exist'">
+            <div class="card-header" *ngIf="filter_clicked">
+              <span class="filter-text"> <i class="bi bi-funnel-fill"></i> Filtre </span>
+
+              <div class="rounded-btn" *ngIf="cag_filter!=''">
+                <span class="item_filter">code article gen={{cag_filter}} </span>
+                <button type="button" class="btn-close" aria-label="Close" (click)="del_filter(cag)"></button>
               </div>
-          
-              <div class="rounded-btn" *ngIf="besoin_filter.length > 0">
-                <span class="item_filter">Besoin = {{besoin_filter.join(', ')}} </span>
-                <button type="button" class="btn-close" aria-label="Close" (click)="del_filter('besoin')"></button>
+
+              <div class="rounded-btn" *ngIf="fp_filter!=''">
+                <span class="item_filter">Fournisseur Principale={{fp}} </span>
+                <button type="button" class="btn-close" aria-label="Close" (click)="del_filter(fp)"></button>
               </div>
-          
-              <div class="rounded-btn" *ngIf="couleur_filter.length > 0">
-                <span class="item_filter">Couleur = {{couleur_filter.join(', ')}} </span>
-                <button type="button" class="btn-close" aria-label="Close" (click)="del_filter('couleur')"></button>
+
+              <div class="rounded-btn" *ngIf="date_injection_filter!=''">
+                <span class="item_filter">Date Injection={{date_injection_filter}} </span>
+                <button type="button" class="btn-close" aria-label="Close"
+                  (click)="del_filter(date_injection)"></button>
               </div>
-          
-              <div class="rounded-btn" *ngIf="codeArticleGen_filter">
-                <span class="item_filter">Code Article = {{codeArticleGen_filter}} </span>
-                <button type="button" class="btn-close" aria-label="Close" (click)="del_filter('codeArticleGen')"></button>
+
+              <div class="rounded-btn" *ngIf="cb_filter!=''">
+                <span class="item_filter">code barre={{cb_filter}} </span>
+                <button type="button" class="btn-close" aria-label="Close" (click)="del_filter(cb)"></button>
               </div>
-          
-              <div class="rounded-btn" *ngIf="solde_filter">
-                <span class="item_filter">Solde = {{solde_filter}} </span>
-                <button type="button" class="btn-close" aria-label="Close" (click)="del_filter('solde')"></button>
+
+              <div class="rounded-btn" *ngIf="cf_filter && cf_filter.length > 0">
+                <span class="item_filter">code fournisseur={{cf_filter.join(', ')}} </span>
+                <button type="button" class="btn-close" aria-label="Close" (click)="del_filter(cf)"></button>
               </div>
-              <div class="rounded-btn" *ngIf="ferme_filter">
-                <span class="item_filter">article fermé = {{ferme_filter}} </span>
-                <button type="button" class="btn-close" aria-label="Close" (click)="del_filter('ferme')"></button>
+
+              <div class="rounded-btn" *ngIf="m_filter!=''">
+                <span class="item_filter">Collection={{m_filter}} </span>
+                <button type="button" class="btn-close" aria-label="Close" (click)="del_filter(m)"></button>
               </div>
-              <div class="rounded-btn" *ngIf="dateDebut_filter">
-                <span class="item_filter">date Debut = {{dateDebut_filter}} </span>
-                <button type="button" class="btn-close" aria-label="Close" (click)="del_filter('dateDebut')"></button>
+
+              <div class="rounded-btn" *ngIf="c_filter && c_filter.length > 0">
+                <span class="item_filter">Famille={{c_filter.join(', ')}} </span>
+                <button type="button" class="btn-close" aria-label="Close" (click)="del_filter(c)"></button>
               </div>
-              <div class="rounded-btn" *ngIf="dateFin_filter">
-                <span class="item_filter">date Fin = {{dateFin_filter}} </span>
-                <button type="button" class="btn-close" aria-label="Close" (click)="del_filter('dateFin')"></button>
+
+              <div class="rounded-btn" *ngIf="code_couleur_filter!=''">
+                <span class="item_filter">code couleur={{code_couleur_filter}} </span>
+                <button type="button" class="btn-close" aria-label="Close" (click)="del_filter(code_couleur)"></button>
               </div>
+
+
+              <div class="rounded-btn" *ngIf="filter_theme_filter && filter_theme_filter.length > 0">
+                <span class="item_filter">theme={{filter_theme_filter.join(', ')}} </span>
+                <button type="button" class="btn-close" aria-label="Close" (click)="del_filter(filter_theme)"></button>
+              </div>
+
+              <div class="rounded-btn" *ngIf="filter_marque_filter && filter_marque_filter.length > 0">
+                <span class="item_filter">marque={{filter_marque_filter.join(', ')}} </span>
+                <button type="button" class="btn-close" aria-label="Close" (click)="del_filter(filter_marque)"></button>
+              </div>
+
+              <div class="rounded-btn" *ngIf="filter_section_filter && filter_section_filter.length > 0">
+                <span class="item_filter">section={{filter_section_filter.join(', ')}} </span>
+                <button type="button" class="btn-close" aria-label="Close"
+                  (click)="del_filter(filter_section)"></button>
+              </div>
+
+              <div class="rounded-btn" *ngIf="filter_collection_filter && filter_collection_filter.length > 0">
+                <span class="item_filter">collection={{filter_collection_filter.join(', ')}} </span>
+                <button type="button" class="btn-close" aria-label="Close"
+                  (click)="del_filter(filter_collection)"></button>
+              </div>
+
+              <div class="rounded-btn" *ngIf="filter_sous_fam_filter && filter_sous_fam_filter.length > 0">
+                <span class="item_filter">sous famille={{filter_sous_fam_filter.join(', ')}} </span>
+                <button type="button" class="btn-close" aria-label="Close"
+                  (click)="del_filter(filter_sous_fam)"></button>
+              </div>
+
+              <div class="rounded-btn" *ngIf="filter_groupe_filter && filter_groupe_filter.length > 0">
+                <span class="item_filter">groupe={{filter_groupe_filter.join(', ')}} </span>
+                <button type="button" class="btn-close" aria-label="Close" (click)="del_filter(filter_groupe)"></button>
+              </div>
+
+              <div class="rounded-btn" *ngIf="filter_material_filter && filter_material_filter.length > 0">
+                <span class="item_filter">material={{filter_material_filter.join(', ')}} </span>
+                <button type="button" class="btn-close" aria-label="Close"
+                  (click)="del_filter(filter_material)"></button>
+              </div>
+
+
+            </div>
+          </div>
+          <div class="card-body">
+            <div class="table-responsive">
+              <table class="display" id="datatable1" width="100%" cellspacing="0">
+                <thead>
+                </thead>
+                <tbody>
+                </tbody>
+                <tfoot>
+                  <tr>
+                    <td [attr.colspan]="totalColumns">
+                      {{selected_articles.length}} item selected
+                      <div style="display: flex; align-items: center; justify-content: center; "><button
+                          class="btn switch_page" (click)="previous_page()" [disabled]="no_previous">&laquo;
+                          Previous</button>
+                        <button class="btn switch_page" (click)="next_page()" [disabled]="end_of_data">Next
+                          &raquo;</button>
+                        <div>
+                          <p style="  margin: 0 5px;padding: 5px 10px;"> page {{page_number}}</p>
+                        </div>
+                      </div>
+                      <div></div>
+                    </td>
+                  </tr>
+                </tfoot>
+              </table>
             </div>
           </div>
         </div>
-        <div *ngIf="crit!='exist'"> 
-          <div class="card-header" *ngIf="filter_clicked" >
-            <span class="filter-text" > <i class="bi bi-funnel-fill"></i> Filtre  </span>
-      
-            <div class="rounded-btn" *ngIf="cag_filter!=''">
-              <span class="item_filter">code article gen={{cag_filter}} </span>
-              <button type="button" class="btn-close" aria-label="Close" (click)="del_filter(cag)"></button>
-            </div>
-      
-            <div class="rounded-btn" *ngIf="fp_filter!=''">
-              <span class="item_filter">Fournisseur Principale={{fp}} </span>
-              <button type="button" class="btn-close" aria-label="Close" (click)="del_filter(fp)"></button>
-            </div>
-      
-            <div class="rounded-btn" *ngIf="date_injection_filter!=''">
-              <span class="item_filter">Date Injection={{date_injection_filter}} </span>
-              <button type="button" class="btn-close" aria-label="Close" (click)="del_filter(date_injection)"></button>
-            </div>
-        
-            <div class="rounded-btn" *ngIf="cb_filter!=''">
-            <span class="item_filter">code barre={{cb_filter}} </span>
-            <button type="button" class="btn-close" aria-label="Close" (click)="del_filter(cb)"></button>
-            </div>
-        
-            <div class="rounded-btn" *ngIf="cf_filter!=''">
-            <span class="item_filter">code fournisseur={{cf_filter}} </span>
-            <button type="button" class="btn-close" aria-label="Close" (click)="del_filter(cf)"></button>
+        <br>
+        <!-- scroll bar  -->
+        <div class="card" *ngIf="selected_articles.length > 0">
+          <div class="card-header py-1 headerColorBg d-flex justify-content-between align-items-center"
+            style="color: white; font-weight: 600;">
+            <div>Selected Articles</div>
+            <div><span>{{selected_articles.length}} items selected</span></div>
           </div>
-      
-          <div class="rounded-btn" *ngIf="m_filter!=''">
-            <span class="item_filter">Collection={{m_filter}} </span>
-            <button type="button" class="btn-close" aria-label="Close" (click)="del_filter(m)"></button>
-          </div>
-        
-          <div class="rounded-btn" *ngIf="c_filter!=''">
-            <span class="item_filter">Famille={{c_filter}} </span>
-            <button type="button" class="btn-close" aria-label="Close" (click)="del_filter(c)"></button>
-          </div>
-      
-          <div class="rounded-btn" *ngIf="code_couleur_filter!=''">
-            <span class="item_filter">code couleur={{code_couleur_filter}} </span>
-            <button type="button" class="btn-close" aria-label="Close" (click)="del_filter(code_couleur)"></button>
-          </div>
-
-
-          <div class="rounded-btn" *ngIf="filter_theme_filter!=''">
-            <span class="item_filter">theme={{filter_theme_filter}} </span>
-            <button type="button" class="btn-close" aria-label="Close" (click)="del_filter(filter_theme)"></button>
-          </div>
-
-          <div class="rounded-btn" *ngIf="filter_marque_filter!=''">
-            <span class="item_filter">marque={{filter_marque_filter}} </span>
-            <button type="button" class="btn-close" aria-label="Close" (click)="del_filter(filter_marque)"></button>
-          </div>
-
-          <div class="rounded-btn" *ngIf="filter_section_filter!=''">
-            <span class="item_filter">section={{filter_section_filter}} </span>
-            <button type="button" class="btn-close" aria-label="Close" (click)="del_filter(filter_section)"></button>
-          </div>
-
-          <div class="rounded-btn" *ngIf="filter_collection_filter!=''">
-            <span class="item_filter">collection={{filter_collection_filter}} </span>
-            <button type="button" class="btn-close" aria-label="Close" (click)="del_filter(filter_collection)"></button>
-          </div>
-
-          <div class="rounded-btn" *ngIf="filter_sous_fam_filter!=''">
-            <span class="item_filter">sous famille={{filter_sous_fam_filter}} </span>
-            <button type="button" class="btn-close" aria-label="Close" (click)="del_filter(filter_sous_fam)"></button>
-          </div>
-
-          <div class="rounded-btn" *ngIf="filter_groupe_filter!=''">
-            <span class="item_filter">groupe={{filter_groupe_filter}} </span>
-            <button type="button" class="btn-close" aria-label="Close" (click)="del_filter(filter_groupe)"></button>
-          </div>
-
-          <div class="rounded-btn" *ngIf="filter_material_filter!=''">
-            <span class="item_filter">material={{filter_material_filter}} </span>
-            <button type="button" class="btn-close" aria-label="Close" (click)="del_filter(filter_material)"></button>
-          </div>
-      
-          
-        </div>
-      </div>
-        <div class="card-body">
-          <div class="table-responsive" >
-            <table class="display" id="datatable1" width="100%" cellspacing="0">
+          <div class="table-container">
+            <table class="table table-hover table-striped">
               <thead>
+                <tr>
+                  <th style="width:40%">Code article DIM </th>
+                  <th style="width:50%">Code à barre</th>
+                  <th style="width:7%">Désignation</th>
+                  <th style="width:3%">action</th>
+                  <th></th>
+                </tr>
               </thead>
               <tbody>
-              </tbody>
-              <tfoot>
-                <tr>
-                  <td [attr.colspan]="totalColumns">
-                    {{selected_articles.length}} item selected
-                    <div style="display: flex; align-items: center; justify-content: center; "><button class="btn switch_page"
-                        (click)="previous_page()" [disabled]="no_previous">&laquo; Previous</button>
-                      <button class="btn switch_page" (click)="next_page()" [disabled]="end_of_data">Next &raquo;</button>
-                      <div><p style="  margin: 0 5px;padding: 5px 10px;">   page {{page_number}}</p></div>
-                    </div>
-                    <div></div>
-                  </td>
+                <tr *ngFor="let article of selected_articles">
+                  <td>{{article.code_article_dem}}</td>
+                  <td>{{article.code_barre}}</td>
+                  <td>{{article.libelle}}</td>
+                  <td><button class="btn btn-danger btn-sm rounded-2 m-1" type="button"
+                      (click)="Deselect_article(article)">Deselect</button></td>
                 </tr>
-              </tfoot>
+              </tbody>
             </table>
+          </div>
+          <div class="card-footer">
+            {{selected_articles.length}} items selected
           </div>
         </div>
       </div>
-      <br>
-      <!-- scroll bar  -->
-    <div class="card" *ngIf="selected_articles.length > 0" >
-      <div class="card-header py-1 headerColorBg d-flex justify-content-between align-items-center" style="color: white; font-weight: 600;">
-        <div>Selected Articles</div>
-        <div><span>{{selected_articles.length}} items selected</span></div>
-      </div>
-      <div class="table-container">
-        <table class="table table-hover table-striped">
-          <thead>
-            <tr>
-              <th style="width:40%">Code article DIM </th>
-              <th style="width:50%">Code à barre</th>
-              <th style="width:7%">Désignation</th>
-              <th style="width:3%">action</th>
-              <th></th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr *ngFor="let article of selected_articles">
-              <td>{{article.code_article_dem}}</td>
-              <td>{{article.code_barre}}</td>
-              <td>{{article.libelle}}</td>
-              <td><button class="btn btn-danger btn-sm rounded-2 m-1" type="button" (click)="Deselect_article(article)">Deselect</button></td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-      <div class="card-footer">
-        {{selected_articles.length}} items selected
-      </div>
-    </div>
-        </div>
-    
-        <div [ngStyle]="{ 'display': crit=='articles_dem' ? 'block' : 'none'} ">
-          <div class="card shadow">
-            <div class="card-header py-1 headerColorBg" style=" color: white; font-weight: 600;">
-              Filtres
-            </div>
-            <!-- <div class="card-body">
+
+      <div [ngStyle]="{ 'display': crit=='articles_dem' ? 'block' : 'none'} ">
+        <div class="card shadow">
+          <div class="card-header py-1 headerColorBg" style=" color: white; font-weight: 600;">
+            Filtres
+          </div>
+          <!-- <div class="card-body">
               <div class="row">
                 <div class="col-md-3">
                   <label for="validationCustom01" class="form-label labelBold">Code Générique</label>
@@ -714,65 +730,59 @@
               </div>
               <br>
             </div> -->
-            <div class="card-body">
+          <div class="card-body">
             <div class="row">
-                  <div class="col-md-3">
-                    <label for="validationCustom01" class="form-label labelBold">Code Générique</label>
-                    <input type="text" class="form-control custom-placeholder" id="validationCustom01" placeholder="Code Générique"
-                      [(ngModel)]="cag">
-                  </div>
+              <div class="col-md-3">
+                <label for="validationCustom01" class="form-label labelBold">Code Générique</label>
+                <input type="text" class="form-control custom-placeholder" id="validationCustom01"
+                  placeholder="Code Générique" [(ngModel)]="cag">
+              </div>
 
-                  <div class="col-md-3">
-                    <label for="validationCustom03" class="form-label labelBold">Fournisseur Principale</label>
-                    <input type="text" class="form-control custom-placeholder" id="validationCustom03" placeholder="Fournisseur Principale" [(ngModel)]="fp">
-                  </div>
+              <div class="col-md-3">
+                <label for="validationCustom03" class="form-label labelBold">Fournisseur Principale</label>
+                <input type="text" class="form-control custom-placeholder" id="validationCustom03"
+                  placeholder="Fournisseur Principale" [(ngModel)]="fp">
+              </div>
 
-                  <div class="col-md-3">
-                       <mat-form-field appearance="fill" style="width: 100%">
+              <div class="col-md-3">
+                <mat-form-field appearance="fill" style="width: 100%">
                   <mat-label>Code Fournisseur</mat-label>
                   <mat-select [(ngModel)]="cf">
                     <mat-option>
-                      <input matInput
-                            type="text"
-                            placeholder="Recherche..."
-                            [(ngModel)]="searchProvider"
-                            (ngModelChange)="onProviderSearchChange()"
-                            (click)="$event.stopPropagation()"
-                            autocomplete="off">
+                      <input matInput type="text" placeholder="Recherche..." [(ngModel)]="searchProvider"
+                        (ngModelChange)="onProviderSearchChange()" (click)="$event.stopPropagation()"
+                        autocomplete="off">
                     </mat-option>
                     <mat-option *ngFor="let option of filteredprovidersOptions" [value]="option.value">
-                       {{option.label}}
+                      {{option.label}}
                     </mat-option>
                   </mat-select>
                   <!-- Clear button (shows only if 'c' is not empty) -->
-                  <button mat-icon-button matSuffix *ngIf="cf" (click)="resetProviderFilter()" aria-label="Clear selection">
+                  <button mat-icon-button matSuffix *ngIf="cf" (click)="resetProviderFilter()"
+                    aria-label="Clear selection">
                     <mat-icon>close</mat-icon>
                   </button>
                 </mat-form-field>
-                  </div>
-       
+              </div>
+
             </div>
             <div class="row" style="margin-top: 1%;">
-               
+
               <div class="col-md-3">
                 <mat-form-field appearance="fill" style="width: 100%">
                   <mat-label>Famille</mat-label>
                   <mat-select [(ngModel)]="c">
                     <mat-option>
-                      <input matInput
-                            type="text"
-                            placeholder="Recherche..."
-                            [(ngModel)]="familleSearch"
-                            (ngModelChange)="onFamilleSearchChange()"
-                            (click)="$event.stopPropagation()"
-                            autocomplete="off">
+                      <input matInput type="text" placeholder="Recherche..." [(ngModel)]="familleSearch"
+                        (ngModelChange)="onFamilleSearchChange()" (click)="$event.stopPropagation()" autocomplete="off">
                     </mat-option>
                     <mat-option *ngFor="let option of filteredFamilleOptions" [value]="option.value">
                       {{option.value}} {{option.label}}
                     </mat-option>
                   </mat-select>
                   <!-- Clear button (shows only if 'c' is not empty) -->
-                  <button mat-icon-button matSuffix *ngIf="c" (click)="resetFamilleFilter()" aria-label="Clear selection">
+                  <button mat-icon-button matSuffix *ngIf="c" (click)="resetFamilleFilter()"
+                    aria-label="Clear selection">
                     <mat-icon>close</mat-icon>
                   </button>
                 </mat-form-field>
@@ -784,16 +794,16 @@
                   <mat-label>Sous Famille</mat-label>
                   <mat-select [(ngModel)]="filter_sous_fam">
                     <mat-option>
-                      <input matInput type="text" placeholder="Recherche..."
-                        [(ngModel)]="sousFamilleSearch"
-                        (ngModelChange)="onSousFamilleSearchChange()"
-                        (click)="$event.stopPropagation()" autocomplete="off">
+                      <input matInput type="text" placeholder="Recherche..." [(ngModel)]="sousFamilleSearch"
+                        (ngModelChange)="onSousFamilleSearchChange()" (click)="$event.stopPropagation()"
+                        autocomplete="off">
                     </mat-option>
                     <mat-option *ngFor="let option of filteredSousFamilleOptions" [value]="option.value">
                       {{option.value}} {{option.label}}
                     </mat-option>
                   </mat-select>
-                  <button mat-icon-button matSuffix *ngIf="filter_sous_fam" (click)="resetSousFamilleFilter()" aria-label="Clear">
+                  <button mat-icon-button matSuffix *ngIf="filter_sous_fam" (click)="resetSousFamilleFilter()"
+                    aria-label="Clear">
                     <mat-icon>close</mat-icon>
                   </button>
                 </mat-form-field>
@@ -801,139 +811,143 @@
 
 
               <div class="col-md-3">
-              <mat-form-field appearance="fill" style="width: 100%">
-                <mat-label>Groupe</mat-label>
-                <mat-select [(ngModel)]="filter_groupe">
-                  <mat-option>
-                    <input matInput type="text" placeholder="Recherche..."
-                      [(ngModel)]="groupeSearch"
-                      (ngModelChange)="onGroupeSearchChange()"
-                      (click)="$event.stopPropagation()" autocomplete="off">
-                  </mat-option>
-                  <mat-option *ngFor="let option of filteredGroupOptions" [value]="option.value">
-                    {{option.value}} {{option.label}}
-                  </mat-option>
-                </mat-select>
-                <button mat-icon-button matSuffix *ngIf="filter_groupe" (click)="resetGroupeFilter()" aria-label="Clear">
-                  <mat-icon>close</mat-icon>
-                </button>
-              </mat-form-field>
+                <mat-form-field appearance="fill" style="width: 100%">
+                  <mat-label>Groupe</mat-label>
+                  <mat-select [(ngModel)]="filter_groupe">
+                    <mat-option>
+                      <input matInput type="text" placeholder="Recherche..." [(ngModel)]="groupeSearch"
+                        (ngModelChange)="onGroupeSearchChange()" (click)="$event.stopPropagation()" autocomplete="off">
+                    </mat-option>
+                    <mat-option *ngFor="let option of filteredGroupOptions" [value]="option.value">
+                      {{option.value}} {{option.label}}
+                    </mat-option>
+                  </mat-select>
+                  <button mat-icon-button matSuffix *ngIf="filter_groupe" (click)="resetGroupeFilter()"
+                    aria-label="Clear">
+                    <mat-icon>close</mat-icon>
+                  </button>
+                </mat-form-field>
               </div>
 
 
               <div class="col-md-3">
-            <mat-form-field appearance="fill" style="width: 100%">
-              <mat-label>Materiel</mat-label>
-              <mat-select [(ngModel)]="filter_material">
-                <mat-option>
-                  <input matInput type="text" placeholder="Recherche..."
-                    [(ngModel)]="materielSearch"
-                    (ngModelChange)="onMaterielSearchChange()"
-                    (click)="$event.stopPropagation()" autocomplete="off">
-                </mat-option>
-                <mat-option *ngFor="let option of filteredMaterialsOptions" [value]="option.value">
-                  {{option.value}} {{option.label}}
-                </mat-option>
-              </mat-select>
-              <button mat-icon-button matSuffix *ngIf="filter_material" (click)="resetMaterielFilter()" aria-label="Clear">
-                <mat-icon>close</mat-icon>
-              </button>
-            </mat-form-field>
+                <mat-form-field appearance="fill" style="width: 100%">
+                  <mat-label>Materiel</mat-label>
+                  <mat-select [(ngModel)]="filter_material">
+                    <mat-option>
+                      <input matInput type="text" placeholder="Recherche..." [(ngModel)]="materielSearch"
+                        (ngModelChange)="onMaterielSearchChange()" (click)="$event.stopPropagation()"
+                        autocomplete="off">
+                    </mat-option>
+                    <mat-option *ngFor="let option of filteredMaterialsOptions" [value]="option.value">
+                      {{option.value}} {{option.label}}
+                    </mat-option>
+                  </mat-select>
+                  <button mat-icon-button matSuffix *ngIf="filter_material" (click)="resetMaterielFilter()"
+                    aria-label="Clear">
+                    <mat-icon>close</mat-icon>
+                  </button>
+                </mat-form-field>
               </div>
 
 
 
-                  <div class="col-md-3">
-                    <mat-form-field appearance="fill" style="width: 100%">
-                      <mat-label>collection</mat-label>
-                      <mat-select [(ngModel)]="filter_collection">
-                        <mat-option>
-                          <input matInput type="text" placeholder="Recherche..."
-                            [(ngModel)]="collectionSearch"
-                            (ngModelChange)="onCollectionSearchChange()"
-                            (click)="$event.stopPropagation()" autocomplete="off">
-                        </mat-option>
-                        <mat-option *ngFor="let option of filteredCollectionsOptions" [value]="option.value">
-                          {{option.value}} {{option.label}}
-                        </mat-option>
-                      </mat-select>
-                      <button mat-icon-button matSuffix *ngIf="filter_collection" (click)="resetCollectionFilter()" aria-label="Clear">
-                        <mat-icon>close</mat-icon>
-                      </button>
-                    </mat-form-field>
-                  </div>
-                  <div class="col-md-3">
-                    <mat-form-field appearance="fill" style="width: 100%">
-                      <mat-label>Section</mat-label>
-                      <mat-select [(ngModel)]="filter_section">
-                        <mat-option>
-                          <input matInput type="text" placeholder="Recherche..." [(ngModel)]="sectionSearch"
-                                (ngModelChange)="onSectionSearchChange()" (click)="$event.stopPropagation()" autocomplete="off">
-                        </mat-option>
-                        <mat-option *ngFor="let option of filteredSectionsOptions" [value]="option.value">
-                          {{option.value}} {{option.label}}
-                        </mat-option>
-                      </mat-select>
-                      <button mat-icon-button matSuffix *ngIf="filter_section" (click)="resetSectionFilter()" aria-label="Clear">
-                        <mat-icon>close</mat-icon>
-                      </button>
-                    </mat-form-field>
-                  </div>
-                  <div class="col-md-3">
-                    <mat-form-field appearance="fill" style="width: 100%">
-                      <mat-label>Marque</mat-label>
-                      <mat-select [(ngModel)]="filter_marque">
-                        <mat-option>
-                          <input matInput type="text" placeholder="Recherche..." [(ngModel)]="marqueSearch"
-                                (ngModelChange)="onMarqueSearchChange()" (click)="$event.stopPropagation()" autocomplete="off">
-                        </mat-option>
-                        <mat-option *ngFor="let option of filteredMarquesOptions" [value]="option.value">
-                          {{option.value}} {{option.label}}
-                        </mat-option>
-                      </mat-select>
-                      <button mat-icon-button matSuffix *ngIf="filter_marque" (click)="resetMarqueFilter()" aria-label="Clear">
-                        <mat-icon>close</mat-icon>
-                      </button>
-                    </mat-form-field>
-                  </div>
-                  <div class="col-md-3">
-                    <mat-form-field appearance="fill" style="width: 100%">
-                      <mat-label>Thème</mat-label>
-                      <mat-select [(ngModel)]="filter_theme">
-                        <mat-option>
-                          <input matInput type="text" placeholder="Recherche..." [(ngModel)]="themeSearch"
-                                (ngModelChange)="onThemeSearchChange()" (click)="$event.stopPropagation()" autocomplete="off">
-                        </mat-option>
-                        <mat-option *ngFor="let option of filteredThemesOptions" [value]="option.value">
-                          {{option.value}} {{option.label}}
-                        </mat-option>
-                      </mat-select>
-                      <button mat-icon-button matSuffix *ngIf="filter_theme" (click)="resetThemeFilter()" aria-label="Clear">
-                        <mat-icon>close</mat-icon>
-                      </button>
-                    </mat-form-field>
-                  </div>
-                 
-
-                  <div class="col-md-3">
-                    <label for="validationCustom02" class="form-label labelBold">Date Injection</label>
-                    <input type="date" class="form-control custom-placeholder" id="validationCustom02" placeholder="Date Injection" [(ngModel)]="date_injection">
-                  </div>
-                </div>
-
-                <br>
+              <div class="col-md-3">
+                <mat-form-field appearance="fill" style="width: 100%">
+                  <mat-label>collection</mat-label>
+                  <mat-select [(ngModel)]="filter_collection">
+                    <mat-option>
+                      <input matInput type="text" placeholder="Recherche..." [(ngModel)]="collectionSearch"
+                        (ngModelChange)="onCollectionSearchChange()" (click)="$event.stopPropagation()"
+                        autocomplete="off">
+                    </mat-option>
+                    <mat-option *ngFor="let option of filteredCollectionsOptions" [value]="option.value">
+                      {{option.value}} {{option.label}}
+                    </mat-option>
+                  </mat-select>
+                  <button mat-icon-button matSuffix *ngIf="filter_collection" (click)="resetCollectionFilter()"
+                    aria-label="Clear">
+                    <mat-icon>close</mat-icon>
+                  </button>
+                </mat-form-field>
               </div>
-            <div class="modal-footer">
-              <button class="btn btn_custom" type="button" (click)="Filtrer_click_articles_gen()" style="margin-right: 2%; margin-bottom: 1%; font-weight: bold;"><span><i
-                class="bi bi-funnel-fill"></i></span>Filtrer</button>
+              <div class="col-md-3">
+                <mat-form-field appearance="fill" style="width: 100%">
+                  <mat-label>Section</mat-label>
+                  <mat-select [(ngModel)]="filter_section">
+                    <mat-option>
+                      <input matInput type="text" placeholder="Recherche..." [(ngModel)]="sectionSearch"
+                        (ngModelChange)="onSectionSearchChange()" (click)="$event.stopPropagation()" autocomplete="off">
+                    </mat-option>
+                    <mat-option *ngFor="let option of filteredSectionsOptions" [value]="option.value">
+                      {{option.value}} {{option.label}}
+                    </mat-option>
+                  </mat-select>
+                  <button mat-icon-button matSuffix *ngIf="filter_section" (click)="resetSectionFilter()"
+                    aria-label="Clear">
+                    <mat-icon>close</mat-icon>
+                  </button>
+                </mat-form-field>
+              </div>
+              <div class="col-md-3">
+                <mat-form-field appearance="fill" style="width: 100%">
+                  <mat-label>Marque</mat-label>
+                  <mat-select [(ngModel)]="filter_marque">
+                    <mat-option>
+                      <input matInput type="text" placeholder="Recherche..." [(ngModel)]="marqueSearch"
+                        (ngModelChange)="onMarqueSearchChange()" (click)="$event.stopPropagation()" autocomplete="off">
+                    </mat-option>
+                    <mat-option *ngFor="let option of filteredMarquesOptions" [value]="option.value">
+                      {{option.value}} {{option.label}}
+                    </mat-option>
+                  </mat-select>
+                  <button mat-icon-button matSuffix *ngIf="filter_marque" (click)="resetMarqueFilter()"
+                    aria-label="Clear">
+                    <mat-icon>close</mat-icon>
+                  </button>
+                </mat-form-field>
+              </div>
+              <div class="col-md-3">
+                <mat-form-field appearance="fill" style="width: 100%">
+                  <mat-label>Thème</mat-label>
+                  <mat-select [(ngModel)]="filter_theme">
+                    <mat-option>
+                      <input matInput type="text" placeholder="Recherche..." [(ngModel)]="themeSearch"
+                        (ngModelChange)="onThemeSearchChange()" (click)="$event.stopPropagation()" autocomplete="off">
+                    </mat-option>
+                    <mat-option *ngFor="let option of filteredThemesOptions" [value]="option.value">
+                      {{option.value}} {{option.label}}
+                    </mat-option>
+                  </mat-select>
+                  <button mat-icon-button matSuffix *ngIf="filter_theme" (click)="resetThemeFilter()"
+                    aria-label="Clear">
+                    <mat-icon>close</mat-icon>
+                  </button>
+                </mat-form-field>
+              </div>
+
+
+              <div class="col-md-3">
+                <label for="validationCustom02" class="form-label labelBold">Date Injection</label>
+                <input type="date" class="form-control custom-placeholder" id="validationCustom02"
+                  placeholder="Date Injection" [(ngModel)]="date_injection">
+              </div>
             </div>
+
+            <br>
           </div>
-          <br>
-          <div class="d-flex justify-content-between">
-            <button class="btn btn_custom" type="button" disabled matStepperPrevious>Previous</button>
-            <button class="btn btn_custom" type="button" (click)="articleShow(false)" matStepperNext>Next</button>
+          <div class="modal-footer">
+            <button class="btn btn_custom" type="button" (click)="Filtrer_click_articles_gen()"
+              style="margin-right: 2%; margin-bottom: 1%; font-weight: bold;"><span><i
+                  class="bi bi-funnel-fill"></i></span>Filtrer</button>
           </div>
-          <br>
+        </div>
+        <br>
+        <div class="d-flex justify-content-between">
+          <button class="btn btn_custom" type="button" disabled matStepperPrevious>Previous</button>
+          <button class="btn btn_custom" type="button" (click)="articleShow(false)" matStepperNext>Next</button>
+        </div>
+        <br>
         <div class="card">
           <!-- <div class="card-header" *ngIf="filter_clicked" >
             <span class="filter-text" > <i class="bi bi-funnel-fill"></i> Filtre  </span>
@@ -959,89 +973,90 @@
           </div>
       
           </div> -->
-          <div class="card-header" *ngIf="filter_clicked" >
-            <span class="filter-text" > <i class="bi bi-funnel-fill"></i> Filtre  </span>
-      
+          <div class="card-header" *ngIf="filter_clicked">
+            <span class="filter-text"> <i class="bi bi-funnel-fill"></i> Filtre </span>
+
             <div class="rounded-btn" *ngIf="cag_filter!=''">
               <span class="item_filter">code article gen={{cag_filter}} </span>
               <button type="button" class="btn-close" aria-label="Close" (click)="del_filter(cag)"></button>
             </div>
-      
+
             <div class="rounded-btn" *ngIf="fp_filter!=''">
               <span class="item_filter">Fournisseur Principale={{fp}} </span>
               <button type="button" class="btn-close" aria-label="Close" (click)="del_filter(fp)"></button>
             </div>
-      
+
             <div class="rounded-btn" *ngIf="date_injection_filter!=''">
               <span class="item_filter">Date Injection={{date_injection_filter}} </span>
               <button type="button" class="btn-close" aria-label="Close" (click)="del_filter(date_injection)"></button>
             </div>
-        
+
             <div class="rounded-btn" *ngIf="cb_filter!=''">
-            <span class="item_filter">code barre={{cb_filter}} </span>
-            <button type="button" class="btn-close" aria-label="Close" (click)="del_filter(cb)"></button>
+              <span class="item_filter">code barre={{cb_filter}} </span>
+              <button type="button" class="btn-close" aria-label="Close" (click)="del_filter(cb)"></button>
             </div>
-        
+
             <div class="rounded-btn" *ngIf="cf_filter!=''">
-            <span class="item_filter">code fournisseur={{cf_filter}} </span>
-            <button type="button" class="btn-close" aria-label="Close" (click)="del_filter(cf)"></button>
-          </div>
-      
-          <div class="rounded-btn" *ngIf="m_filter!=''">
-            <span class="item_filter">Collection={{m_filter}} </span>
-            <button type="button" class="btn-close" aria-label="Close" (click)="del_filter(m)"></button>
-          </div>
-        
-          <div class="rounded-btn" *ngIf="c_filter!=''">
-            <span class="item_filter">Famille={{c_filter}} </span>
-            <button type="button" class="btn-close" aria-label="Close" (click)="del_filter(c)"></button>
-          </div>
-      
-          <div class="rounded-btn" *ngIf="code_couleur_filter!=''">
-            <span class="item_filter">code couleur={{code_couleur_filter}} </span>
-            <button type="button" class="btn-close" aria-label="Close" (click)="del_filter(code_couleur)"></button>
-          </div>
+              <span class="item_filter">code fournisseur={{cf_filter}} </span>
+              <button type="button" class="btn-close" aria-label="Close" (click)="del_filter(cf)"></button>
+            </div>
+
+            <div class="rounded-btn" *ngIf="m_filter!=''">
+              <span class="item_filter">Collection={{m_filter}} </span>
+              <button type="button" class="btn-close" aria-label="Close" (click)="del_filter(m)"></button>
+            </div>
+
+            <div class="rounded-btn" *ngIf="c_filter!=''">
+              <span class="item_filter">Famille={{c_filter}} </span>
+              <button type="button" class="btn-close" aria-label="Close" (click)="del_filter(c)"></button>
+            </div>
+
+            <div class="rounded-btn" *ngIf="code_couleur_filter!=''">
+              <span class="item_filter">code couleur={{code_couleur_filter}} </span>
+              <button type="button" class="btn-close" aria-label="Close" (click)="del_filter(code_couleur)"></button>
+            </div>
 
 
-          <div class="rounded-btn" *ngIf="filter_theme_filter!=''">
-            <span class="item_filter">theme={{filter_theme_filter}} </span>
-            <button type="button" class="btn-close" aria-label="Close" (click)="del_filter(filter_theme)"></button>
-          </div>
+            <div class="rounded-btn" *ngIf="filter_theme_filter!=''">
+              <span class="item_filter">theme={{filter_theme_filter}} </span>
+              <button type="button" class="btn-close" aria-label="Close" (click)="del_filter(filter_theme)"></button>
+            </div>
 
-          <div class="rounded-btn" *ngIf="filter_marque_filter!=''">
-            <span class="item_filter">marque={{filter_marque_filter}} </span>
-            <button type="button" class="btn-close" aria-label="Close" (click)="del_filter(filter_marque)"></button>
-          </div>
+            <div class="rounded-btn" *ngIf="filter_marque_filter!=''">
+              <span class="item_filter">marque={{filter_marque_filter}} </span>
+              <button type="button" class="btn-close" aria-label="Close" (click)="del_filter(filter_marque)"></button>
+            </div>
 
-          <div class="rounded-btn" *ngIf="filter_section_filter!=''">
-            <span class="item_filter">section={{filter_section_filter}} </span>
-            <button type="button" class="btn-close" aria-label="Close" (click)="del_filter(filter_section)"></button>
-          </div>
+            <div class="rounded-btn" *ngIf="filter_section_filter!=''">
+              <span class="item_filter">section={{filter_section_filter}} </span>
+              <button type="button" class="btn-close" aria-label="Close" (click)="del_filter(filter_section)"></button>
+            </div>
 
-          <div class="rounded-btn" *ngIf="filter_collection_filter!=''">
-            <span class="item_filter">collection={{filter_collection_filter}} </span>
-            <button type="button" class="btn-close" aria-label="Close" (click)="del_filter(filter_collection)"></button>
-          </div>
+            <div class="rounded-btn" *ngIf="filter_collection_filter!=''">
+              <span class="item_filter">collection={{filter_collection_filter}} </span>
+              <button type="button" class="btn-close" aria-label="Close"
+                (click)="del_filter(filter_collection)"></button>
+            </div>
 
-          <div class="rounded-btn" *ngIf="filter_sous_fam_filter!=''">
-            <span class="item_filter">sous famille={{filter_sous_fam_filter}} </span>
-            <button type="button" class="btn-close" aria-label="Close" (click)="del_filter(filter_sous_fam)"></button>
-          </div>
+            <div class="rounded-btn" *ngIf="filter_sous_fam_filter!=''">
+              <span class="item_filter">sous famille={{filter_sous_fam_filter}} </span>
+              <button type="button" class="btn-close" aria-label="Close" (click)="del_filter(filter_sous_fam)"></button>
+            </div>
 
-          <div class="rounded-btn" *ngIf="filter_groupe_filter!=''">
-            <span class="item_filter">groupe={{filter_groupe_filter}} </span>
-            <button type="button" class="btn-close" aria-label="Close" (click)="del_filter(filter_groupe)"></button>
-          </div>
+            <div class="rounded-btn" *ngIf="filter_groupe_filter!=''">
+              <span class="item_filter">groupe={{filter_groupe_filter}} </span>
+              <button type="button" class="btn-close" aria-label="Close" (click)="del_filter(filter_groupe)"></button>
+            </div>
 
-          <div class="rounded-btn" *ngIf="filter_material_filter!=''">
-            <span class="item_filter">material={{filter_material_filter}} </span>
-            <button type="button" class="btn-close" aria-label="Close" (click)="del_filter(filter_material)"></button>
+            <div class="rounded-btn" *ngIf="filter_material_filter!=''">
+              <span class="item_filter">material={{filter_material_filter}} </span>
+              <button type="button" class="btn-close" aria-label="Close" (click)="del_filter(filter_material)"></button>
+            </div>
+
+
           </div>
-      
-          
-        </div>
           <div class="card-body">
-            <div class="table-responsive" >
+            <div class="table-responsive">
               <table class="display" id="datatable4" width="100%" cellspacing="0">
                 <thead>
                 </thead>
@@ -1051,10 +1066,14 @@
                   <tr>
                     <td [attr.colspan]="4">
                       {{selected_articles.length}} item selected
-                      <div style="display: flex; align-items: center; justify-content: center; "><button class="btn switch_page"
-                          (click)="previous_page_articles_gen()" [disabled]="no_previous">&laquo; Previous</button>
-                        <button class="btn switch_page" (click)="next_page_articles_gen()" [disabled]="end_of_data">Next &raquo;</button>
-                        <div><p style="  margin: 0 5px;padding: 5px 10px;">   page {{page_number}}</p></div>
+                      <div style="display: flex; align-items: center; justify-content: center; "><button
+                          class="btn switch_page" (click)="previous_page_articles_gen()"
+                          [disabled]="no_previous">&laquo; Previous</button>
+                        <button class="btn switch_page" (click)="next_page_articles_gen()" [disabled]="end_of_data">Next
+                          &raquo;</button>
+                        <div>
+                          <p style="  margin: 0 5px;padding: 5px 10px;"> page {{page_number}}</p>
+                        </div>
                       </div>
                       <div></div>
                     </td>
@@ -1066,324 +1085,348 @@
         </div>
         <br>
         <!-- scroll bar -->
-        <div class="card" *ngIf="selected_articles.length > 0" >
-        <div class="card-header py-1 headerColorBg d-flex justify-content-between align-items-center" style="color: white; font-weight: 600;">
-          <div>Selected Articles</div>
-          <div><span>{{selected_articles.length}} items selected</span></div>
+        <div class="card" *ngIf="selected_articles.length > 0">
+          <div class="card-header py-1 headerColorBg d-flex justify-content-between align-items-center"
+            style="color: white; font-weight: 600;">
+            <div>Selected Articles</div>
+            <div><span>{{selected_articles.length}} items selected</span></div>
+          </div>
+          <div class="table-container">
+            <table class="table table-hover table-striped">
+              <thead>
+                <tr>
+                  <th style="width:40%">Code article Gen </th>
+                  <th style="width:50%">Désignation</th>
+                  <th style="width:7%">Model</th>
+                  <th style="width:3%">action</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let article of selected_articles">
+                  <td>{{article.code_article_gen}}</td>
+                  <td>{{article.libelle}}</td>
+                  <td>{{article.fam1}}</td>
+                  <td><button class="btn btn-danger btn-sm rounded-2 m-1" type="button"
+                      (click)="Deselect_article_gen(article)">Deselect</button></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="card-footer">
+            {{selected_articles.length}} items selected
+          </div>
         </div>
-        <div class="table-container">
-          <table class="table table-hover table-striped">
-            <thead>
-              <tr>
-                <th style="width:40%">Code article Gen </th>
-                <th style="width:50%">Désignation</th>
-                <th style="width:7%">Model</th>
-                <th style="width:3%">action</th>
-                <th></th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr *ngFor="let article of selected_articles">
-                <td>{{article.code_article_gen}}</td>
-                <td>{{article.libelle}}</td>
-                <td>{{article.fam1}}</td>
-                <td><button class="btn btn-danger btn-sm rounded-2 m-1" type="button" (click)="Deselect_article_gen(article)">Deselect</button></td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-        <div class="card-footer">
-          {{selected_articles.length}} items selected
-        </div>
-        </div>
-        </div>
-    
-    </div> 
-      <div>
       </div>
-    </mat-step>
-    <mat-step label="Choix des Etablissements" state="etab" [editable]="etabA" [completed]="propgen">
-      <div [ngStyle]="{ 'display': etabA ? 'block' : 'none'} ">
-        <br>
-        <div class="card">
-          <div class="card-header headerColorBg  py-1" style=" color: white; font-weight: 600;">
-            Filter
-          </div>
-          <div class="card-body">
-            <div class="row">
-              <div class="col-md-3">
-                <label for="validationCustom01" class="form-label labelBold">Code Etablissement</label>
-                <input type="text" class="form-control custom-placeholder" id="validationCustom01" placeholder="Code Etablissement"
-                  [(ngModel)]="ce">
-              </div>
-              <div class="col-md-3">
-                <label for="validationCustom02" class="form-label labelBold">Adresse</label>
-                <input type="text" class="form-control custom-placeholder" id="validationCustom02" placeholder="Adresse" [(ngModel)]="adr">
-              </div>
-              <div class="col-md-3">
-                <label for="validationCustomUsername" class="form-label labelBold">Type</label>
-                <div class="input-group has-validation">
-                  <input type="text" class="form-control custom-placeholder" id="validationCustomUsername" aria-describedby="inputGroupPrepend"
-                    placeholder="Type" [(ngModel)]="type">
-                </div>
-              </div>
-              <div class="col-md-3">
-                <label for="validationCustomUsername" class="form-label labelBold">secteur</label>
-                <div class="input-group has-validation">
-                  <input type="number" class="form-control custom-placeholder" id="validationCustomUsername" aria-describedby="inputGroupPrepend"
-                    placeholder="secteur" [(ngModel)]="secteur">
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="modal-footer">
-            <button class="btn btn_custom" type="button" (click)="Filtrer2()" style="margin-right: 2%; margin-bottom: 1%; font-weight: bold;"><span><i
-              class="bi bi-funnel-fill"></i></span>Filtrer</button>
-          </div>
-        </div>
-        <br>
-        <div class="d-flex justify-content-between">
-          <button class="btn btn_custom" type="button" (click)="articleShow(true)"  matStepperPrevious>Previous</button>
-          <button class="btn btn_custom" type="button" (click)="createProp(stepper)" >Next</button>
-        </div>
-        <br>
-        <!-- etab-input.component.html -->
 
-<div class="card custom-card mb-3">
-  <div class="card-body col-md-4">
-    <p class="card-text">Veuillez saisir le nombre d'établissements récepteurs :</p>
-
-    <input 
-      type="number" 
-      class="form-control mb-3"
-      [(ngModel)]="top_etabs_count"
-      placeholder="Ex: 5"
-    />
-
-  </div>
-</div>
-
-
-        <div class="card">
-          <div class="card-header" *ngIf="filter_clicked2" >
-            <span class="filter-text" > <i class="bi bi-funnel-fill"></i> Filtre  </span>
-      
-            <div class="rounded-btn" *ngIf="ce_filter!=''">
-              <span class="item_filter">code Etablissement={{ce_filter}} </span>
-              <button type="button" class="btn-close" aria-label="Close" (click)="del_filter2(ce)"></button>
-            </div>
-    
-            <div class="rounded-btn" *ngIf="adr_filter!=''">
-              <span class="item_filter">Adresse={{adr_filter}} </span>
-              <button type="button" class="btn-close" aria-label="Close" (click)="del_filter2(adr)"></button>
-            </div>
-    
-            <div class="rounded-btn" *ngIf="type!=''">
-              <span class="item_filter">Type Etablissement={{type_filter}} </span>
-              <button type="button" class="btn-close" aria-label="Close" (click)="del_filter2(type)"></button>
-            </div>
-
-            <div class="rounded-btn" *ngIf="secteur!=''">
-              <span class="item_filter">secteur ={{secteur_filter}} </span>
-              <button type="button" class="btn-close" aria-label="Close" (click)="del_filter2(secteur)"></button>
-            </div>
-    
-          </div>
-<!-- ...existing filters and buttons... -->
-
-<!-- Show the multi-selector ONLY if crit is 'test' -->
-<div   class="p-3"  *ngIf="crit === 'test' ; else normalTable">
-  <div class="row mb-3">
-  <div class="col-md-6">
-    <label class="form-label labelBold mb-2">Critère de transfert</label>
-    <div class="form-check">
-      <input 
-        class="form-check-input" 
-        type="radio" 
-        name="critere" 
-        id="critereVider" 
-        value="vider"
-        [(ngModel)]="critere"
-        (change)="onCritereChange('vider')">
-      <label class="form-check-label" for="critereVider">
-        <strong>Vider</strong> - Transférer tout le stock disponible vers les établissements à stock zéro
-      </label>
     </div>
-    <div class="form-check mt-2">
-      <input 
-        class="form-check-input" 
-        type="radio" 
-        name="critere" 
-        id="critereSender" 
-        value="sender"
-        [(ngModel)]="critere"
-        (change)="onCritereChange('sender')">
-      <label class="form-check-label" for="critereSender">
-        <strong>Sender</strong> - Transférer vers les établissements à stock zéro avec ventes supérieures
-      </label>
+    <div>
     </div>
-  </div>
-</div>
-  <app-etab-multi-selector
-    [etabs]="etabs"
-    (emetteursChange)="onEmetteursChange($event)"
-    (recepteursChange)="onRecepteursChange($event)"
-    (qteChange)="onQteChange($event)">
-  </app-etab-multi-selector>
-</div>
+  </mat-step>
+  <mat-step label="Choix des Etablissements" state="etab" [editable]="etabA" [completed]="propgen">
+    <div [ngStyle]="{ 'display': etabA ? 'block' : 'none'} ">
+      <br>
+      <div class="card">
+        <div class="card-header headerColorBg  py-1" style=" color: white; font-weight: 600;">
+          Filter
+        </div>
+        <div class="card-body">
+          <div class="row">
+            <div class="col-md-3">
+              <label for="validationCustom01" class="form-label labelBold">Code Etablissement</label>
+              <input type="text" class="form-control custom-placeholder" id="validationCustom01"
+                placeholder="Code Etablissement" [(ngModel)]="ce">
+            </div>
+            <div class="col-md-3">
+              <label for="validationCustom02" class="form-label labelBold">Adresse</label>
+              <input type="text" class="form-control custom-placeholder" id="validationCustom02" placeholder="Adresse"
+                [(ngModel)]="adr">
+            </div>
+            <div class="col-md-3">
+              <label for="validationCustomUsername" class="form-label labelBold">Type</label>
+              <div class="input-group has-validation">
+                <input type="text" class="form-control custom-placeholder" id="validationCustomUsername"
+                  aria-describedby="inputGroupPrepend" placeholder="Type" [(ngModel)]="type">
+              </div>
+            </div>
+            <div class="col-md-3">
+              <label for="validationCustomUsername" class="form-label labelBold">secteur</label>
+              <div class="input-group has-validation">
+                <input type="number" class="form-control custom-placeholder" id="validationCustomUsername"
+                  aria-describedby="inputGroupPrepend" placeholder="secteur" [(ngModel)]="secteur">
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn_custom" type="button" (click)="Filtrer2()"
+            style="margin-right: 2%; margin-bottom: 1%; font-weight: bold;"><span><i
+                class="bi bi-funnel-fill"></i></span>Filtrer</button>
+        </div>
+      </div>
+      <br>
+      <div class="d-flex justify-content-between">
+        <button class="btn btn_custom" type="button" (click)="articleShow(true)" matStepperPrevious>Previous</button>
+        <button class="btn btn_custom" type="button" (click)="createProp(stepper)">Next</button>
+      </div>
+      <br>
+      <!-- etab-input.component.html -->
 
-<!-- Normal table display if crit is not 'test' -->
-<ng-template #normalTable>
-  <div class="card-body">
-    <div class="table-responsive">
-      <table class="display" id="datatable2" width="100%" cellspacing="0">
-        <thead>
-          <tr>
-            <th style="width:3%"></th>
-            <th style="width:14%">Code Etablissement </th>
-            <th style="width:14%">Libellé</th>
-            <th style="width:14%">Adresse1</th>
-            <th style="width:14%">Adresse2</th>
-            <th style="width:14%">Type</th>
-            <th style="width:12%">secteur</th>
-            <th style="width:14%">Priorité</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let etab of etabs">
-            <td></td>
-            <td>{{etab.code_etab}}</td>
-            <td>{{etab.libelle}}</td>
-            <td>{{etab.adresse1}}</td>
-            <td>{{etab.adresse2}}</td>
-            <td>{{etab.type}}</td>
-            <td>{{etab.secteur}}</td>
-            <td>
-              <input type="number" placeholder="{{etab.priorite}}" [(ngModel)]="etab.priorite"
-                (change)="onInputChange(etab)">
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-  </div>
-</ng-template>
+      <div class="card custom-card mb-3" *ngIf="crit=='articles_dem'">
+        <div class="card-body col-md-4">
+          <p class="card-text">Veuillez saisir le nombre d'établissements récepteurs :</p>
+
+          <input type="number" class="form-control mb-3" [(ngModel)]="top_etabs_count" placeholder="Ex: 5" />
 
         </div>
       </div>
-      <div>
-      </div>
-    </mat-step>
-    <mat-step label="Propositions" state="prop" [completed]="created">
-      <div [ngStyle]="{ 'display': dataLoading ? 'block' : 'none'} ">
-        <table class="table table-responsive">
-          <thead>
-            <tr>
-              <th>Ordre transfert</th>
-              <th>Code Gén</th>
-              <th>Code DIM</th>
-              <th>Code Barre</th>
-              <th>Code Dépot Emmet</th>
-              <th>Taille</th>
-              <th>Couleur</th>
-              <th>Emmeteur</th>
-              <th>Récepteur</th>
-              <th>Qté à Transferer</th>
-              <th>Code session</th>
-              <th>Date création</th>
-              <th>Statut</th>
-            </tr>
-          </thead>
-          <tr>
-            <td>
-              <div style="width: 70%; margin-left: 5%; "><ngx-skeleton-loader #skeletonLoader [count]="10" [appearance]="'line'"></ngx-skeleton-loader></div>
-            </td>
-            <td><div style="margin: 10%;"><ngx-skeleton-loader #skeletonLoader [count]="10" [appearance]="'line'"></ngx-skeleton-loader></div></td>
-            <td><div style="margin: 10%;" ><ngx-skeleton-loader #skeletonLoader [count]="10" [appearance]="'line'"></ngx-skeleton-loader></div></td>    
-            <td><div style="margin: 10%;" ><ngx-skeleton-loader #skeletonLoader [count]="10" [appearance]="'line'"></ngx-skeleton-loader></div></td>
-            <td><div style="margin: 10%;"><ngx-skeleton-loader #skeletonLoader [count]="10" [appearance]="'line'"></ngx-skeleton-loader></div></td>
-            <td><div style="margin: 10%;"><ngx-skeleton-loader #skeletonLoader [count]="10" [appearance]="'line'"></ngx-skeleton-loader></div></td>
-            <td><div style="margin: 10%;"><ngx-skeleton-loader #skeletonLoader [count]="10" [appearance]="'line'"></ngx-skeleton-loader></div></td>
-            <td><div style="margin: 10%;" ><ngx-skeleton-loader #skeletonLoader [count]="10" [appearance]="'line'"></ngx-skeleton-loader></div></td>    
-            <td><div style="margin: 10%;" ><ngx-skeleton-loader #skeletonLoader [count]="10" [appearance]="'line'"></ngx-skeleton-loader></div></td>
-            <td><div style="margin: 10%;"><ngx-skeleton-loader #skeletonLoader [count]="10" [appearance]="'line'"></ngx-skeleton-loader></div></td>
-            <td><div style="margin: 10%;"><ngx-skeleton-loader #skeletonLoader [count]="10" [appearance]="'line'"></ngx-skeleton-loader></div></td>
-            <td><div style="margin: 10%;"><ngx-skeleton-loader #skeletonLoader [count]="10" [appearance]="'line'"></ngx-skeleton-loader></div></td>
-            <td><div style="margin: 10%;" ><ngx-skeleton-loader #skeletonLoader [count]="10" [appearance]="'line'"></ngx-skeleton-loader></div></td>    
-            <td><div style="margin: 10%;" ><ngx-skeleton-loader #skeletonLoader [count]="10" [appearance]="'line'"></ngx-skeleton-loader></div></td>
-          
-          </tr>
-        </table>
-      </div>
-      <div [ngStyle]="{ 'display': created ? 'block' : 'none'} ">
-        <div class="card">
+
+
+      <div class="card">
+        <div class="card-header" *ngIf="filter_clicked2">
+          <span class="filter-text"> <i class="bi bi-funnel-fill"></i> Filtre </span>
+
+          <div class="rounded-btn" *ngIf="ce_filter!=''">
+            <span class="item_filter">code Etablissement={{ce_filter}} </span>
+            <button type="button" class="btn-close" aria-label="Close" (click)="del_filter2(ce)"></button>
+          </div>
+
+          <div class="rounded-btn" *ngIf="adr_filter!=''">
+            <span class="item_filter">Adresse={{adr_filter}} </span>
+            <button type="button" class="btn-close" aria-label="Close" (click)="del_filter2(adr)"></button>
+          </div>
+
+          <div class="rounded-btn" *ngIf="type!=''">
+            <span class="item_filter">Type Etablissement={{type_filter}} </span>
+            <button type="button" class="btn-close" aria-label="Close" (click)="del_filter2(type)"></button>
+          </div>
+
+          <div class="rounded-btn" *ngIf="secteur!=''">
+            <span class="item_filter">secteur ={{secteur_filter}} </span>
+            <button type="button" class="btn-close" aria-label="Close" (click)="del_filter2(secteur)"></button>
+          </div>
+
+        </div>
+        <!-- ...existing filters and buttons... -->
+
+        <!-- Show the multi-selector ONLY if crit is 'test' -->
+        <div class="p-3" *ngIf="crit === 'test' ; else normalTable">
+          <div class="row mb-3">
+            <div class="col-md-6">
+              <label class="form-label labelBold mb-2">Critère de transfert</label>
+              <div class="form-check">
+                <input class="form-check-input" type="radio" name="critere" id="critereVider" value="vider"
+                  [(ngModel)]="critere" (change)="onCritereChange('vider')">
+                <label class="form-check-label" for="critereVider">
+                  <strong>Vider</strong> - Transférer tout le stock disponible vers les établissements à stock zéro
+                </label>
+              </div>
+              <div class="form-check mt-2">
+                <input class="form-check-input" type="radio" name="critere" id="critereSender" value="sender"
+                  [(ngModel)]="critere" (change)="onCritereChange('sender')">
+                <label class="form-check-label" for="critereSender">
+                  <strong>Sender</strong> - Transférer vers les établissements à stock zéro avec ventes supérieures
+                </label>
+              </div>
+            </div>
+          </div>
+          <app-etab-multi-selector [etabs]="etabs" (emetteursChange)="onEmetteursChange($event)"
+            (recepteursChange)="onRecepteursChange($event)" (qteChange)="onQteChange($event)">
+          </app-etab-multi-selector>
+        </div>
+
+        <!-- Normal table display if crit is not 'test' -->
+        <ng-template #normalTable>
           <div class="card-body">
             <div class="table-responsive">
-              <table class="display" id="datatable3" width="100%" cellspacing="0">
+              <table class="display" id="datatable2" width="100%" cellspacing="0">
                 <thead>
                   <tr>
-                    <th>Ordre transfert</th>
-                    <th>Code Gén</th>
-                    <th>Code DIM</th>
-                    <th>Libellé</th>
-                    <th>Code Barre</th>
-                    <th>Code Dépot Emmet</th>
-                    <th>Code Eatb Récepteur</th>
-                    <th>Taille</th>
-                    <th>Couleur</th>
-                    <th>Emmeteur</th>
-                    <th>Récepteur</th>
-                    <th>Qté à Transferer</th>
-                    <th>Code session</th>
-                    <th>Date création</th>
-                    <th>Statut</th>
-                    <th>Stock Emet Sera Couleur</th>
-                    <th>Stock Emet Sera</th>
-                    <th>Stock Recep Sera en Couleur</th>
-                    <th>Stock Recep Sera</th>
+                    <th style="width:3%"></th>
+                    <th style="width:14%">Code Etablissement </th>
+                    <th style="width:14%">Libellé</th>
+                    <th style="width:14%">Adresse1</th>
+                    <th style="width:14%">Adresse2</th>
+                    <th style="width:14%">Type</th>
+                    <th style="width:12%">secteur</th>
+                    <th style="width:14%">Priorité</th>
                   </tr>
                 </thead>
                 <tbody>
-                  <tr *ngFor="let prop of props">
-                    <td>{{prop.ordre_trf}}</td>
-                    <td>{{prop.code_article_gen}}</td>
-                    <td>{{prop.code_article_dem}}</td>
-                    <td>{{prop.libelle}}</td>
-                    <td>{{prop.code_barre}}</td>
-                    <td>{{prop.code_depot_emet}}</td>
-                    <td>{{prop.code_etab_recep}}</td>
-                    <td>{{prop.lib_taille}}</td>
-                    <td>{{prop.lib_couleur}}</td>
-                    <td>{{prop.emet}}</td>
-                    <td>{{prop.recep}}</td>
-                    <td>{{prop.qte_trf}}</td>
-                    <td>{{prop.code_session}}</td>
-                    <td>{{prop.date}}</td>
-                    <td>{{prop.statut}}</td>
-                    <td>{{prop.stock_emet_sera_couleur}}</td>
-                    <td>{{prop.stock_emet_sera}}</td>
-                    <td>{{prop.stock_recep_sera_couleur}}</td>
-                    <td>{{prop.stock_recep_sera}}</td>
+                  <tr *ngFor="let etab of etabs">
+                    <td></td>
+                    <td>{{etab.code_etab}}</td>
+                    <td>{{etab.libelle}}</td>
+                    <td>{{etab.adresse1}}</td>
+                    <td>{{etab.adresse2}}</td>
+                    <td>{{etab.type}}</td>
+                    <td>{{etab.secteur}}</td>
+                    <td>
+                      <input type="number" placeholder="{{etab.priorite}}" [(ngModel)]="etab.priorite"
+                        (change)="onInputChange(etab)">
+                    </td>
                   </tr>
                 </tbody>
               </table>
             </div>
           </div>
+        </ng-template>
+
+      </div>
+    </div>
+    <div>
+    </div>
+  </mat-step>
+  <mat-step label="Propositions" state="prop" [completed]="created">
+    <div [ngStyle]="{ 'display': dataLoading ? 'block' : 'none'} ">
+      <table class="table table-responsive">
+        <thead>
+          <tr>
+            <th>Ordre transfert</th>
+            <th>Code Gén</th>
+            <th>Code DIM</th>
+            <th>Code Barre</th>
+            <th>Code Dépot Emmet</th>
+            <th>Taille</th>
+            <th>Couleur</th>
+            <th>Emmeteur</th>
+            <th>Récepteur</th>
+            <th>Qté à Transferer</th>
+            <th>Code session</th>
+            <th>Date création</th>
+            <th>Statut</th>
+          </tr>
+        </thead>
+        <tr>
+          <td>
+            <div style="width: 70%; margin-left: 5%; "><ngx-skeleton-loader #skeletonLoader [count]="10"
+                [appearance]="'line'"></ngx-skeleton-loader></div>
+          </td>
+          <td>
+            <div style="margin: 10%;"><ngx-skeleton-loader #skeletonLoader [count]="10"
+                [appearance]="'line'"></ngx-skeleton-loader></div>
+          </td>
+          <td>
+            <div style="margin: 10%;"><ngx-skeleton-loader #skeletonLoader [count]="10"
+                [appearance]="'line'"></ngx-skeleton-loader></div>
+          </td>
+          <td>
+            <div style="margin: 10%;"><ngx-skeleton-loader #skeletonLoader [count]="10"
+                [appearance]="'line'"></ngx-skeleton-loader></div>
+          </td>
+          <td>
+            <div style="margin: 10%;"><ngx-skeleton-loader #skeletonLoader [count]="10"
+                [appearance]="'line'"></ngx-skeleton-loader></div>
+          </td>
+          <td>
+            <div style="margin: 10%;"><ngx-skeleton-loader #skeletonLoader [count]="10"
+                [appearance]="'line'"></ngx-skeleton-loader></div>
+          </td>
+          <td>
+            <div style="margin: 10%;"><ngx-skeleton-loader #skeletonLoader [count]="10"
+                [appearance]="'line'"></ngx-skeleton-loader></div>
+          </td>
+          <td>
+            <div style="margin: 10%;"><ngx-skeleton-loader #skeletonLoader [count]="10"
+                [appearance]="'line'"></ngx-skeleton-loader></div>
+          </td>
+          <td>
+            <div style="margin: 10%;"><ngx-skeleton-loader #skeletonLoader [count]="10"
+                [appearance]="'line'"></ngx-skeleton-loader></div>
+          </td>
+          <td>
+            <div style="margin: 10%;"><ngx-skeleton-loader #skeletonLoader [count]="10"
+                [appearance]="'line'"></ngx-skeleton-loader></div>
+          </td>
+          <td>
+            <div style="margin: 10%;"><ngx-skeleton-loader #skeletonLoader [count]="10"
+                [appearance]="'line'"></ngx-skeleton-loader></div>
+          </td>
+          <td>
+            <div style="margin: 10%;"><ngx-skeleton-loader #skeletonLoader [count]="10"
+                [appearance]="'line'"></ngx-skeleton-loader></div>
+          </td>
+          <td>
+            <div style="margin: 10%;"><ngx-skeleton-loader #skeletonLoader [count]="10"
+                [appearance]="'line'"></ngx-skeleton-loader></div>
+          </td>
+          <td>
+            <div style="margin: 10%;"><ngx-skeleton-loader #skeletonLoader [count]="10"
+                [appearance]="'line'"></ngx-skeleton-loader></div>
+          </td>
+
+        </tr>
+      </table>
+    </div>
+    <div [ngStyle]="{ 'display': created ? 'block' : 'none'} ">
+      <div class="card">
+        <div class="card-body">
+          <div class="table-responsive">
+            <table class="display" id="datatable3" width="100%" cellspacing="0">
+              <thead>
+                <tr>
+                  <th>Ordre transfert</th>
+                  <th>Code Gén</th>
+                  <th>Code DIM</th>
+                  <th>Libellé</th>
+                  <th>Code Barre</th>
+                  <th>Code Dépot Emmet</th>
+                  <th>Code Eatb Récepteur</th>
+                  <th>Taille</th>
+                  <th>Couleur</th>
+                  <th>Emmeteur</th>
+                  <th>Récepteur</th>
+                  <th>Qté à Transferer</th>
+                  <th>Code session</th>
+                  <th>Date création</th>
+                  <th>Statut</th>
+                  <th>Stock Emet Sera Couleur</th>
+                  <th>Stock Emet Sera</th>
+                  <th>Stock Recep Sera en Couleur</th>
+                  <th>Stock Recep Sera</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let prop of props">
+                  <td>{{prop.ordre_trf}}</td>
+                  <td>{{prop.code_article_gen}}</td>
+                  <td>{{prop.code_article_dem}}</td>
+                  <td>{{prop.libelle}}</td>
+                  <td>{{prop.code_barre}}</td>
+                  <td>{{prop.code_depot_emet}}</td>
+                  <td>{{prop.code_etab_recep}}</td>
+                  <td>{{prop.lib_taille}}</td>
+                  <td>{{prop.lib_couleur}}</td>
+                  <td>{{prop.emet}}</td>
+                  <td>{{prop.recep}}</td>
+                  <td>{{prop.qte_trf}}</td>
+                  <td>{{prop.code_session}}</td>
+                  <td>{{prop.date}}</td>
+                  <td>{{prop.statut}}</td>
+                  <td>{{prop.stock_emet_sera_couleur}}</td>
+                  <td>{{prop.stock_emet_sera}}</td>
+                  <td>{{prop.stock_recep_sera_couleur}}</td>
+                  <td>{{prop.stock_recep_sera}}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
-    </mat-step>
-  
-    <!-- Icon overrides. -->
-    <ng-template matStepperIcon="settings">
-      <mat-icon>settings</mat-icon>
-    </ng-template>
-    <ng-template matStepperIcon="article">
-      <mat-icon>inbox</mat-icon>
-    </ng-template>
-    <ng-template matStepperIcon="etab">
-      <mat-icon>business</mat-icon>
-    </ng-template>
-    <ng-template matStepperIcon="prop">
-      <mat-icon>ballot</mat-icon>
-    </ng-template>
-  </mat-stepper>
+    </div>
+  </mat-step>
+
+  <!-- Icon overrides. -->
+  <ng-template matStepperIcon="settings">
+    <mat-icon>settings</mat-icon>
+  </ng-template>
+  <ng-template matStepperIcon="article">
+    <mat-icon>inbox</mat-icon>
+  </ng-template>
+  <ng-template matStepperIcon="etab">
+    <mat-icon>business</mat-icon>
+  </ng-template>
+  <ng-template matStepperIcon="prop">
+    <mat-icon>ballot</mat-icon>
+  </ng-template>
+</mat-stepper>
